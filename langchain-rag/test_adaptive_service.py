@@ -6,39 +6,38 @@
 
 import asyncio
 import logging
-import json
+import os
 import time
 from datetime import datetime
-from typing import Dict, List, Any, Optional
-import os
 
-from fastapi import FastAPI, HTTPException, BackgroundTasks
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
 import uvicorn
 
 # 導入我們的增強策略
 from enhanced_adaptive_strategies import (
+    ContextualRAGStrategy,
     EnhancedAdaptiveManager,
     QueryContext,
-    QueryIntent,
-    ContextualRAGStrategy
 )
+from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
 
 # 配置日誌
 logging.basicConfig(
-    level=logging.DEBUG if os.getenv('LOG_LEVEL') == 'DEBUG' else logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.DEBUG if os.getenv("LOG_LEVEL") == "DEBUG" else logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
+
 
 # Pydantic 模型
 class TestQueryRequest(BaseModel):
     query: str = Field(..., description="測試查詢文本")
-    user_id: Optional[str] = Field(None, description="用戶ID")
-    session_id: Optional[str] = Field(None, description="會話ID")
-    expected_intent: Optional[str] = Field(None, description="預期意圖")
+    user_id: str | None = Field(None, description="用戶ID")
+    session_id: str | None = Field(None, description="會話ID")
+    expected_intent: str | None = Field(None, description="預期意圖")
     simulate_multimodal: bool = Field(False, description="模擬多模態查詢")
+
 
 class PerformanceFeedback(BaseModel):
     strategy: str = Field(..., description="使用的策略")
@@ -47,10 +46,12 @@ class PerformanceFeedback(BaseModel):
     confidence: float = Field(..., description="信心度")
     user_satisfaction: float = Field(5.0, description="用戶滿意度(1-5)")
 
+
 class BatchTestRequest(BaseModel):
-    queries: List[str] = Field(..., description="批次測試查詢")
+    queries: list[str] = Field(..., description="批次測試查詢")
     test_duration: int = Field(300, description="測試持續時間(秒)")
     concurrent_users: int = Field(5, description="並發用戶數")
+
 
 # FastAPI 應用
 app = FastAPI(
@@ -58,7 +59,7 @@ app = FastAPI(
     description="增強型自適應RAG策略測試服務",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url="/redoc"
+    redoc_url="/redoc",
 )
 
 # 添加CORS中間件
@@ -71,15 +72,16 @@ app.add_middleware(
 )
 
 # 全局變數
-adaptive_manager: Optional[EnhancedAdaptiveManager] = None
+adaptive_manager: EnhancedAdaptiveManager | None = None
 test_results = []
 test_stats = {
     "total_queries": 0,
     "successful_queries": 0,
     "failed_queries": 0,
     "avg_response_time": 0.0,
-    "strategy_distribution": {}
+    "strategy_distribution": {},
 }
+
 
 @app.on_event("startup")
 async def startup_event():
@@ -90,19 +92,21 @@ async def startup_event():
         logger.info("🚀 初始化增強型自適應策略管理器...")
 
         # 從環境變數讀取配置
-        learning_rate = float(os.getenv('LEARNING_RATE', '0.15'))
-        exploration_rate = float(os.getenv('EXPLORATION_RATE', '0.3'))
+        learning_rate = float(os.getenv("LEARNING_RATE", "0.15"))
+        exploration_rate = float(os.getenv("EXPLORATION_RATE", "0.3"))
 
         adaptive_manager = EnhancedAdaptiveManager(
-            learning_rate=learning_rate,
-            exploration_rate=exploration_rate
+            learning_rate=learning_rate, exploration_rate=exploration_rate
         )
 
-        logger.info(f"✅ 自適應策略管理器初始化完成 (學習率: {learning_rate}, 探索率: {exploration_rate})")
+        logger.info(
+            f"✅ 自適應策略管理器初始化完成 (學習率: {learning_rate}, 探索率: {exploration_rate})"
+        )
 
     except Exception as e:
         logger.error(f"❌ 初始化失敗: {e}")
         raise
+
 
 @app.get("/")
 async def root():
@@ -118,9 +122,10 @@ async def root():
             "/test/batch",
             "/feedback",
             "/stats",
-            "/system/status"
-        ]
+            "/system/status",
+        ],
     }
+
 
 @app.get("/health")
 async def health_check():
@@ -132,8 +137,9 @@ async def health_check():
         "status": "healthy",
         "service": "adaptive-strategy-test",
         "timestamp": datetime.now().isoformat(),
-        "total_queries_processed": test_stats["total_queries"]
+        "total_queries_processed": test_stats["total_queries"],
     }
+
 
 @app.post("/test/strategy")
 async def test_strategy_selection(request: TestQueryRequest):
@@ -149,7 +155,7 @@ async def test_strategy_selection(request: TestQueryRequest):
             query_text=request.query,
             user_id=request.user_id,
             session_id=request.session_id,
-            multimodal_components=["image", "text"] if request.simulate_multimodal else ["text"]
+            multimodal_components=["image", "text"] if request.simulate_multimodal else ["text"],
         )
 
         # 選擇最優策略
@@ -164,8 +170,9 @@ async def test_strategy_selection(request: TestQueryRequest):
 
         # 更新統計
         test_stats["total_queries"] += 1
-        test_stats["strategy_distribution"][selected_strategy.value] = \
+        test_stats["strategy_distribution"][selected_strategy.value] = (
             test_stats["strategy_distribution"].get(selected_strategy.value, 0) + 1
+        )
 
         result = {
             "query": request.query,
@@ -176,15 +183,17 @@ async def test_strategy_selection(request: TestQueryRequest):
             "context": {
                 "user_id": context.user_id,
                 "session_id": context.session_id,
-                "multimodal": request.simulate_multimodal
+                "multimodal": request.simulate_multimodal,
             },
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         # 記錄測試結果
         test_results.append(result)
 
-        logger.info(f"🎯 策略選擇測試完成: {selected_strategy.value} (處理時間: {processing_time:.3f}s)")
+        logger.info(
+            f"🎯 策略選擇測試完成: {selected_strategy.value} (處理時間: {processing_time:.3f}s)"
+        )
 
         return result
 
@@ -192,6 +201,7 @@ async def test_strategy_selection(request: TestQueryRequest):
         test_stats["failed_queries"] += 1
         logger.error(f"❌ 策略選擇測試失敗: {e}")
         raise HTTPException(status_code=500, detail=f"測試失敗: {str(e)}")
+
 
 @app.post("/feedback")
 async def submit_performance_feedback(feedback: PerformanceFeedback):
@@ -208,16 +218,14 @@ async def submit_performance_feedback(feedback: PerformanceFeedback):
 
         # 構建性能指標
         performance_metrics = {
-            'success': feedback.success,
-            'response_time': feedback.response_time,
-            'confidence': feedback.confidence,
-            'user_satisfaction': feedback.user_satisfaction
+            "success": feedback.success,
+            "response_time": feedback.response_time,
+            "confidence": feedback.confidence,
+            "user_satisfaction": feedback.user_satisfaction,
         }
 
         # 更新策略性能
-        await adaptive_manager.update_strategy_performance(
-            strategy, context, performance_metrics
-        )
+        await adaptive_manager.update_strategy_performance(strategy, context, performance_metrics)
 
         # 更新統計
         if feedback.success:
@@ -229,8 +237,8 @@ async def submit_performance_feedback(feedback: PerformanceFeedback):
         total_queries = test_stats["total_queries"]
         if total_queries > 0:
             test_stats["avg_response_time"] = (
-                (test_stats["avg_response_time"] * (total_queries - 1) + feedback.response_time) / total_queries
-            )
+                test_stats["avg_response_time"] * (total_queries - 1) + feedback.response_time
+            ) / total_queries
 
         logger.info(f"📊 性能反饋已更新: {strategy.value}")
 
@@ -238,14 +246,15 @@ async def submit_performance_feedback(feedback: PerformanceFeedback):
             "success": True,
             "message": "性能反饋已記錄",
             "strategy": feedback.strategy,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
-    except ValueError as e:
+    except ValueError:
         raise HTTPException(status_code=400, detail=f"無效的策略名稱: {feedback.strategy}")
     except Exception as e:
         logger.error(f"❌ 提交反饋失敗: {e}")
         raise HTTPException(status_code=500, detail=f"提交反饋失敗: {str(e)}")
+
 
 @app.post("/test/batch")
 async def batch_test(request: BatchTestRequest, background_tasks: BackgroundTasks):
@@ -267,11 +276,12 @@ async def batch_test(request: BatchTestRequest, background_tasks: BackgroundTask
                     context = QueryContext(
                         query_text=query,
                         user_id=f"test_user_{test_count % request.concurrent_users}",
-                        session_id=f"test_session_{test_count}"
+                        session_id=f"test_session_{test_count}",
                     )
 
                     # 選擇策略（同步調用，實際中需要使用 asyncio.run）
                     import asyncio
+
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)
 
@@ -281,10 +291,10 @@ async def batch_test(request: BatchTestRequest, background_tasks: BackgroundTask
 
                     # 模擬性能指標
                     simulated_metrics = {
-                        'success': True,
-                        'response_time': 0.1 + (hash(query) % 20) / 100.0,  # 0.1-0.3s
-                        'confidence': 0.6 + (hash(query) % 40) / 100.0,     # 0.6-1.0
-                        'user_satisfaction': 3.0 + (hash(query) % 20) / 10.0  # 3.0-5.0
+                        "success": True,
+                        "response_time": 0.1 + (hash(query) % 20) / 100.0,  # 0.1-0.3s
+                        "confidence": 0.6 + (hash(query) % 40) / 100.0,  # 0.6-1.0
+                        "user_satisfaction": 3.0 + (hash(query) % 20) / 10.0,  # 3.0-5.0
                     }
 
                     # 更新性能
@@ -317,10 +327,11 @@ async def batch_test(request: BatchTestRequest, background_tasks: BackgroundTask
         "test_config": {
             "queries_count": len(request.queries),
             "test_duration": request.test_duration,
-            "concurrent_users": request.concurrent_users
+            "concurrent_users": request.concurrent_users,
         },
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
     }
+
 
 @app.get("/stats")
 async def get_test_statistics():
@@ -336,8 +347,9 @@ async def get_test_statistics():
         "system_status": system_status,
         "recent_results": test_results[-10:] if len(test_results) > 10 else test_results,
         "total_results_count": len(test_results),
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
     }
+
 
 @app.get("/system/status")
 async def get_system_status():
@@ -351,15 +363,16 @@ async def get_system_status():
             "total_queries": test_stats["total_queries"],
             "success_rate": test_stats["successful_queries"] / max(test_stats["total_queries"], 1),
             "avg_response_time": test_stats["avg_response_time"],
-            "strategy_distribution": test_stats["strategy_distribution"]
+            "strategy_distribution": test_stats["strategy_distribution"],
         },
         "environment": {
-            "learning_rate": os.getenv('LEARNING_RATE', '0.15'),
-            "exploration_rate": os.getenv('EXPLORATION_RATE', '0.3'),
-            "log_level": os.getenv('LOG_LEVEL', 'INFO')
+            "learning_rate": os.getenv("LEARNING_RATE", "0.15"),
+            "exploration_rate": os.getenv("EXPLORATION_RATE", "0.3"),
+            "log_level": os.getenv("LOG_LEVEL", "INFO"),
         },
-        "timestamp": datetime.now().isoformat()
+        "timestamp": datetime.now().isoformat(),
     }
+
 
 @app.post("/system/optimize")
 async def trigger_optimization(background_tasks: BackgroundTasks):
@@ -381,11 +394,8 @@ async def trigger_optimization(background_tasks: BackgroundTasks):
 
     background_tasks.add_task(run_optimization)
 
-    return {
-        "success": True,
-        "message": "系統優化已啟動",
-        "timestamp": datetime.now().isoformat()
-    }
+    return {"success": True, "message": "系統優化已啟動", "timestamp": datetime.now().isoformat()}
+
 
 if __name__ == "__main__":
     logger.info("🚀 啟動增強型自適應策略測試服務...")
@@ -396,6 +406,6 @@ if __name__ == "__main__":
         "test_adaptive_service:app",
         host="0.0.0.0",
         port=8003,
-        reload=os.getenv('FLASK_ENV') == 'testing',
-        log_level="debug" if os.getenv('LOG_LEVEL') == 'DEBUG' else "info"
+        reload=os.getenv("FLASK_ENV") == "testing",
+        log_level="debug" if os.getenv("LOG_LEVEL") == "DEBUG" else "info",
     )

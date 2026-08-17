@@ -5,39 +5,40 @@
 """
 
 import asyncio
-import time
 import json
 import logging
-from datetime import datetime
-from typing import Dict, List, Any, Optional
-from pathlib import Path
-import sys
 import os
+import sys
+import time
+from typing import Any
 
 # 添加當前目錄到Python路徑
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, BackgroundTasks
-    from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
     import uvicorn
+    from fastapi import BackgroundTasks, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+    from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
     logging.warning("FastAPI not available, web interface will be disabled")
 
-from enhanced_adaptive_strategies import EnhancedAdaptiveManager, QueryContext
 from adaptive_strategy_monitor import AdaptiveStrategyMonitor
 from alert_and_optimization_system import AlertAndOptimizationSystem
-from realtime_monitoring_service import RealTimeMonitoringService
+from enhanced_adaptive_strategies import EnhancedAdaptiveManager, QueryContext
+
 
 class UnifiedMonitoringService:
     """統一監控優化服務"""
 
-    def __init__(self,
-                 adaptive_manager: Optional[EnhancedAdaptiveManager] = None,
-                 host: str = "0.0.0.0",
-                 port: int = 8005):
+    def __init__(
+        self,
+        adaptive_manager: EnhancedAdaptiveManager | None = None,
+        host: str = "0.0.0.0",
+        port: int = 8005,
+    ):
         """
         初始化統一監控服務
 
@@ -48,15 +49,12 @@ class UnifiedMonitoringService:
         """
         # 核心組件
         self.adaptive_manager = adaptive_manager or EnhancedAdaptiveManager(
-            learning_rate=0.15,
-            exploration_rate=0.3
+            learning_rate=0.15, exploration_rate=0.3
         )
 
         self.monitor = AdaptiveStrategyMonitor(self.adaptive_manager)
         self.alert_system = AlertAndOptimizationSystem(
-            self.adaptive_manager,
-            self.monitor,
-            enable_auto_optimization=True
+            self.adaptive_manager, self.monitor, enable_auto_optimization=True
         )
 
         # 服務配置
@@ -71,7 +69,7 @@ class UnifiedMonitoringService:
         self.start_time = time.time()
 
         # WebSocket連接管理
-        self.active_connections: List[WebSocket] = []
+        self.active_connections: list[WebSocket] = []
 
         # 創建FastAPI應用
         self.app = None
@@ -82,14 +80,12 @@ class UnifiedMonitoringService:
 
     def _setup_logger(self) -> logging.Logger:
         """設置日誌"""
-        logger = logging.getLogger('UnifiedMonitoringService')
+        logger = logging.getLogger("UnifiedMonitoringService")
         logger.setLevel(logging.INFO)
 
         if not logger.handlers:
             handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            )
+            formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
             handler.setFormatter(formatter)
             logger.addHandler(handler)
 
@@ -100,7 +96,7 @@ class UnifiedMonitoringService:
         app = FastAPI(
             title="增強型自適應策略統一監控平台",
             description="集成監控、告警、優化的完整解決方案",
-            version="1.0.0"
+            version="1.0.0",
         )
 
         # 註冊所有路由
@@ -127,8 +123,8 @@ class UnifiedMonitoringService:
                 "components": {
                     "adaptive_manager": "running",
                     "monitor": "running" if self.monitor.monitoring_active else "stopped",
-                    "alert_system": "running" if self.alert_system.system_running else "stopped"
-                }
+                    "alert_system": "running" if self.alert_system.system_running else "stopped",
+                },
             }
 
         @app.get("/api/overview")
@@ -141,23 +137,27 @@ class UnifiedMonitoringService:
                 "timestamp": time.time(),
                 "system_health": health_report,
                 "alerts": alert_summary,
-                "uptime": time.time() - self.start_time
+                "uptime": time.time() - self.start_time,
             }
 
         @app.get("/api/metrics/prometheus")
         async def prometheus_metrics():
             """Prometheus格式的指標"""
             from fastapi.responses import Response
-            return Response(
-                content=self.monitor.get_prometheus_metrics(),
-                media_type="text/plain"
-            )
+
+            return Response(content=self.monitor.get_prometheus_metrics(), media_type="text/plain")
 
         @app.get("/api/stats/strategies")
         async def get_strategy_statistics():
             """獲取策略統計"""
-            strategies = ["text_semantic", "visual_multimodal", "knowledge_graph",
-                         "temporal_aware", "hybrid_fusion", "contextual_adaptive"]
+            strategies = [
+                "text_semantic",
+                "visual_multimodal",
+                "knowledge_graph",
+                "temporal_aware",
+                "hybrid_fusion",
+                "contextual_adaptive",
+            ]
 
             return {
                 strategy: self.monitor.get_strategy_statistics(strategy, hours=1)
@@ -185,9 +185,7 @@ class UnifiedMonitoringService:
             query_text = request.get("query", "測試增強型自適應策略")
 
             context = QueryContext(
-                query_text=query_text,
-                user_id="test_user",
-                session_id=f"test_{int(time.time())}"
+                query_text=query_text, user_id="test_user", session_id=f"test_{int(time.time())}"
             )
 
             # 執行策略選擇
@@ -201,10 +199,10 @@ class UnifiedMonitoringService:
 
                 # 模擬性能數據
                 performance_data = {
-                    'response_time': response_time,
-                    'confidence': 0.85 + (hash(query_text) % 15) / 100.0,
-                    'success': True,
-                    'user_satisfaction': 4.2
+                    "response_time": response_time,
+                    "confidence": 0.85 + (hash(query_text) % 15) / 100.0,
+                    "success": True,
+                    "user_satisfaction": 4.2,
                 }
 
                 # 記錄性能
@@ -216,16 +214,12 @@ class UnifiedMonitoringService:
                     "selected_strategy": strategy.value,
                     "response_time": response_time,
                     "performance_data": performance_data,
-                    "recommendation_details": recommendation
+                    "recommendation_details": recommendation,
                 }
 
             except Exception as e:
                 self.logger.error(f"測試查詢失敗: {e}")
-                return {
-                    "success": False,
-                    "error": str(e),
-                    "query": query_text
-                }
+                return {"success": False, "error": str(e), "query": query_text}
 
         @app.post("/api/optimization/manual")
         async def manual_optimization():
@@ -233,16 +227,9 @@ class UnifiedMonitoringService:
             try:
                 # 執行系統優化
                 result = await self.adaptive_manager.optimize_system_performance()
-                return {
-                    "success": True,
-                    "message": "手動優化已執行",
-                    "result": result
-                }
+                return {"success": True, "message": "手動優化已執行", "result": result}
             except Exception as e:
-                return {
-                    "success": False,
-                    "error": str(e)
-                }
+                return {"success": False, "error": str(e)}
 
         @app.get("/api/export/metrics")
         async def export_metrics():
@@ -251,9 +238,7 @@ class UnifiedMonitoringService:
             self.monitor.export_metrics_to_json(export_path)
 
             return FileResponse(
-                path=export_path,
-                filename=export_path,
-                media_type='application/json'
+                path=export_path, filename=export_path, media_type="application/json"
             )
 
         @app.get("/api/export/alerts")
@@ -263,9 +248,7 @@ class UnifiedMonitoringService:
             self.alert_system.export_alert_history(export_path, hours=24)
 
             return FileResponse(
-                path=export_path,
-                filename=export_path,
-                media_type='application/json'
+                path=export_path, filename=export_path, media_type="application/json"
             )
 
         @app.post("/api/config/thresholds")
@@ -979,7 +962,7 @@ class UnifiedMonitoringService:
 </html>
         """
 
-    async def _get_realtime_overview(self) -> Dict[str, Any]:
+    async def _get_realtime_overview(self) -> dict[str, Any]:
         """獲取實時概覽數據"""
         health_report = self.monitor.get_system_health_report()
         alert_summary = self.alert_system.get_alert_summary()
@@ -989,7 +972,7 @@ class UnifiedMonitoringService:
             "timestamp": time.time(),
             "system_health": health_report,
             "alerts": alert_summary,
-            "uptime": time.time() - self.start_time
+            "uptime": time.time() - self.start_time,
         }
 
     async def connect(self, websocket: WebSocket):
@@ -1004,7 +987,7 @@ class UnifiedMonitoringService:
             self.active_connections.remove(websocket)
         self.logger.info("WebSocket連接已斷開")
 
-    async def broadcast_update(self, data: Dict[str, Any]):
+    async def broadcast_update(self, data: dict[str, Any]):
         """廣播更新到所有連接"""
         if not self.active_connections:
             return
@@ -1049,12 +1032,7 @@ class UnifiedMonitoringService:
             self.logger.error("FastAPI不可用，無法啟動Web服務")
             return
 
-        config = uvicorn.Config(
-            app=self.app,
-            host=self.host,
-            port=self.port,
-            log_level="info"
-        )
+        config = uvicorn.Config(app=self.app, host=self.host, port=self.port, log_level="info")
 
         server = uvicorn.Server(config)
 
@@ -1066,6 +1044,7 @@ class UnifiedMonitoringService:
         finally:
             await self.stop_monitoring()
 
+
 # 主函數
 async def main():
     """主函數"""
@@ -1074,6 +1053,7 @@ async def main():
 
     # 運行服務器
     await service.run_server()
+
 
 if __name__ == "__main__":
     if FASTAPI_AVAILABLE:

@@ -25,36 +25,34 @@ await integration_manager.initialize_mcp_system()
 ```
 """
 
-from .mcp_tool_registry import (
-    MCPToolRegistry,
-    MCPToolSpec,
-    MCPToolInstance,
-    MCPToolType,
-    MCPToolStatus,
-    get_mcp_registry
+from .mcp_agent_integration import (
+    MCPAgentFactory,
+    MCPCapableAgent,
+    MCPIntegrationManager,
+    MCPMasterAgent,
+    MCPMultimodalAgent,
+    MCPVectorRAGAgent,
+    get_mcp_integration_manager,
 )
-
 from .mcp_tool_proxy import (
-    MCPToolProxy,
-    MCPProxyManager,
-    ProxyRequest,
-    ProxyResponse,
-    ProxyCallType,
     HTTPToolProxy,
     LLMToolProxy,
-    VectorDBToolProxy,
+    MCPProxyManager,
+    MCPToolProxy,
     MultimodalToolProxy,
-    get_proxy_manager
+    ProxyCallType,
+    ProxyRequest,
+    ProxyResponse,
+    VectorDBToolProxy,
+    get_proxy_manager,
 )
-
-from .mcp_agent_integration import (
-    MCPCapableAgent,
-    MCPMasterAgent,
-    MCPVectorRAGAgent,
-    MCPMultimodalAgent,
-    MCPAgentFactory,
-    MCPIntegrationManager,
-    get_mcp_integration_manager
+from .mcp_tool_registry import (
+    MCPToolInstance,
+    MCPToolRegistry,
+    MCPToolSpec,
+    MCPToolStatus,
+    MCPToolType,
+    get_mcp_registry,
 )
 
 __version__ = "1.0.0"
@@ -70,7 +68,6 @@ __all__ = [
     "MCPToolType",
     "MCPToolStatus",
     "get_mcp_registry",
-
     # Proxy components
     "MCPToolProxy",
     "MCPProxyManager",
@@ -82,7 +79,6 @@ __all__ = [
     "VectorDBToolProxy",
     "MultimodalToolProxy",
     "get_proxy_manager",
-
     # Integration components
     "MCPCapableAgent",
     "MCPMasterAgent",
@@ -90,5 +86,5 @@ __all__ = [
     "MCPMultimodalAgent",
     "MCPAgentFactory",
     "MCPIntegrationManager",
-    "get_mcp_integration_manager"
+    "get_mcp_integration_manager",
 ]

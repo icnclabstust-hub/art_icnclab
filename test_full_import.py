@@ -4,22 +4,24 @@
 模擬 importer.py 的行為來診斷問題
 """
 
+import traceback
+
 import chromadb
 import requests
-import traceback
+
 
 def test_full_import_workflow():
     """測試完整的匯入工作流程"""
 
-    print("="*60)
+    print("=" * 60)
     print("測試完整匯入流程")
-    print("="*60)
+    print("=" * 60)
     print()
 
     # 1. 連接 ChromaDB
     print("1️⃣ 連接 ChromaDB...")
     try:
-        client = chromadb.HttpClient(host='localhost', port=8000)
+        client = chromadb.HttpClient(host="localhost", port=8000)
         heartbeat = client.heartbeat()
         print(f"   ✅ 連接成功 (heartbeat: {heartbeat})")
     except Exception as e:
@@ -49,16 +51,13 @@ def test_full_import_workflow():
     try:
         response = requests.post(
             "http://localhost:11434/api/embeddings",
-            json={
-                "model": "nomic-embed-text",
-                "prompt": test_text
-            },
-            timeout=30
+            json={"model": "nomic-embed-text", "prompt": test_text},
+            timeout=30,
         )
 
         if response.status_code == 200:
-            embedding = response.json().get('embedding')
-            print(f"   ✅ 嵌入生成成功")
+            embedding = response.json().get("embedding")
+            print("   ✅ 嵌入生成成功")
             print(f"   嵌入維度: {len(embedding)}")
         else:
             print(f"   ❌ Ollama API 錯誤: {response.status_code}")
@@ -87,14 +86,11 @@ def test_full_import_workflow():
             ids=[test_id],
             documents=[test_text],
             embeddings=[embedding],
-            metadatas=[{
-                'title': '測試作品',
-                'artist': '漢寶德',
-                'period': '現代',
-                'source': 'test'
-            }]
+            metadatas=[
+                {"title": "測試作品", "artist": "漢寶德", "period": "現代", "source": "test"}
+            ],
         )
-        print(f"   ✅ 資料插入成功")
+        print("   ✅ 資料插入成功")
         print(f"   Collection 文檔數: {collection.count()}")
 
     except Exception as e:
@@ -122,7 +118,7 @@ def test_full_import_workflow():
     print("5️⃣ 查詢測試資料...")
     try:
         results = collection.get(ids=[test_id])
-        print(f"   ✅ 查詢成功")
+        print("   ✅ 查詢成功")
         print(f"   文檔: {results['documents'][0][:50]}...")
         print(f"   Metadata: {results['metadatas'][0]}")
 
@@ -136,15 +132,15 @@ def test_full_import_workflow():
     print("6️⃣ 清理測試資料...")
     try:
         collection.delete(ids=[test_id])
-        print(f"   ✅ 清理成功")
+        print("   ✅ 清理成功")
 
     except Exception as e:
         print(f"   ⚠️  清理失敗: {e}")
 
     print()
-    print("="*60)
+    print("=" * 60)
     print("✅ 完整匯入流程測試通過！")
-    print("="*60)
+    print("=" * 60)
 
     return True
 
@@ -152,13 +148,13 @@ def test_full_import_workflow():
 def check_collection_dimension():
     """檢查現有 collection 的維度設定"""
 
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("檢查現有 Collection 的維度")
-    print("="*60)
+    print("=" * 60)
     print()
 
     try:
-        client = chromadb.HttpClient(host='localhost', port=8000)
+        client = chromadb.HttpClient(host="localhost", port=8000)
         collections = client.list_collections()
 
         for col in collections:
@@ -168,13 +164,13 @@ def check_collection_dimension():
             # 如果有文檔，取得第一個的嵌入維度
             if col.count() > 0:
                 try:
-                    result = col.get(limit=1, include=['embeddings'])
-                    if result.get('embeddings'):
-                        emb = result['embeddings'][0]
-                        if emb is not None and hasattr(emb, '__len__'):
+                    result = col.get(limit=1, include=["embeddings"])
+                    if result.get("embeddings"):
+                        emb = result["embeddings"][0]
+                        if emb is not None and hasattr(emb, "__len__"):
                             print(f"   嵌入維度: {len(emb)}")
                         else:
-                            print(f"   嵌入維度: 無法確定")
+                            print("   嵌入維度: 無法確定")
                 except Exception as e:
                     print(f"   嵌入維度: 無法取得 ({e})")
             print()
@@ -193,4 +189,5 @@ if __name__ == "__main__":
 
     # 返回結果
     import sys
+
     sys.exit(0 if success else 1)

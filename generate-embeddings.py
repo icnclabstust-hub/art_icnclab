@@ -4,14 +4,16 @@
 使用本地模型，不需要 OpenAI API
 """
 
-import sys
 import logging
+import sys
+
 from neo4j import GraphDatabase
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class EmbeddingGenerator:
     """嵌入向量生成器"""
@@ -21,7 +23,7 @@ class EmbeddingGenerator:
         neo4j_uri="bolt://localhost:7687",
         neo4j_user="neo4j",
         neo4j_password="CHANGE_ME_NEO4J_PASSWORD",
-        model_name="BAAI/bge-small-zh-v1.5"  # 中文優化的輕量級模型
+        model_name="BAAI/bge-small-zh-v1.5",  # 中文優化的輕量級模型
     ):
         # 連接 Neo4j
         self.driver = GraphDatabase.driver(neo4j_uri, auth=(neo4j_user, neo4j_password))
@@ -59,9 +61,9 @@ class EmbeddingGenerator:
 
             # 生成嵌入
             for artist in tqdm(artists, desc="生成藝術家嵌入"):
-                name = artist['name']
-                node_id = artist['node_id']
-                biography = artist.get('biography', '')
+                name = artist["name"]
+                node_id = artist["node_id"]
+                biography = artist.get("biography", "")
 
                 # 組合文本：名稱 + 簡介
                 text = f"{name} {biography[:200]}" if biography else name
@@ -70,14 +72,14 @@ class EmbeddingGenerator:
                 embedding = self.model.encode(text).tolist()
 
                 # 更新節點
-                session.run("""
+                session.run(
+                    """
                     MATCH (a:Artist)
                     WHERE id(a) = $node_id
                     SET a.name_embedding = $embedding
-                """, {
-                    'node_id': node_id,
-                    'embedding': embedding
-                })
+                """,
+                    {"node_id": node_id, "embedding": embedding},
+                )
 
             logger.info(f"✅ 完成 {len(artists)} 個藝術家的嵌入生成")
 
@@ -103,9 +105,9 @@ class EmbeddingGenerator:
 
             # 生成嵌入
             for artwork in tqdm(artworks, desc="生成作品嵌入"):
-                title = artwork['title']
-                node_id = artwork['node_id']
-                description = artwork.get('description', '')
+                title = artwork["title"]
+                node_id = artwork["node_id"]
+                description = artwork.get("description", "")
 
                 # 組合文本：標題 + 描述
                 text = f"{title} {description[:200]}" if description else title
@@ -114,14 +116,14 @@ class EmbeddingGenerator:
                 embedding = self.model.encode(text).tolist()
 
                 # 更新節點
-                session.run("""
+                session.run(
+                    """
                     MATCH (w:Artwork)
                     WHERE id(w) = $node_id
                     SET w.title_embedding = $embedding
-                """, {
-                    'node_id': node_id,
-                    'embedding': embedding
-                })
+                """,
+                    {"node_id": node_id, "embedding": embedding},
+                )
 
             logger.info(f"✅ 完成 {len(artworks)} 個作品的嵌入生成")
 
@@ -136,7 +138,7 @@ class EmbeddingGenerator:
                 WHERE a.name_embedding IS NOT NULL
                 RETURN count(a) as count
             """)
-            artist_count = result.single()['count']
+            artist_count = result.single()["count"]
             logger.info(f"✅ 藝術家有嵌入: {artist_count} 個")
 
             # 檢查作品
@@ -145,19 +147,14 @@ class EmbeddingGenerator:
                 WHERE w.title_embedding IS NOT NULL
                 RETURN count(w) as count
             """)
-            artwork_count = result.single()['count']
+            artwork_count = result.single()["count"]
             logger.info(f"✅ 作品有嵌入: {artwork_count} 個")
 
     def test_vector_search(self):
         """測試向量搜索"""
         logger.info("\n🧪 測試向量搜索...")
 
-        test_queries = [
-            "Leonardo da Vinci",
-            "達文西",
-            "印象派",
-            "Renaissance painting"
-        ]
+        test_queries = ["Leonardo da Vinci", "達文西", "印象派", "Renaissance painting"]
 
         for query in test_queries:
             logger.info(f"\n查詢: {query}")
@@ -167,11 +164,14 @@ class EmbeddingGenerator:
 
             with self.driver.session() as session:
                 # 向量搜索藝術家
-                result = session.run("""
+                result = session.run(
+                    """
                     CALL db.index.vector.queryNodes('artist_name_embeddings', 3, $embedding)
                     YIELD node, score
                     RETURN node.name as name, score
-                """, {'embedding': query_embedding})
+                """,
+                    {"embedding": query_embedding},
+                )
 
                 results = list(result)
                 if results:
@@ -181,15 +181,16 @@ class EmbeddingGenerator:
                 else:
                     logger.info("  未找到結果")
 
+
 def main():
     """主函數"""
     import argparse
 
     parser = argparse.ArgumentParser(description="生成 Neo4j 嵌入向量")
-    parser.add_argument('--artists', type=int, default=50, help='生成嵌入的藝術家數量')
-    parser.add_argument('--artworks', type=int, default=100, help='生成嵌入的作品數量')
-    parser.add_argument('--model', default='BAAI/bge-small-zh-v1.5', help='嵌入模型名稱')
-    parser.add_argument('--test-only', action='store_true', help='僅測試向量搜索')
+    parser.add_argument("--artists", type=int, default=50, help="生成嵌入的藝術家數量")
+    parser.add_argument("--artworks", type=int, default=100, help="生成嵌入的作品數量")
+    parser.add_argument("--model", default="BAAI/bge-small-zh-v1.5", help="嵌入模型名稱")
+    parser.add_argument("--test-only", action="store_true", help="僅測試向量搜索")
 
     args = parser.parse_args()
 
@@ -218,6 +219,7 @@ def main():
         sys.exit(1)
     finally:
         generator.close()
+
 
 if __name__ == "__main__":
     main()

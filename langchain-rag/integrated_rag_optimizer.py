@@ -5,23 +5,24 @@
 """
 
 import asyncio
-import logging
-import time
 import json
+import logging
 import statistics
-from typing import Dict, List, Any, Optional, Tuple, Union
+import time
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
-from datetime import datetime, timedelta
-import threading
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from typing import Any
 
-from performance_monitor import PerformanceMonitor, QueryMetrics, SystemMetrics
+from performance_monitor import PerformanceMonitor, QueryMetrics
 
 logger = logging.getLogger(__name__)
 
+
 class RAGStrategy(Enum):
     """RAG策略類型"""
+
     VECTOR_ONLY = "vector_only"
     GRAPH_ONLY = "graph_only"
     HYBRID_BALANCED = "hybrid_balanced"
@@ -32,16 +33,20 @@ class RAGStrategy(Enum):
     AGENTIC_RAG = "agentic_rag"
     NAIVE_RAG = "naive_rag"
 
+
 class QueryComplexity(Enum):
     """查詢複雜度"""
+
     SIMPLE = "simple"
     MEDIUM = "medium"
     COMPLEX = "complex"
     EXPERT = "expert"
 
+
 @dataclass
 class RAGConfiguration:
     """RAG系統配置"""
+
     # 檢索策略
     strategy: RAGStrategy = RAGStrategy.HYBRID_BALANCED
     vector_weight: float = 0.6
@@ -71,26 +76,31 @@ class RAGConfiguration:
     max_tokens: int = 1000
     enable_streaming: bool = False
 
+
 @dataclass
 class RAGQueryResult:
     """RAG查詢結果"""
+
     query: str
     answer: str
-    sources: List[Dict[str, Any]]
+    sources: list[dict[str, Any]]
     strategy_used: RAGStrategy
     processing_time: float
     confidence_score: float
     cache_hit: bool = False
-    metadata: Dict[str, Any] = field(default_factory=dict)
+    metadata: dict[str, Any] = field(default_factory=dict)
+
 
 class IntegratedRAGOptimizer:
     """整合多模態RAG優化管理器"""
 
-    def __init__(self,
-                 ml_service_url: str = "http://localhost:8080",
-                 neo4j_url: str = "bolt://localhost:7687",
-                 neo4j_user: str = "neo4j",
-                 neo4j_password: str = "CHANGE_ME_NEO4J_PASSWORD"):
+    def __init__(
+        self,
+        ml_service_url: str = "http://localhost:8080",
+        neo4j_url: str = "bolt://localhost:7687",
+        neo4j_user: str = "neo4j",
+        neo4j_password: str = "CHANGE_ME_NEO4J_PASSWORD",
+    ):
 
         self.ml_service_url = ml_service_url
         self.neo4j_url = neo4j_url
@@ -106,8 +116,9 @@ class IntegratedRAGOptimizer:
         self.cache_stats = {"hits": 0, "misses": 0, "total": 0}
 
         # 性能統計
-        self.strategy_stats = {strategy: {"count": 0, "avg_time": 0.0, "success_rate": 0.0}
-                             for strategy in RAGStrategy}
+        self.strategy_stats = {
+            strategy: {"count": 0, "avg_time": 0.0, "success_rate": 0.0} for strategy in RAGStrategy
+        }
 
         # 自適應學習
         self.query_patterns = {}
@@ -146,7 +157,7 @@ class IntegratedRAGOptimizer:
             "status": "ready",
             "entities": 20,
             "relationships": 20,
-            "last_update": datetime.now()
+            "last_update": datetime.now(),
         }
 
     def _initialize_vector_component(self):
@@ -156,7 +167,7 @@ class IntegratedRAGOptimizer:
             "status": "ready",
             "dimension": 1024,
             "index_size": 1000,
-            "last_update": datetime.now()
+            "last_update": datetime.now(),
         }
 
     async def query(self, query_text: str, **kwargs) -> RAGQueryResult:
@@ -186,7 +197,7 @@ class IntegratedRAGOptimizer:
             strategy = self._select_optimal_strategy(query_text, complexity, **kwargs)
 
             # 移除kwargs中的strategy避免參數衝突
-            filtered_kwargs = {k: v for k, v in kwargs.items() if k != 'strategy'}
+            filtered_kwargs = {k: v for k, v in kwargs.items() if k != "strategy"}
 
             # 執行RAG查詢
             result = await self._execute_rag_query(query_text, strategy, **filtered_kwargs)
@@ -214,7 +225,7 @@ class IntegratedRAGOptimizer:
                 strategy_used=RAGStrategy.HYBRID_BALANCED,
                 processing_time=time.time() - start_time,
                 confidence_score=0.0,
-                metadata={"error": str(e)}
+                metadata={"error": str(e)},
             )
 
             self._log_query_metrics(query_text, error_result)
@@ -225,13 +236,42 @@ class IntegratedRAGOptimizer:
         query_lower = query.lower()
 
         # 專家級查詢關鍵詞
-        expert_keywords = ['影響', '師承', '發展', '演變', '比較', '關係', 'influence', 'development', 'comparison']
+        expert_keywords = [
+            "影響",
+            "師承",
+            "發展",
+            "演變",
+            "比較",
+            "關係",
+            "influence",
+            "development",
+            "comparison",
+        ]
 
         # 複雜查詢關鍵詞
-        complex_keywords = ['風格', '技法', '特色', '歷史', '時期', 'style', 'technique', 'history', 'period']
+        complex_keywords = [
+            "風格",
+            "技法",
+            "特色",
+            "歷史",
+            "時期",
+            "style",
+            "technique",
+            "history",
+            "period",
+        ]
 
         # 中等查詢關鍵詞
-        medium_keywords = ['作品', '藝術家', '繪畫', '雕塑', 'artwork', 'artist', 'painting', 'sculpture']
+        medium_keywords = [
+            "作品",
+            "藝術家",
+            "繪畫",
+            "雕塑",
+            "artwork",
+            "artist",
+            "painting",
+            "sculpture",
+        ]
 
         word_count = len(query.split())
 
@@ -244,12 +284,14 @@ class IntegratedRAGOptimizer:
         else:
             return QueryComplexity.SIMPLE
 
-    def _select_optimal_strategy(self, query: str, complexity: QueryComplexity, **kwargs) -> RAGStrategy:
+    def _select_optimal_strategy(
+        self, query: str, complexity: QueryComplexity, **kwargs
+    ) -> RAGStrategy:
         """選擇最佳RAG策略"""
 
         # 用戶指定策略
-        if 'strategy' in kwargs:
-            return RAGStrategy(kwargs['strategy'])
+        if "strategy" in kwargs:
+            return RAGStrategy(kwargs["strategy"])
 
         # 基於複雜度的策略選擇
         if complexity == QueryComplexity.EXPERT:
@@ -261,7 +303,9 @@ class IntegratedRAGOptimizer:
         else:
             return RAGStrategy.VECTOR_ONLY  # 簡單查詢使用向量
 
-    async def _execute_rag_query(self, query: str, strategy: RAGStrategy, **kwargs) -> RAGQueryResult:
+    async def _execute_rag_query(
+        self, query: str, strategy: RAGStrategy, **kwargs
+    ) -> RAGQueryResult:
         """執行RAG查詢"""
         start_time = time.time()
 
@@ -300,7 +344,7 @@ class IntegratedRAGOptimizer:
                 "content": f"向量檢索結果：{query}的相關藝術史文獻內容",
                 "source": "vector_database",
                 "score": 0.85,
-                "metadata": {"retrieval_method": "vector"}
+                "metadata": {"retrieval_method": "vector"},
             }
         ]
 
@@ -312,7 +356,7 @@ class IntegratedRAGOptimizer:
             sources=sources,
             strategy_used=RAGStrategy.VECTOR_ONLY,
             processing_time=0.0,
-            confidence_score=0.8
+            confidence_score=0.8,
         )
 
     async def _graph_only_query(self, query: str, **kwargs) -> RAGQueryResult:
@@ -327,7 +371,7 @@ class IntegratedRAGOptimizer:
                 "entities": ["Leonardo da Vinci", "Mona Lisa", "Renaissance"],
                 "relationships": ["CREATED_BY", "BELONGS_TO_MOVEMENT"],
                 "score": 0.9,
-                "metadata": {"retrieval_method": "graph"}
+                "metadata": {"retrieval_method": "graph"},
             }
         ]
 
@@ -339,7 +383,7 @@ class IntegratedRAGOptimizer:
             sources=sources,
             strategy_used=RAGStrategy.GRAPH_ONLY,
             processing_time=0.0,
-            confidence_score=0.85
+            confidence_score=0.85,
         )
 
     async def _hybrid_balanced_query(self, query: str, **kwargs) -> RAGQueryResult:
@@ -356,8 +400,8 @@ class IntegratedRAGOptimizer:
 
         # 計算加權置信度
         confidence = (
-            vector_result.confidence_score * self.config.vector_weight +
-            graph_result.confidence_score * self.config.graph_weight
+            vector_result.confidence_score * self.config.vector_weight
+            + graph_result.confidence_score * self.config.graph_weight
         )
 
         return RAGQueryResult(
@@ -372,9 +416,9 @@ class IntegratedRAGOptimizer:
                 "graph_confidence": graph_result.confidence_score,
                 "combination_weights": {
                     "vector": self.config.vector_weight,
-                    "graph": self.config.graph_weight
-                }
-            }
+                    "graph": self.config.graph_weight,
+                },
+            },
         )
 
     async def _adaptive_query(self, query: str, **kwargs) -> RAGQueryResult:
@@ -394,11 +438,13 @@ class IntegratedRAGOptimizer:
         query_lower = query.lower()
 
         # 關係查詢偏向圖譜
-        if any(word in query_lower for word in ['影響', '師承', '關係', 'influence', 'relationship']):
+        if any(
+            word in query_lower for word in ["影響", "師承", "關係", "influence", "relationship"]
+        ):
             return await self._graph_only_query(query, **kwargs)
 
         # 內容查詢偏向向量
-        elif any(word in query_lower for word in ['描述', '內容', '特色', 'describe', 'content']):
+        elif any(word in query_lower for word in ["描述", "內容", "特色", "describe", "content"]):
             return await self._vector_only_query(query, **kwargs)
 
         # 其他使用混合
@@ -424,22 +470,26 @@ class IntegratedRAGOptimizer:
         all_sources = vector_result.sources + graph_result.sources + expanded_result.sources
 
         # 模擬重排序算法（基於相關性和多樣性）
-        reranked_sources = sorted(all_sources, key=lambda x: x.get('score', 0), reverse=True)[:kwargs.get('top_k', 8)]
+        reranked_sources = sorted(all_sources, key=lambda x: x.get("score", 0), reverse=True)[
+            : kwargs.get("top_k", 8)
+        ]
 
         # 添加高級特徵
         for source in reranked_sources:
-            source['metadata']['advanced_features'] = {
-                'multi_stage_retrieval': True,
-                'query_expansion': True,
-                'reranked': True,
-                'relevance_score': source.get('score', 0) * 1.1  # 提升分數
+            source["metadata"]["advanced_features"] = {
+                "multi_stage_retrieval": True,
+                "query_expansion": True,
+                "reranked": True,
+                "relevance_score": source.get("score", 0) * 1.1,  # 提升分數
             }
 
-        advanced_answer = f"Advanced RAG深度分析：{query}\n\n通過多級檢索，我們發現：\n" \
-                         f"1. 直接相關內容：{vector_result.answer[:50]}...\n" \
-                         f"2. 結構化關係：{graph_result.answer[:50]}...\n" \
-                         f"3. 擴展概念：{expanded_result.answer[:50]}...\n\n" \
-                         f"綜合分析顯示這個概念在藝術史中具有多重意義和深遠影響。"
+        advanced_answer = (
+            f"Advanced RAG深度分析：{query}\n\n通過多級檢索，我們發現：\n"
+            f"1. 直接相關內容：{vector_result.answer[:50]}...\n"
+            f"2. 結構化關係：{graph_result.answer[:50]}...\n"
+            f"3. 擴展概念：{expanded_result.answer[:50]}...\n\n"
+            f"綜合分析顯示這個概念在藝術史中具有多重意義和深遠影響。"
+        )
 
         # 計算增強的置信度
         base_confidence = (vector_result.confidence_score + graph_result.confidence_score) / 2
@@ -453,11 +503,11 @@ class IntegratedRAGOptimizer:
             processing_time=0.0,
             confidence_score=advanced_confidence,
             metadata={
-                'retrieval_stages': 3,
-                'query_expansion': True,
-                'reranking_applied': True,
-                'sources_count': len(reranked_sources)
-            }
+                "retrieval_stages": 3,
+                "query_expansion": True,
+                "reranking_applied": True,
+                "sources_count": len(reranked_sources),
+            },
         )
 
     async def _self_rag_query(self, query: str, **kwargs) -> RAGQueryResult:
@@ -469,9 +519,11 @@ class IntegratedRAGOptimizer:
 
         # 自我評估階段
         self_critique = {
-            'completeness': 0.7 if len(initial_result.sources) >= 3 else 0.5,
-            'relevance': initial_result.confidence_score,
-            'coverage': 0.8 if 'graph' in str(initial_result.sources) and 'vector' in str(initial_result.sources) else 0.6
+            "completeness": 0.7 if len(initial_result.sources) >= 3 else 0.5,
+            "relevance": initial_result.confidence_score,
+            "coverage": 0.8
+            if "graph" in str(initial_result.sources) and "vector" in str(initial_result.sources)
+            else 0.6,
         }
 
         overall_quality = statistics.mean(self_critique.values())
@@ -488,40 +540,44 @@ class IntegratedRAGOptimizer:
             unique_sources = []
             seen_content = set()
             for source in combined_sources:
-                content_hash = hash(source.get('content', '')[:100])
+                content_hash = hash(source.get("content", "")[:100])
                 if content_hash not in seen_content:
                     seen_content.add(content_hash)
                     unique_sources.append(source)
 
             # 限制最終結果數量
-            final_sources = unique_sources[:kwargs.get('top_k', 6)]
+            final_sources = unique_sources[: kwargs.get("top_k", 6)]
 
             # 生成自我反思的回答
-            self_rag_answer = f"Self-RAG反思性分析：{query}\n\n" \
-                             f"初始分析：{initial_result.answer[:80]}...\n\n" \
-                             f"深度反思：經過自我評估，發現需要補充更多細節。\n" \
-                             f"改進分析：{refined_result.answer[:80]}...\n\n" \
-                             f"綜合結論：通過多輪自我反思和改進，提供更全面準確的回答。"
+            self_rag_answer = (
+                f"Self-RAG反思性分析：{query}\n\n"
+                f"初始分析：{initial_result.answer[:80]}...\n\n"
+                f"深度反思：經過自我評估，發現需要補充更多細節。\n"
+                f"改進分析：{refined_result.answer[:80]}...\n\n"
+                f"綜合結論：通過多輪自我反思和改進，提供更全面準確的回答。"
+            )
 
             final_confidence = min(overall_quality * 1.2, 0.92)
 
         else:
             # 質量已經足夠，直接返回改進的結果
             final_sources = initial_result.sources
-            self_rag_answer = f"Self-RAG高質量分析：{query}\n\n" \
-                             f"經過自我評估，初始結果已達到高質量標準：\n" \
-                             f"{initial_result.answer}\n\n" \
-                             f"置信度評估：該分析在完整性、相關性和覆蓋度方面都達到了優秀水準。"
+            self_rag_answer = (
+                f"Self-RAG高質量分析：{query}\n\n"
+                f"經過自我評估，初始結果已達到高質量標準：\n"
+                f"{initial_result.answer}\n\n"
+                f"置信度評估：該分析在完整性、相關性和覆蓋度方面都達到了優秀水準。"
+            )
 
             final_confidence = min(initial_result.confidence_score * 1.1, 0.90)
 
         # 添加Self-RAG特有的元數據
         for source in final_sources:
-            source['metadata']['self_rag_features'] = {
-                'self_evaluated': True,
-                'quality_score': overall_quality,
-                'refinement_applied': overall_quality < 0.75,
-                'confidence_boost': True
+            source["metadata"]["self_rag_features"] = {
+                "self_evaluated": True,
+                "quality_score": overall_quality,
+                "refinement_applied": overall_quality < 0.75,
+                "confidence_boost": True,
             }
 
         return RAGQueryResult(
@@ -532,12 +588,12 @@ class IntegratedRAGOptimizer:
             processing_time=0.0,
             confidence_score=final_confidence,
             metadata={
-                'self_critique': self_critique,
-                'quality_threshold': 0.75,
-                'quality_achieved': overall_quality,
-                'refinement_iterations': 1 if overall_quality < 0.75 else 0,
-                'final_confidence': final_confidence
-            }
+                "self_critique": self_critique,
+                "quality_threshold": 0.75,
+                "quality_achieved": overall_quality,
+                "refinement_iterations": 1 if overall_quality < 0.75 else 0,
+                "final_confidence": final_confidence,
+            },
         )
 
     async def _agentic_rag_query(self, query: str, **kwargs) -> RAGQueryResult:
@@ -546,17 +602,26 @@ class IntegratedRAGOptimizer:
 
         # 第一階段：問題分解和策略規劃
         query_analysis = {
-            'intent': 'factual' if any(word in query.lower() for word in ['什麼', '誰', '何時', 'what', 'who', 'when']) else 'analytical',
-            'complexity': len(query.split()),
-            'domain_keywords': [word for word in query.lower().split() if word in ['藝術', '畫家', '雕塑', '風格', '時期', 'art', 'artist', 'style']],
-            'requires_reasoning': any(word in query.lower() for word in ['為什麼', '如何', '影響', 'why', 'how', 'influence'])
+            "intent": "factual"
+            if any(word in query.lower() for word in ["什麼", "誰", "何時", "what", "who", "when"])
+            else "analytical",
+            "complexity": len(query.split()),
+            "domain_keywords": [
+                word
+                for word in query.lower().split()
+                if word in ["藝術", "畫家", "雕塑", "風格", "時期", "art", "artist", "style"]
+            ],
+            "requires_reasoning": any(
+                word in query.lower()
+                for word in ["為什麼", "如何", "影響", "why", "how", "influence"]
+            ),
         }
 
         # 第二階段：智能代理決策
-        if query_analysis['intent'] == 'factual' and not query_analysis['requires_reasoning']:
+        if query_analysis["intent"] == "factual" and not query_analysis["requires_reasoning"]:
             # 事實性查詢：使用向量檢索
             primary_result = await self._vector_only_query(query, **kwargs)
-        elif query_analysis['requires_reasoning']:
+        elif query_analysis["requires_reasoning"]:
             # 推理性查詢：結合圖譜關係
             primary_result = await self._graph_only_query(query, **kwargs)
         else:
@@ -580,50 +645,52 @@ class IntegratedRAGOptimizer:
             f"問題分析：{query_analysis['intent']}查詢，複雜度級別{query_analysis['complexity']}",
             f"檢索策略：基於問題特徵選擇{primary_result.strategy_used.value}策略",
             f"知識整合：從{len(enhanced_sources)}個可靠來源整合信息",
-            f"推理驗證：通過多重驗證確保答案準確性"
+            "推理驗證：通過多重驗證確保答案準確性",
         ]
 
         agentic_answer = f"Agentic RAG智能代理分析：{query}\n\n"
-        agentic_answer += f"🤖 智能推理過程：\n"
+        agentic_answer += "🤖 智能推理過程：\n"
         for i, step in enumerate(reasoning_steps, 1):
             agentic_answer += f"{i}. {step}\n"
 
         agentic_answer += f"\n📊 分析結果：\n{primary_result.answer}\n\n"
 
         if primary_result.confidence_score < 0.7:
-            agentic_answer += f"🔍 補充分析：智能代理識別需要更多信息，執行了補充檢索以提高準確性。\n"
+            agentic_answer += (
+                "🔍 補充分析：智能代理識別需要更多信息，執行了補充檢索以提高準確性。\n"
+            )
 
-        agentic_answer += f"\n🎯 智能代理結論：基於多階段推理和驗證，提供高可信度的專業分析。"
+        agentic_answer += "\n🎯 智能代理結論：基於多階段推理和驗證，提供高可信度的專業分析。"
 
         # 計算增強的置信度（智能代理的判斷加權）
-        agent_confidence_boost = 0.15 if query_analysis['requires_reasoning'] else 0.1
+        agent_confidence_boost = 0.15 if query_analysis["requires_reasoning"] else 0.1
         final_confidence = min(primary_result.confidence_score + agent_confidence_boost, 0.95)
 
         # 添加Agentic RAG特有的元數據
         for source in enhanced_sources:
-            source['metadata']['agentic_rag_features'] = {
-                'agent_selected': True,
-                'reasoning_chain': True,
-                'multi_stage_validation': True,
-                'adaptive_strategy': True,
-                'confidence_enhanced': True
+            source["metadata"]["agentic_rag_features"] = {
+                "agent_selected": True,
+                "reasoning_chain": True,
+                "multi_stage_validation": True,
+                "adaptive_strategy": True,
+                "confidence_enhanced": True,
             }
 
         return RAGQueryResult(
             query=query,
             answer=agentic_answer,
-            sources=enhanced_sources[:kwargs.get('top_k', 6)],
+            sources=enhanced_sources[: kwargs.get("top_k", 6)],
             strategy_used=RAGStrategy.AGENTIC_RAG,
             processing_time=0.0,
             confidence_score=final_confidence,
             metadata={
-                'query_analysis': query_analysis,
-                'reasoning_steps': reasoning_steps,
-                'primary_strategy': primary_result.strategy_used.value,
-                'supplementary_search': primary_result.confidence_score < 0.7,
-                'agent_confidence_boost': agent_confidence_boost,
-                'intelligence_level': 'advanced'
-            }
+                "query_analysis": query_analysis,
+                "reasoning_steps": reasoning_steps,
+                "primary_strategy": primary_result.strategy_used.value,
+                "supplementary_search": primary_result.confidence_score < 0.7,
+                "agent_confidence_boost": agent_confidence_boost,
+                "intelligence_level": "advanced",
+            },
         )
 
     async def _naive_rag_query(self, query: str, **kwargs) -> RAGQueryResult:
@@ -639,39 +706,35 @@ class IntegratedRAGOptimizer:
                 "content": f"基於關鍵詞 '{' '.join(keywords[:3])}' 的基礎檢索結果",
                 "source": "naive_retrieval",
                 "score": 0.6,
-                "metadata": {
-                    "retrieval_method": "keyword_match",
-                    "keywords_used": keywords[:3]
-                }
+                "metadata": {"retrieval_method": "keyword_match", "keywords_used": keywords[:3]},
             },
             {
                 "content": f"與 '{query[:30]}...' 相關的簡單匹配內容",
                 "source": "simple_search",
                 "score": 0.55,
-                "metadata": {
-                    "retrieval_method": "text_match",
-                    "query_snippet": query[:30]
-                }
-            }
+                "metadata": {"retrieval_method": "text_match", "query_snippet": query[:30]},
+            },
         ]
 
         # 生成簡單直接的回答
         naive_answer = f"Naive RAG簡單檢索：{query}\n\n"
-        naive_answer += f"基於關鍵詞匹配，找到以下相關信息：\n"
+        naive_answer += "基於關鍵詞匹配，找到以下相關信息：\n"
         naive_answer += f"• 檢索到 {len(sources)} 個基礎來源\n"
         naive_answer += f"• 使用關鍵詞：{', '.join(keywords[:3])}\n\n"
-        naive_answer += f"基礎回答：這是一個關於 {keywords[0] if keywords else '未知主題'} 的簡單查詢結果。"
+        naive_answer += (
+            f"基礎回答：這是一個關於 {keywords[0] if keywords else '未知主題'} 的簡單查詢結果。"
+        )
 
         # 較低的置信度，因為是最基礎的策略
         basic_confidence = 0.5
 
         # 添加Naive RAG特有的元數據
         for source in sources:
-            source['metadata']['naive_rag_features'] = {
-                'simple_matching': True,
-                'keyword_based': True,
-                'fast_retrieval': True,
-                'basic_strategy': True
+            source["metadata"]["naive_rag_features"] = {
+                "simple_matching": True,
+                "keyword_based": True,
+                "fast_retrieval": True,
+                "basic_strategy": True,
             }
 
         return RAGQueryResult(
@@ -682,21 +745,21 @@ class IntegratedRAGOptimizer:
             processing_time=0.0,
             confidence_score=basic_confidence,
             metadata={
-                'keywords_extracted': keywords,
-                'retrieval_method': 'simple_keyword_match',
-                'strategy_level': 'basic',
-                'processing_complexity': 'minimal',
-                'suitable_for': ['simple_queries', 'quick_answers', 'basic_search']
-            }
+                "keywords_extracted": keywords,
+                "retrieval_method": "simple_keyword_match",
+                "strategy_level": "basic",
+                "processing_complexity": "minimal",
+                "suitable_for": ["simple_queries", "quick_answers", "basic_search"],
+            },
         )
 
-    def _generate_cache_key(self, query: str, kwargs: Dict) -> str:
+    def _generate_cache_key(self, query: str, kwargs: dict) -> str:
         """生成快取鍵"""
         # 簡化的快取鍵生成
         key_data = {
             "query": query.lower().strip(),
             "strategy": kwargs.get("strategy", "default"),
-            "top_k": kwargs.get("top_k", self.config.top_k_final)
+            "top_k": kwargs.get("top_k", self.config.top_k_final),
         }
         return str(hash(json.dumps(key_data, sort_keys=True)))
 
@@ -716,7 +779,7 @@ class IntegratedRAGOptimizer:
             response_time=result.processing_time,
             num_results=len(result.sources),
             cache_hit=cache_hit,
-            accuracy_score=result.confidence_score
+            accuracy_score=result.confidence_score,
         )
 
         self.monitor.log_query(metrics)
@@ -729,7 +792,9 @@ class IntegratedRAGOptimizer:
 
         # 更新平均時間
         old_avg = stats["avg_time"]
-        stats["avg_time"] = (old_avg * (stats["count"] - 1) + result.processing_time) / stats["count"]
+        stats["avg_time"] = (old_avg * (stats["count"] - 1) + result.processing_time) / stats[
+            "count"
+        ]
 
         # 更新成功率（基於置信度）
         success = 1.0 if result.confidence_score > 0.7 else 0.0
@@ -753,14 +818,14 @@ class IntegratedRAGOptimizer:
 
         return best_strategy
 
-    def optimize_configuration(self) -> Dict[str, Any]:
+    def optimize_configuration(self) -> dict[str, Any]:
         """優化配置參數"""
         current_stats = self.monitor.get_current_stats()
 
         optimizations = {
             "timestamp": datetime.now().isoformat(),
             "current_performance": current_stats,
-            "optimizations_applied": []
+            "optimizations_applied": [],
         }
 
         # 基於響應時間優化
@@ -797,7 +862,7 @@ class IntegratedRAGOptimizer:
 
         return optimizations
 
-    def get_system_status(self) -> Dict[str, Any]:
+    def get_system_status(self) -> dict[str, Any]:
         """獲取系統狀態"""
         current_stats = self.monitor.get_current_stats()
 
@@ -807,7 +872,7 @@ class IntegratedRAGOptimizer:
                 "vector_retriever": "ready" if self._vector_retriever else "not_initialized",
                 "graph_retriever": "ready" if self._graph_instance else "not_initialized",
                 "performance_monitor": "ready",
-                "cache": "ready" if self.config.enable_cache else "disabled"
+                "cache": "ready" if self.config.enable_cache else "disabled",
             },
             "configuration": {
                 "strategy": self.config.strategy.value,
@@ -815,20 +880,20 @@ class IntegratedRAGOptimizer:
                 "graph_weight": self.config.graph_weight,
                 "cache_enabled": self.config.enable_cache,
                 "top_k_vector": self.config.top_k_vector,
-                "top_k_graph": self.config.top_k_graph
+                "top_k_graph": self.config.top_k_graph,
             },
             "performance": current_stats,
             "cache_stats": {
                 **self.cache_stats,
-                "hit_rate": self.cache_stats["hits"] / max(self.cache_stats["total"], 1)
+                "hit_rate": self.cache_stats["hits"] / max(self.cache_stats["total"], 1),
             },
             "strategy_performance": self.strategy_stats,
-            "optimization_count": len(self.optimization_history)
+            "optimization_count": len(self.optimization_history),
         }
 
         return status
 
-    async def batch_query(self, queries: List[str], **kwargs) -> List[RAGQueryResult]:
+    async def batch_query(self, queries: list[str], **kwargs) -> list[RAGQueryResult]:
         """批次查詢處理"""
         logger.info(f"🔄 開始批次處理 {len(queries)} 個查詢...")
 
@@ -842,7 +907,7 @@ class IntegratedRAGOptimizer:
         processed_results = []
         for i, result in enumerate(results):
             if isinstance(result, Exception):
-                logger.error(f"❌ 查詢 {i+1} 失敗: {result}")
+                logger.error(f"❌ 查詢 {i + 1} 失敗: {result}")
                 error_result = RAGQueryResult(
                     query=queries[i],
                     answer=f"批次查詢失敗: {str(result)}",
@@ -850,13 +915,15 @@ class IntegratedRAGOptimizer:
                     strategy_used=RAGStrategy.HYBRID_BALANCED,
                     processing_time=0.0,
                     confidence_score=0.0,
-                    metadata={"error": str(result)}
+                    metadata={"error": str(result)},
                 )
                 processed_results.append(error_result)
             else:
                 processed_results.append(result)
 
-        logger.info(f"✅ 批次查詢完成，成功: {len([r for r in processed_results if r.confidence_score > 0])}/{len(queries)}")
+        logger.info(
+            f"✅ 批次查詢完成，成功: {len([r for r in processed_results if r.confidence_score > 0])}/{len(queries)}"
+        )
         return processed_results
 
     def cleanup(self):
@@ -865,8 +932,10 @@ class IntegratedRAGOptimizer:
             self.executor.shutdown(wait=True)
         logger.info("✅ RAG優化管理器資源清理完成")
 
+
 # 使用示例
 if __name__ == "__main__":
+
     async def main():
         # 初始化優化管理器
         optimizer = IntegratedRAGOptimizer()
@@ -881,7 +950,7 @@ if __name__ == "__main__":
         test_queries = [
             "達文西的藝術特色是什麼？",
             "印象派與後印象派的差異",
-            "哪些藝術家影響了畢卡索？"
+            "哪些藝術家影響了畢卡索？",
         ]
 
         for query in test_queries:
@@ -893,17 +962,17 @@ if __name__ == "__main__":
             print(f"💡 回答: {result.answer[:100]}...")
 
         # 批次查詢測試
-        print(f"\n🔄 批次查詢測試...")
+        print("\n🔄 批次查詢測試...")
         batch_results = await optimizer.batch_query(test_queries)
         print(f"✅ 批次完成: {len(batch_results)} 個結果")
 
         # 性能優化
-        print(f"\n⚙️ 執行性能優化...")
+        print("\n⚙️ 執行性能優化...")
         optimization_report = optimizer.optimize_configuration()
         print(f"🔧 優化項目: {len(optimization_report['optimizations_applied'])}")
 
         # 系統狀態
-        print(f"\n📊 系統狀態報告:")
+        print("\n📊 系統狀態報告:")
         status = optimizer.get_system_status()
         print(f"組件狀態: {status['components']}")
         print(f"快取命中率: {status['cache_stats']['hit_rate']:.1%}")

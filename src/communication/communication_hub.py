@@ -7,31 +7,37 @@ Agent間通信中樞
 import asyncio
 import json
 import logging
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Set, Any, Callable
-import uuid
-from dataclasses import dataclass
-from enum import Enum
-import redis.asyncio as redis
 from collections import defaultdict
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import datetime
+from enum import Enum
+from typing import Any
 
-from agents.core.base_agent import AgentMessage, MessageType
+import redis.asyncio as redis
+
+from agents.core.base_agent import AgentMessage
+
 
 class RoutingStrategy(Enum):
     """路由策略"""
+
     DIRECT = "direct"  # 直接路由
     BROADCAST = "broadcast"  # 廣播
     ROUND_ROBIN = "round_robin"  # 輪詢
     LOAD_BALANCED = "load_balanced"  # 負載均衡
     TOPIC_BASED = "topic_based"  # 基於主題
 
+
 @dataclass
 class MessageRoute:
     """消息路由配置"""
+
     pattern: str  # 路由模式
     strategy: RoutingStrategy
-    targets: List[str]  # 目標Agent列表
-    conditions: Dict[str, Any] = None  # 路由條件
+    targets: list[str]  # 目標Agent列表
+    conditions: dict[str, Any] = None  # 路由條件
+
 
 class CommunicationHub:
     """
@@ -39,43 +45,34 @@ class CommunicationHub:
     處理Agent間的所有通信需求
     """
 
-    def __init__(self, redis_config: Dict[str, Any] = None):
+    def __init__(self, redis_config: dict[str, Any] = None):
         self.logger = logging.getLogger("communication_hub")
 
         # Agent註冊表
-        self.registered_agents: Dict[str, Any] = {}
-        self.agent_capabilities: Dict[str, List[str]] = {}
+        self.registered_agents: dict[str, Any] = {}
+        self.agent_capabilities: dict[str, list[str]] = {}
 
         # 消息路由
-        self.routes: List[MessageRoute] = []
-        self.routing_table: Dict[str, str] = {}
+        self.routes: list[MessageRoute] = []
+        self.routing_table: dict[str, str] = {}
 
         # 消息持久化和緩存
         self.redis_client = None
-        self.redis_config = redis_config or {
-            "host": "localhost",
-            "port": 6379,
-            "db": 1
-        }
+        self.redis_config = redis_config or {"host": "localhost", "port": 6379, "db": 1}
 
         # 消息隊列
-        self.message_queues: Dict[str, asyncio.Queue] = defaultdict(lambda: asyncio.Queue())
-        self.processing_tasks: Dict[str, asyncio.Task] = {}
+        self.message_queues: dict[str, asyncio.Queue] = defaultdict(lambda: asyncio.Queue())
+        self.processing_tasks: dict[str, asyncio.Task] = {}
 
         # 訂閱模式
-        self.topic_subscribers: Dict[str, Set[str]] = defaultdict(set)
-        self.pattern_subscribers: Dict[str, Set[str]] = defaultdict(set)
+        self.topic_subscribers: dict[str, set[str]] = defaultdict(set)
+        self.pattern_subscribers: dict[str, set[str]] = defaultdict(set)
 
         # 消息統計
-        self.message_stats = {
-            "sent": 0,
-            "received": 0,
-            "failed": 0,
-            "broadcast": 0
-        }
+        self.message_stats = {"sent": 0, "received": 0, "failed": 0, "broadcast": 0}
 
         # 錯誤處理
-        self.error_handlers: List[Callable] = []
+        self.error_handlers: list[Callable] = []
         self.dead_letter_queue: asyncio.Queue = asyncio.Queue()
 
         self.logger.info("通信中樞初始化完成")
@@ -100,7 +97,7 @@ class CommunicationHub:
             self.logger.error(f"通信中樞初始化失敗: {e}")
             raise
 
-    async def register_agent(self, agent_id: str, agent_info: Dict[str, Any]):
+    async def register_agent(self, agent_id: str, agent_info: dict[str, Any]):
         """註冊Agent"""
         self.registered_agents[agent_id] = {
             "agent_id": agent_id,
@@ -108,7 +105,7 @@ class CommunicationHub:
             "capabilities": agent_info.get("capabilities", []),
             "registered_at": datetime.now(),
             "last_seen": datetime.now(),
-            "status": "online"
+            "status": "online",
         }
 
         # 為Agent創建專用隊列
@@ -198,7 +195,8 @@ class CommunicationHub:
     async def _broadcast_message(self, message: AgentMessage):
         """廣播消息到所有在線Agent"""
         online_agents = [
-            agent_id for agent_id, info in self.registered_agents.items()
+            agent_id
+            for agent_id, info in self.registered_agents.items()
             if info["status"] == "online" and agent_id != message.sender_id
         ]
 
@@ -213,7 +211,7 @@ class CommunicationHub:
                 timestamp=message.timestamp,
                 priority=message.priority,
                 correlation_id=message.correlation_id,
-                expires_at=message.expires_at
+                expires_at=message.expires_at,
             )
 
             await self.message_queues[agent_id].put(broadcast_msg)
@@ -239,7 +237,7 @@ class CommunicationHub:
                 await self._deliver_message(agent_id, message)
                 self.message_stats["received"] += 1
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 self.logger.error(f"處理Agent {agent_id} 消息時出錯: {e}")
@@ -266,12 +264,10 @@ class CommunicationHub:
         while True:
             try:
                 # 處理死信隊列中的消息
-                message = await asyncio.wait_for(
-                    self.dead_letter_queue.get(), timeout=10.0
-                )
+                message = await asyncio.wait_for(self.dead_letter_queue.get(), timeout=10.0)
                 await self._handle_dead_letter(message)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 continue
             except Exception as e:
                 self.logger.error(f"死信處理錯誤: {e}")
@@ -330,9 +326,7 @@ class CommunicationHub:
             # 掃描所有消息鍵
             cursor = 0
             while True:
-                cursor, keys = await self.redis_client.scan(
-                    cursor, match="message:*", count=100
-                )
+                cursor, keys = await self.redis_client.scan(cursor, match="message:*", count=100)
 
                 for key in keys:
                     ttl = await self.redis_client.ttl(key)
@@ -368,29 +362,26 @@ class CommunicationHub:
                 payload={**message.payload, "topic": topic},
                 timestamp=message.timestamp,
                 priority=message.priority,
-                correlation_id=message.correlation_id
+                correlation_id=message.correlation_id,
             )
             await self.message_queues[agent_id].put(topic_message)
 
         self.logger.info(f"發布消息到主題 {topic}，{len(subscribers)} 個訂閱者")
 
-    def get_statistics(self) -> Dict[str, Any]:
+    def get_statistics(self) -> dict[str, Any]:
         """獲取通信統計"""
         return {
             "registered_agents": len(self.registered_agents),
-            "online_agents": len([
-                a for a in self.registered_agents.values()
-                if a["status"] == "online"
-            ]),
+            "online_agents": len(
+                [a for a in self.registered_agents.values() if a["status"] == "online"]
+            ),
             "message_stats": self.message_stats.copy(),
             "queue_sizes": {
-                agent_id: queue.qsize()
-                for agent_id, queue in self.message_queues.items()
+                agent_id: queue.qsize() for agent_id, queue in self.message_queues.items()
             },
             "topic_subscribers": {
-                topic: len(subscribers)
-                for topic, subscribers in self.topic_subscribers.items()
-            }
+                topic: len(subscribers) for topic, subscribers in self.topic_subscribers.items()
+            },
         }
 
     def add_error_handler(self, handler: Callable):

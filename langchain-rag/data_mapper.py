@@ -7,22 +7,25 @@
 import json
 import logging
 import re
-from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass
+from typing import Any
 
-from enhanced_art_history_schema import NodeType, RelationType, EnhancedArtHistorySchema
+from enhanced_art_history_schema import EnhancedArtHistorySchema, NodeType, RelationType
 from enhanced_graph_builder import EnhancedArtEntity, EnhancedArtHistoryGraphBuilder
 
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class MappingRule:
     """數據映射規則"""
+
     source_field: str
     target_node_type: NodeType
     target_property: str
-    transformation: Optional[str] = None
-    condition: Optional[str] = None
+    transformation: str | None = None
+    condition: str | None = None
+
 
 class ArtHistoryDataMapper:
     """藝術史數據映射器"""
@@ -34,7 +37,7 @@ class ArtHistoryDataMapper:
         self.mapped_entities = []
         self.mapped_relationships = []
 
-    def _define_mapping_rules(self) -> Dict[str, List[MappingRule]]:
+    def _define_mapping_rules(self) -> dict[str, list[MappingRule]]:
         """定義數據映射規則"""
         return {
             # Europeana數據映射
@@ -44,7 +47,6 @@ class ArtHistoryDataMapper:
                 MappingRule("dcCreator", NodeType.ARTIST, "full_name"),
                 MappingRule("edmTimeSpan", NodeType.ARTIST, "birth_year", "extract_birth_year"),
                 MappingRule("edmTimeSpan", NodeType.ARTIST, "death_year", "extract_death_year"),
-
                 # 作品映射
                 MappingRule("dcTitle", NodeType.ARTWORK, "title"),
                 MappingRule("dcDescription", NodeType.ARTWORK, "description"),
@@ -52,30 +54,24 @@ class ArtHistoryDataMapper:
                 MappingRule("dcFormat", NodeType.ARTWORK, "medium"),
                 MappingRule("dcType", NodeType.ARTWORK, "genre"),
                 MappingRule("dcSubject", NodeType.ARTWORK, "subject_matter", "list_conversion"),
-
                 # 特定作品類型映射
                 MappingRule("dcType", NodeType.PAINTING, "genre", condition="type_is_painting"),
                 MappingRule("dcType", NodeType.SCULPTURE, "genre", condition="type_is_sculpture"),
                 MappingRule("dcType", NodeType.PHOTOGRAPH, "genre", condition="type_is_photograph"),
-
                 # 機構映射
                 MappingRule("edmDataProvider", NodeType.MUSEUM, "name"),
                 MappingRule("edmDataProvider", NodeType.GALLERY, "name", condition="is_gallery"),
                 MappingRule("edmCountry", NodeType.MUSEUM, "country"),
-
                 # 地理映射
                 MappingRule("dctermsCreated", NodeType.LOCATION, "name", "extract_location"),
                 MappingRule("edmCountry", NodeType.COUNTRY, "name"),
-
                 # 時期映射
                 MappingRule("edmTimeSpan", NodeType.PERIOD, "name", "extract_period"),
                 MappingRule("edmTimeSpan", NodeType.CENTURY, "name", "extract_century"),
-
                 # 主題映射
                 MappingRule("dcSubject", NodeType.THEME, "name", "extract_themes"),
                 MappingRule("dcSubject", NodeType.MOTIF, "name", "extract_motifs"),
             ],
-
             # 維基百科數據映射
             "wikipedia": [
                 MappingRule("title", NodeType.ARTIST, "name"),
@@ -85,7 +81,6 @@ class ArtHistoryDataMapper:
                 MappingRule("nationality", NodeType.ARTIST, "nationality"),
                 MappingRule("movement", NodeType.MOVEMENT, "name"),
             ],
-
             # Getty數據映射
             "getty": [
                 MappingRule("preferred_term", NodeType.ARTIST, "name"),
@@ -93,10 +88,12 @@ class ArtHistoryDataMapper:
                 MappingRule("birth_date", NodeType.ARTIST, "birth_year"),
                 MappingRule("death_date", NodeType.ARTIST, "death_year"),
                 MappingRule("nationality", NodeType.ARTIST, "nationality"),
-            ]
+            ],
         }
 
-    def map_europeana_data(self, europeana_data: List[Dict]) -> Tuple[List[EnhancedArtEntity], List[Dict]]:
+    def map_europeana_data(
+        self, europeana_data: list[dict]
+    ) -> tuple[list[EnhancedArtEntity], list[dict]]:
         """映射Europeana數據到增強節點類型"""
         entities = []
         relationships = []
@@ -134,7 +131,9 @@ class ArtHistoryDataMapper:
                 entities.extend(theme_entities)
 
                 # 創建關係
-                item_relationships = self._create_relationships(item, artwork_entity, artist_entity, institution_entity)
+                item_relationships = self._create_relationships(
+                    item, artwork_entity, artist_entity, institution_entity
+                )
                 relationships.extend(item_relationships)
 
             except Exception as e:
@@ -147,91 +146,111 @@ class ArtHistoryDataMapper:
         logger.info(f"✅ 映射完成: {len(unique_entities)} 個實體, {len(relationships)} 個關係")
         return unique_entities, relationships
 
-    def _determine_artwork_type(self, item: Dict) -> NodeType:
+    def _determine_artwork_type(self, item: dict) -> NodeType:
         """確定作品的具體類型"""
-        dc_type = item.get('dcType', '').lower()
-        dc_format = item.get('dcFormat', '').lower()
-        title = item.get('dcTitle', '').lower()
+        dc_type = item.get("dcType", "").lower()
+        dc_format = item.get("dcFormat", "").lower()
+        title = item.get("dcTitle", "").lower()
 
         # 繪畫
-        if any(keyword in dc_type or keyword in dc_format for keyword in
-               ['painting', 'oil', 'canvas', 'fresco', 'watercolor', 'gouache']):
+        if any(
+            keyword in dc_type or keyword in dc_format
+            for keyword in ["painting", "oil", "canvas", "fresco", "watercolor", "gouache"]
+        ):
             return NodeType.PAINTING
 
         # 雕塑
-        elif any(keyword in dc_type or keyword in dc_format for keyword in
-                ['sculpture', 'statue', 'bronze', 'marble', 'clay', 'ceramic']):
+        elif any(
+            keyword in dc_type or keyword in dc_format
+            for keyword in ["sculpture", "statue", "bronze", "marble", "clay", "ceramic"]
+        ):
             return NodeType.SCULPTURE
 
         # 素描
-        elif any(keyword in dc_type or keyword in dc_format for keyword in
-                ['drawing', 'sketch', 'charcoal', 'pencil', 'ink']):
+        elif any(
+            keyword in dc_type or keyword in dc_format
+            for keyword in ["drawing", "sketch", "charcoal", "pencil", "ink"]
+        ):
             return NodeType.DRAWING
 
         # 版畫
-        elif any(keyword in dc_type or keyword in dc_format for keyword in
-                ['print', 'etching', 'engraving', 'lithograph', 'woodcut']):
+        elif any(
+            keyword in dc_type or keyword in dc_format
+            for keyword in ["print", "etching", "engraving", "lithograph", "woodcut"]
+        ):
             return NodeType.PRINT
 
         # 攝影
-        elif any(keyword in dc_type or keyword in dc_format for keyword in
-                ['photograph', 'photo', 'daguerreotype', 'digital']):
+        elif any(
+            keyword in dc_type or keyword in dc_format
+            for keyword in ["photograph", "photo", "daguerreotype", "digital"]
+        ):
             return NodeType.PHOTOGRAPH
 
         # 手稿
-        elif any(keyword in dc_type or keyword in dc_format for keyword in
-                ['manuscript', 'illuminated', 'codex', 'scroll']):
+        elif any(
+            keyword in dc_type or keyword in dc_format
+            for keyword in ["manuscript", "illuminated", "codex", "scroll"]
+        ):
             return NodeType.MANUSCRIPT
 
         # 工藝品
-        elif any(keyword in dc_type or keyword in dc_format for keyword in
-                ['craft', 'decorative', 'applied', 'pottery', 'textile']):
+        elif any(
+            keyword in dc_type or keyword in dc_format
+            for keyword in ["craft", "decorative", "applied", "pottery", "textile"]
+        ):
             return NodeType.CRAFT
 
         # 默認為藝術作品
         else:
             return NodeType.ARTWORK
 
-    def _create_artwork_entity(self, item: Dict, artwork_type: NodeType) -> Optional[EnhancedArtEntity]:
+    def _create_artwork_entity(
+        self, item: dict, artwork_type: NodeType
+    ) -> EnhancedArtEntity | None:
         """創建作品實體"""
-        title = item.get('dcTitle')
+        title = item.get("dcTitle")
         if not title:
             return None
 
         properties = {
             "title": title,
-            "description": item.get('dcDescription', ''),
-            "creation_date": self._extract_date(item.get('dcDate', '')),
-            "medium": item.get('dcFormat', ''),
-            "genre": item.get('dcType', ''),
-            "subject_matter": self._extract_list(item.get('dcSubject', '')),
-            "current_location": item.get('edmDataProvider', ''),
-            "cultural_significance": item.get('dcDescription', ''),
-            "provenance": [item.get('edmDataProvider', '')],
-            "source_url": item.get('edmIsShownAt', ''),
-            "external_id": item.get('id', ''),
-            "language": item.get('dcLanguage', ''),
-            "rights": item.get('dcRights', '')
+            "description": item.get("dcDescription", ""),
+            "creation_date": self._extract_date(item.get("dcDate", "")),
+            "medium": item.get("dcFormat", ""),
+            "genre": item.get("dcType", ""),
+            "subject_matter": self._extract_list(item.get("dcSubject", "")),
+            "current_location": item.get("edmDataProvider", ""),
+            "cultural_significance": item.get("dcDescription", ""),
+            "provenance": [item.get("edmDataProvider", "")],
+            "source_url": item.get("edmIsShownAt", ""),
+            "external_id": item.get("id", ""),
+            "language": item.get("dcLanguage", ""),
+            "rights": item.get("dcRights", ""),
         }
 
         # 根據作品類型添加特定屬性
         if artwork_type == NodeType.PAINTING:
-            properties.update({
-                "technique": self._extract_techniques(item),
-                "style": self._extract_style(item),
-                "color_palette": self._extract_colors(item)
-            })
+            properties.update(
+                {
+                    "technique": self._extract_techniques(item),
+                    "style": self._extract_style(item),
+                    "color_palette": self._extract_colors(item),
+                }
+            )
         elif artwork_type == NodeType.SCULPTURE:
-            properties.update({
-                "material": self._extract_materials(item),
-                "technique": self._extract_sculpture_techniques(item)
-            })
+            properties.update(
+                {
+                    "material": self._extract_materials(item),
+                    "technique": self._extract_sculpture_techniques(item),
+                }
+            )
 
         return EnhancedArtEntity(artwork_type, title, properties)
 
-    def _create_artist_entity(self, item: Dict) -> Optional[EnhancedArtEntity]:
+    def _create_artist_entity(self, item: dict) -> EnhancedArtEntity | None:
         """創建藝術家實體"""
-        creator = item.get('dcCreator')
+        creator = item.get("dcCreator")
         if not creator:
             return None
 
@@ -239,18 +258,18 @@ class ArtHistoryDataMapper:
             "name": creator,
             "full_name": creator,
             "biography": f"Artist mentioned in {item.get('edmDataProvider', 'unknown source')}",
-            "notable_works": [item.get('dcTitle', '')],
-            "historical_significance": item.get('dcDescription', ''),
-            "active_period": self._extract_date(item.get('dcDate', '')),
+            "notable_works": [item.get("dcTitle", "")],
+            "historical_significance": item.get("dcDescription", ""),
+            "active_period": self._extract_date(item.get("dcDate", "")),
             "associated_locations": [self._extract_location(item)],
-            "source_references": [item.get('edmIsShownAt', '')]
+            "source_references": [item.get("edmIsShownAt", "")],
         }
 
         return EnhancedArtEntity(NodeType.ARTIST, creator, properties)
 
-    def _create_institution_entity(self, item: Dict) -> Optional[EnhancedArtEntity]:
+    def _create_institution_entity(self, item: dict) -> EnhancedArtEntity | None:
         """創建機構實體"""
-        provider = item.get('edmDataProvider')
+        provider = item.get("edmDataProvider")
         if not provider:
             return None
 
@@ -260,12 +279,12 @@ class ArtHistoryDataMapper:
         properties = {
             "name": provider,
             "full_name": provider,
-            "country": item.get('edmCountry', ''),
+            "country": item.get("edmCountry", ""),
             "collection_focus": self._infer_collection_focus(item),
-            "notable_collections": [item.get('dcTitle', '')],
-            "website": item.get('edmIsShownAt', ''),
-            "specialization": [item.get('dcType', '')],
-            "source_data": "Europeana"
+            "notable_collections": [item.get("dcTitle", "")],
+            "website": item.get("edmIsShownAt", ""),
+            "specialization": [item.get("dcType", "")],
+            "source_data": "Europeana",
         }
 
         return EnhancedArtEntity(institution_type, provider, properties)
@@ -274,25 +293,29 @@ class ArtHistoryDataMapper:
         """確定機構類型"""
         provider_lower = provider_name.lower()
 
-        if any(keyword in provider_lower for keyword in ['museum', 'museo', 'musée', 'muzeum']):
+        if any(keyword in provider_lower for keyword in ["museum", "museo", "musée", "muzeum"]):
             return NodeType.MUSEUM
-        elif any(keyword in provider_lower for keyword in ['gallery', 'galerie', 'galleria']):
+        elif any(keyword in provider_lower for keyword in ["gallery", "galerie", "galleria"]):
             return NodeType.GALLERY
-        elif any(keyword in provider_lower for keyword in ['library', 'biblioteca', 'bibliothèque']):
+        elif any(
+            keyword in provider_lower for keyword in ["library", "biblioteca", "bibliothèque"]
+        ):
             return NodeType.LIBRARY
-        elif any(keyword in provider_lower for keyword in ['archive', 'archivo', 'archivio']):
+        elif any(keyword in provider_lower for keyword in ["archive", "archivo", "archivio"]):
             return NodeType.ARCHIVE
-        elif any(keyword in provider_lower for keyword in ['university', 'universidad', 'université']):
+        elif any(
+            keyword in provider_lower for keyword in ["university", "universidad", "université"]
+        ):
             return NodeType.UNIVERSITY
         else:
             return NodeType.INSTITUTION
 
-    def _create_location_entities(self, item: Dict) -> List[EnhancedArtEntity]:
+    def _create_location_entities(self, item: dict) -> list[EnhancedArtEntity]:
         """創建地理實體"""
         entities = []
 
         # 國家
-        country = item.get('edmCountry')
+        country = item.get("edmCountry")
         if country:
             country_entity = EnhancedArtEntity(
                 NodeType.COUNTRY,
@@ -300,8 +323,8 @@ class ArtHistoryDataMapper:
                 {
                     "name": country,
                     "cultural_heritage": "Represented in Europeana",
-                    "artistic_traditions": [item.get('dcType', '')]
-                }
+                    "artistic_traditions": [item.get("dcType", "")],
+                },
             )
             entities.append(country_entity)
 
@@ -315,18 +338,18 @@ class ArtHistoryDataMapper:
                     "name": location,
                     "country": country,
                     "cultural_significance": f"Associated with {item.get('dcTitle', '')}",
-                    "artistic_heritage": [item.get('dcType', '')]
-                }
+                    "artistic_heritage": [item.get("dcType", "")],
+                },
             )
             entities.append(location_entity)
 
         return entities
 
-    def _create_period_entities(self, item: Dict) -> List[EnhancedArtEntity]:
+    def _create_period_entities(self, item: dict) -> list[EnhancedArtEntity]:
         """創建時期實體"""
         entities = []
 
-        date_str = item.get('dcDate', '')
+        date_str = item.get("dcDate", "")
         if not date_str:
             return entities
 
@@ -340,8 +363,8 @@ class ArtHistoryDataMapper:
                     "name": century,
                     "time_period": century,
                     "cultural_context": f"Period of {item.get('dcTitle', '')}",
-                    "artistic_movements": [item.get('dcType', '')]
-                }
+                    "artistic_movements": [item.get("dcType", "")],
+                },
             )
             entities.append(century_entity)
 
@@ -355,18 +378,18 @@ class ArtHistoryDataMapper:
                     "name": decade,
                     "time_period": decade,
                     "historical_events": f"Period of {item.get('dcTitle', '')}",
-                    "artistic_trends": [item.get('dcType', '')]
-                }
+                    "artistic_trends": [item.get("dcType", "")],
+                },
             )
             entities.append(decade_entity)
 
         return entities
 
-    def _create_theme_entities(self, item: Dict) -> List[EnhancedArtEntity]:
+    def _create_theme_entities(self, item: dict) -> list[EnhancedArtEntity]:
         """創建主題實體"""
         entities = []
 
-        subjects = self._extract_list(item.get('dcSubject', ''))
+        subjects = self._extract_list(item.get("dcSubject", ""))
         for subject in subjects:
             if len(subject.strip()) > 2:  # 過濾太短的主題
                 theme_entity = EnhancedArtEntity(
@@ -375,56 +398,64 @@ class ArtHistoryDataMapper:
                     {
                         "name": subject,
                         "description": f"Theme found in {item.get('dcTitle', '')}",
-                        "cultural_context": item.get('edmCountry', ''),
-                        "associated_works": [item.get('dcTitle', '')],
-                        "time_period": self._extract_date(item.get('dcDate', ''))
-                    }
+                        "cultural_context": item.get("edmCountry", ""),
+                        "associated_works": [item.get("dcTitle", "")],
+                        "time_period": self._extract_date(item.get("dcDate", "")),
+                    },
                 )
                 entities.append(theme_entity)
 
         return entities
 
-    def _create_relationships(self, item: Dict, artwork: EnhancedArtEntity,
-                            artist: EnhancedArtEntity, institution: EnhancedArtEntity) -> List[Dict]:
+    def _create_relationships(
+        self,
+        item: dict,
+        artwork: EnhancedArtEntity,
+        artist: EnhancedArtEntity,
+        institution: EnhancedArtEntity,
+    ) -> list[dict]:
         """創建實體間關係"""
         relationships = []
 
         if artwork and artist:
-            relationships.append({
-                "from": artwork.name,
-                "type": RelationType.CREATED_BY.value,
-                "to": artist.name,
-                "properties": {
-                    "creation_date": self._extract_date(item.get('dcDate', '')),
-                    "attribution_certainty": 0.8,
-                    "source": "Europeana"
+            relationships.append(
+                {
+                    "from": artwork.name,
+                    "type": RelationType.CREATED_BY.value,
+                    "to": artist.name,
+                    "properties": {
+                        "creation_date": self._extract_date(item.get("dcDate", "")),
+                        "attribution_certainty": 0.8,
+                        "source": "Europeana",
+                    },
                 }
-            })
+            )
 
         if artwork and institution:
-            relationships.append({
-                "from": artwork.name,
-                "type": RelationType.HOUSED_IN.value,
-                "to": institution.name,
-                "properties": {
-                    "collection_type": "Digital collection",
-                    "access_type": "Online",
-                    "source": "Europeana"
+            relationships.append(
+                {
+                    "from": artwork.name,
+                    "type": RelationType.HOUSED_IN.value,
+                    "to": institution.name,
+                    "properties": {
+                        "collection_type": "Digital collection",
+                        "access_type": "Online",
+                        "source": "Europeana",
+                    },
                 }
-            })
+            )
 
         # 地理關係
-        country = item.get('edmCountry')
+        country = item.get("edmCountry")
         if artist and country:
-            relationships.append({
-                "from": artist.name,
-                "type": RelationType.ASSOCIATED_WITH.value,
-                "to": country,
-                "properties": {
-                    "association_type": "Cultural heritage",
-                    "source": "Europeana"
+            relationships.append(
+                {
+                    "from": artist.name,
+                    "type": RelationType.ASSOCIATED_WITH.value,
+                    "to": country,
+                    "properties": {"association_type": "Cultural heritage", "source": "Europeana"},
                 }
-            })
+            )
 
         return relationships
 
@@ -436,104 +467,104 @@ class ArtHistoryDataMapper:
             return ""
 
         # 查找四位數年份
-        year_match = re.search(r'\b(1[0-9]{3}|20[0-2][0-9])\b', date_str)
+        year_match = re.search(r"\b(1[0-9]{3}|20[0-2][0-9])\b", date_str)
         if year_match:
             return year_match.group(1)
 
         # 查找世紀表示
-        century_match = re.search(r'(\d+)(?:st|nd|rd|th)?\s*century', date_str.lower())
+        century_match = re.search(r"(\d+)(?:st|nd|rd|th)?\s*century", date_str.lower())
         if century_match:
             return f"{century_match.group(1)}th century"
 
         return date_str
 
-    def _extract_century(self, date_str: str) -> Optional[str]:
+    def _extract_century(self, date_str: str) -> str | None:
         """從日期字符串提取世紀"""
-        year_match = re.search(r'\b(1[0-9]{3}|20[0-2][0-9])\b', date_str)
+        year_match = re.search(r"\b(1[0-9]{3}|20[0-2][0-9])\b", date_str)
         if year_match:
             year = int(year_match.group(1))
             century = (year - 1) // 100 + 1
             return f"{century}th century"
 
-        century_match = re.search(r'(\d+)(?:st|nd|rd|th)?\s*century', date_str.lower())
+        century_match = re.search(r"(\d+)(?:st|nd|rd|th)?\s*century", date_str.lower())
         if century_match:
             return f"{century_match.group(1)}th century"
 
         return None
 
-    def _extract_decade(self, date_str: str) -> Optional[str]:
+    def _extract_decade(self, date_str: str) -> str | None:
         """從日期字符串提取年代"""
-        year_match = re.search(r'\b(1[0-9]{3}|20[0-2][0-9])\b', date_str)
+        year_match = re.search(r"\b(1[0-9]{3}|20[0-2][0-9])\b", date_str)
         if year_match:
             year = int(year_match.group(1))
             decade = (year // 10) * 10
             return f"{decade}s"
         return None
 
-    def _extract_location(self, item: Dict) -> str:
+    def _extract_location(self, item: dict) -> str:
         """提取地理位置"""
         # 嘗試從多個字段提取位置信息
-        location_fields = ['dctermsCreated', 'dctermsSpatial', 'edmPlace']
+        location_fields = ["dctermsCreated", "dctermsSpatial", "edmPlace"]
         for field in location_fields:
             if field in item and item[field]:
                 return item[field]
         return ""
 
-    def _extract_list(self, value: Any) -> List[str]:
+    def _extract_list(self, value: Any) -> list[str]:
         """將值轉換為列表"""
         if isinstance(value, list):
             return value
         elif isinstance(value, str):
             # 分割字符串
-            return [item.strip() for item in re.split(r'[;,|]', value) if item.strip()]
+            return [item.strip() for item in re.split(r"[;,|]", value) if item.strip()]
         else:
             return [str(value)] if value else []
 
-    def _extract_techniques(self, item: Dict) -> List[str]:
+    def _extract_techniques(self, item: dict) -> list[str]:
         """提取繪畫技法"""
         techniques = []
-        format_str = item.get('dcFormat', '').lower()
+        format_str = item.get("dcFormat", "").lower()
 
-        if 'oil' in format_str:
-            techniques.append('Oil painting')
-        if 'watercolor' in format_str:
-            techniques.append('Watercolor')
-        if 'fresco' in format_str:
-            techniques.append('Fresco')
-        if 'tempera' in format_str:
-            techniques.append('Tempera')
+        if "oil" in format_str:
+            techniques.append("Oil painting")
+        if "watercolor" in format_str:
+            techniques.append("Watercolor")
+        if "fresco" in format_str:
+            techniques.append("Fresco")
+        if "tempera" in format_str:
+            techniques.append("Tempera")
 
         return techniques
 
-    def _extract_materials(self, item: Dict) -> List[str]:
+    def _extract_materials(self, item: dict) -> list[str]:
         """提取雕塑材料"""
         materials = []
-        format_str = item.get('dcFormat', '').lower()
+        format_str = item.get("dcFormat", "").lower()
 
-        if any(mat in format_str for mat in ['bronze', 'brass']):
-            materials.append('Bronze')
-        if any(mat in format_str for mat in ['marble', 'stone']):
-            materials.append('Stone')
-        if 'wood' in format_str:
-            materials.append('Wood')
-        if any(mat in format_str for mat in ['clay', 'ceramic']):
-            materials.append('Clay')
+        if any(mat in format_str for mat in ["bronze", "brass"]):
+            materials.append("Bronze")
+        if any(mat in format_str for mat in ["marble", "stone"]):
+            materials.append("Stone")
+        if "wood" in format_str:
+            materials.append("Wood")
+        if any(mat in format_str for mat in ["clay", "ceramic"]):
+            materials.append("Clay")
 
         return materials
 
-    def _extract_style(self, item: Dict) -> str:
+    def _extract_style(self, item: dict) -> str:
         """提取藝術風格"""
         # 從描述或類型中推斷風格
-        desc = item.get('dcDescription', '').lower()
-        dc_type = item.get('dcType', '').lower()
+        desc = item.get("dcDescription", "").lower()
+        dc_type = item.get("dcType", "").lower()
 
         style_keywords = {
-            'renaissance': 'Renaissance',
-            'baroque': 'Baroque',
-            'impressionist': 'Impressionism',
-            'romantic': 'Romanticism',
-            'classical': 'Classicism',
-            'modern': 'Modernism'
+            "renaissance": "Renaissance",
+            "baroque": "Baroque",
+            "impressionist": "Impressionism",
+            "romantic": "Romanticism",
+            "classical": "Classicism",
+            "modern": "Modernism",
         }
 
         for keyword, style in style_keywords.items():
@@ -542,24 +573,24 @@ class ArtHistoryDataMapper:
 
         return ""
 
-    def _extract_colors(self, item: Dict) -> List[str]:
+    def _extract_colors(self, item: dict) -> list[str]:
         """提取色彩信息"""
         colors = []
-        desc = item.get('dcDescription', '').lower()
+        desc = item.get("dcDescription", "").lower()
 
-        color_keywords = ['red', 'blue', 'green', 'yellow', 'black', 'white', 'gold', 'silver']
+        color_keywords = ["red", "blue", "green", "yellow", "black", "white", "gold", "silver"]
         for color in color_keywords:
             if color in desc:
                 colors.append(color.capitalize())
 
         return colors
 
-    def _infer_collection_focus(self, item: Dict) -> List[str]:
+    def _infer_collection_focus(self, item: dict) -> list[str]:
         """推斷收藏重點"""
-        dc_type = item.get('dcType', '')
+        dc_type = item.get("dcType", "")
         return [dc_type] if dc_type else ["General collection"]
 
-    def _deduplicate_entities(self, entities: List[EnhancedArtEntity]) -> List[EnhancedArtEntity]:
+    def _deduplicate_entities(self, entities: list[EnhancedArtEntity]) -> list[EnhancedArtEntity]:
         """去除重複實體"""
         seen = set()
         unique_entities = []
@@ -572,7 +603,9 @@ class ArtHistoryDataMapper:
 
         return unique_entities
 
-    def map_single_item(self, item: Dict, source: str = "unknown") -> Tuple[List[EnhancedArtEntity], List[Dict]]:
+    def map_single_item(
+        self, item: dict, source: str = "unknown"
+    ) -> tuple[list[EnhancedArtEntity], list[dict]]:
         """映射單個數據項目"""
         entities = []
         relationships = []
@@ -597,7 +630,9 @@ class ArtHistoryDataMapper:
                 entities.append(institution_entity)
 
             # 創建關係
-            item_relationships = self._create_relationships(item, artwork_entity, artist_entity, institution_entity)
+            item_relationships = self._create_relationships(
+                item, artwork_entity, artist_entity, institution_entity
+            )
             relationships.extend(item_relationships)
 
         except Exception as e:
@@ -605,7 +640,7 @@ class ArtHistoryDataMapper:
 
         return entities, relationships
 
-    def save_mapped_data(self, entities: List[EnhancedArtEntity], relationships: List[Dict]):
+    def save_mapped_data(self, entities: list[EnhancedArtEntity], relationships: list[dict]):
         """保存映射後的數據"""
         # 保存實體
         entities_data = [
@@ -614,7 +649,7 @@ class ArtHistoryDataMapper:
                 "name": entity.name,
                 "properties": entity.properties,
                 "subcategory": entity.subcategory,
-                "aliases": entity.aliases
+                "aliases": entity.aliases,
             }
             for entity in entities
         ]
@@ -627,6 +662,7 @@ class ArtHistoryDataMapper:
             json.dump(relationships, f, ensure_ascii=False, indent=2)
 
         logger.info("✅ 映射數據已保存")
+
 
 # 測試函數
 def test_data_mapping():
@@ -644,18 +680,18 @@ def test_data_mapping():
             "dcSubject": "Night; Village; Stars; Landscape",
             "edmDataProvider": "Museum of Modern Art",
             "edmCountry": "Netherlands",
-            "edmIsShownAt": "https://example.com/starry-night"
+            "edmIsShownAt": "https://example.com/starry-night",
         }
     ]
 
     mapper = ArtHistoryDataMapper()
     entities, relationships = mapper.map_europeana_data(sample_data)
 
-    print(f"✅ 測試完成:")
+    print("✅ 測試完成:")
     print(f"   實體數量: {len(entities)}")
     print(f"   關係數量: {len(relationships)}")
 
-    print(f"\n實體類型分布:")
+    print("\n實體類型分布:")
     entity_types = {}
     for entity in entities:
         entity_type = entity.entity_type.value
@@ -663,6 +699,7 @@ def test_data_mapping():
 
     for entity_type, count in sorted(entity_types.items()):
         print(f"   - {entity_type}: {count}")
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)

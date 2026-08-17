@@ -4,11 +4,13 @@
 標記資料來自 WikiArt、Met Museum 或其他來源
 """
 
-from neo4j import GraphDatabase
 import logging
+
+from neo4j import GraphDatabase
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class SourceMetadataAdder:
     def __init__(self):
@@ -18,20 +20,17 @@ class SourceMetadataAdder:
         self.driver = None
 
         self.stats = {
-            'artists_wikiart': 0,
-            'artists_met': 0,
-            'artworks_met': 0,
-            'artworks_other': 0,
-            'total_updated': 0
+            "artists_wikiart": 0,
+            "artists_met": 0,
+            "artworks_met": 0,
+            "artworks_other": 0,
+            "total_updated": 0,
         }
 
     def connect(self):
         """連接到 Neo4j"""
         try:
-            self.driver = GraphDatabase.driver(
-                self.uri,
-                auth=(self.username, self.password)
-            )
+            self.driver = GraphDatabase.driver(self.uri, auth=(self.username, self.password))
             # 測試連接
             with self.driver.session() as session:
                 result = session.run("RETURN 1")
@@ -61,9 +60,9 @@ class SourceMetadataAdder:
 
             result = session.run(query)
             record = result.single()
-            count = record['count'] if record else 0
+            count = record["count"] if record else 0
 
-            self.stats['artists_wikiart'] = count
+            self.stats["artists_wikiart"] = count
             logger.info(f"✅ 更新了 {count} 位 WikiArt 藝術家")
 
             return count
@@ -86,9 +85,9 @@ class SourceMetadataAdder:
 
             result = session.run(query)
             record = result.single()
-            count = record['count'] if record else 0
+            count = record["count"] if record else 0
 
-            self.stats['artists_met'] = count
+            self.stats["artists_met"] = count
             logger.info(f"✅ 更新了 {count} 位 Met Museum 藝術家")
 
             return count
@@ -111,9 +110,9 @@ class SourceMetadataAdder:
 
             result = session.run(query)
             record = result.single()
-            count = record['count'] if record else 0
+            count = record["count"] if record else 0
 
-            self.stats['artworks_met'] = count
+            self.stats["artworks_met"] = count
             logger.info(f"✅ 更新了 {count} 件 Met Museum 作品")
 
             return count
@@ -135,9 +134,9 @@ class SourceMetadataAdder:
 
             result = session.run(query)
             record = result.single()
-            count = record['count'] if record else 0
+            count = record["count"] if record else 0
 
-            self.stats['artworks_other'] = count
+            self.stats["artworks_other"] = count
             logger.info(f"✅ 更新了 {count} 件內部知識庫作品")
 
             return count
@@ -149,42 +148,42 @@ class SourceMetadataAdder:
         with self.driver.session() as session:
             # 統計各來源的數量
             queries = {
-                'WikiArt 藝術家': """
+                "WikiArt 藝術家": """
                     MATCH (a:Artist)
                     WHERE a.original_source = 'WikiArt'
                     RETURN count(a) as count
                 """,
-                'Met Museum 藝術家': """
+                "Met Museum 藝術家": """
                     MATCH (a:Artist)
                     WHERE a.original_source = 'Met Museum API'
                     RETURN count(a) as count
                 """,
-                'Met Museum 作品': """
+                "Met Museum 作品": """
                     MATCH (w:Artwork)
                     WHERE w.original_source = 'Met Museum API'
                     RETURN count(w) as count
                 """,
-                '內部知識庫作品': """
+                "內部知識庫作品": """
                     MATCH (w:Artwork)
                     WHERE w.original_source = 'Internal Knowledge Base'
                     RETURN count(w) as count
                 """,
-                '未標記的節點': """
+                "未標記的節點": """
                     MATCH (n)
                     WHERE n:Artist OR n:Artwork
                       AND n.original_source IS NULL
                     RETURN count(n) as count
-                """
+                """,
             }
 
-            logger.info("\n" + "="*60)
+            logger.info("\n" + "=" * 60)
             logger.info("資料來源統計:")
-            logger.info("="*60)
+            logger.info("=" * 60)
 
             for label, query in queries.items():
                 result = session.run(query)
                 record = result.single()
-                count = record['count'] if record else 0
+                count = record["count"] if record else 0
                 logger.info(f"{label}: {count}")
 
     def add_source_collection_metadata(self):
@@ -205,7 +204,7 @@ class SourceMetadataAdder:
 
             result = session.run(query)
             record = result.single()
-            count = record['count'] if record else 0
+            count = record["count"] if record else 0
 
             logger.info(f"✅ 為 {count} 個節點添加了資料庫集合標記")
             return count
@@ -237,23 +236,23 @@ class SourceMetadataAdder:
             self.verify_updates()
 
             # 計算總數
-            self.stats['total_updated'] = (
-                self.stats['artists_wikiart'] +
-                self.stats['artists_met'] +
-                self.stats['artworks_met'] +
-                self.stats['artworks_other']
+            self.stats["total_updated"] = (
+                self.stats["artists_wikiart"]
+                + self.stats["artists_met"]
+                + self.stats["artworks_met"]
+                + self.stats["artworks_other"]
             )
 
             # 顯示統計
-            logger.info("\n" + "="*60)
+            logger.info("\n" + "=" * 60)
             logger.info("更新統計:")
-            logger.info("="*60)
+            logger.info("=" * 60)
             logger.info(f"WikiArt 藝術家: {self.stats['artists_wikiart']}")
             logger.info(f"Met Museum 藝術家: {self.stats['artists_met']}")
             logger.info(f"Met Museum 作品: {self.stats['artworks_met']}")
             logger.info(f"內部知識庫作品: {self.stats['artworks_other']}")
             logger.info(f"總更新數: {self.stats['total_updated']}")
-            logger.info("="*60)
+            logger.info("=" * 60)
 
             logger.info("\n✅ 資料來源標記添加完成！")
 
@@ -269,6 +268,7 @@ class SourceMetadataAdder:
         except Exception as e:
             logger.error(f"❌ 執行失敗: {e}")
             import traceback
+
             traceback.print_exc()
             return False
 
@@ -276,6 +276,7 @@ class SourceMetadataAdder:
             if self.driver:
                 self.driver.close()
                 logger.info("\n🔌 已關閉 Neo4j 連接")
+
 
 def main():
     adder = SourceMetadataAdder()
@@ -287,6 +288,7 @@ def main():
     else:
         logger.error("\n❌ 失敗")
         return 1
+
 
 if __name__ == "__main__":
     exit(main())

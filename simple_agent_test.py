@@ -7,11 +7,10 @@ Agent框架簡化測試
 import asyncio
 import logging
 import sys
-import json
-from datetime import datetime
 
 # 添加src目錄到Python路径
-sys.path.append('src')
+sys.path.append("src")
+
 
 async def test_basic_agent_functionality():
     """測試基本Agent功能"""
@@ -21,7 +20,7 @@ async def test_basic_agent_functionality():
     try:
         # 測試1: 基礎Agent類
         print("\n🔍 測試1: Agent基礎類")
-        from agents.core.base_agent import BaseAgent, AgentCapability, AgentMessage, MessageType
+        from agents.core.base_agent import AgentCapability, BaseAgent
 
         # 創建測試Agent
         class TestAgent(BaseAgent):
@@ -39,7 +38,7 @@ async def test_basic_agent_functionality():
                         input_types=["text"],
                         output_types=["text"],
                         resource_requirements={},
-                        estimated_time=1.0
+                        estimated_time=1.0,
                     )
                 ]
 
@@ -97,7 +96,7 @@ async def test_basic_agent_functionality():
             "experiment_id": "test_experiment",
             "priority": 1,
             "estimated_duration": 10,
-            "dependencies": []
+            "dependencies": [],
         }
 
         scheduled_exp = await scheduler.schedule_single_experiment(experiment_config)
@@ -119,13 +118,16 @@ async def test_basic_agent_functionality():
         monitor.register_agent("test_agent", {"name": "測試Agent"})
 
         # 更新指標
-        await monitor.update_agent_metrics("test_agent", {
-            "cpu_usage": 50.0,
-            "memory_usage": 60.0,
-            "response_time": 1.5,
-            "task_success_rate": 0.95,
-            "error_count": 0
-        })
+        await monitor.update_agent_metrics(
+            "test_agent",
+            {
+                "cpu_usage": 50.0,
+                "memory_usage": 60.0,
+                "response_time": 1.5,
+                "task_success_rate": 0.95,
+                "error_count": 0,
+            },
+        )
 
         health = monitor.get_agent_health("test_agent")
         system_overview = monitor.get_system_overview()
@@ -145,8 +147,10 @@ async def test_basic_agent_functionality():
     except Exception as e:
         print(f"\n💥 測試失敗: {e}")
         import traceback
+
         traceback.print_exc()
         return False
+
 
 async def test_agent_integration():
     """測試Agent集成功能"""
@@ -162,17 +166,13 @@ async def test_agent_integration():
         await agent.start()
 
         # 模擬批量查詢測試
-        test_queries = [
-            "什麼是文藝復興？",
-            "印象派有什麼特點？",
-            "蒙娜麗莎的作者是誰？"
-        ]
+        test_queries = ["什麼是文藝復興？", "印象派有什麼特點？", "蒙娜麗莎的作者是誰？"]
 
         print(f"📝 處理 {len(test_queries)} 個測試查詢...")
 
         batch_result = await agent.process_batch_queries(test_queries)
 
-        print(f"✅ 批量處理完成:")
+        print("✅ 批量處理完成:")
         print(f"   - 總查詢數: {batch_result['total_queries']}")
         print(f"   - 成功查詢: {batch_result['successful_queries']}")
         print(f"   - 失敗查詢: {batch_result['failed_queries']}")
@@ -180,7 +180,7 @@ async def test_agent_integration():
 
         # 獲取性能指標
         performance = agent.get_performance_metrics()
-        print(f"✅ Agent性能指標:")
+        print("✅ Agent性能指標:")
         print(f"   - 框架: {performance['rag_framework']}")
         print(f"   - 總查詢數: {performance['performance']['total_queries']}")
         print(f"   - 平均響應時間: {performance['performance']['avg_response_time']:.2f}秒")
@@ -195,6 +195,7 @@ async def test_agent_integration():
         print(f"❌ 集成測試失敗: {e}")
         return False
 
+
 async def main():
     """主函數"""
     # 配置基礎日誌
@@ -202,6 +203,7 @@ async def main():
 
     # 確保目錄存在
     import os
+
     os.makedirs("logs", exist_ok=True)
 
     # 運行測試
@@ -226,6 +228,7 @@ async def main():
     else:
         print("🚨 基礎功能測試失敗")
         print("   請檢查Agent框架的核心實現")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

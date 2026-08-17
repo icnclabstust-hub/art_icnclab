@@ -6,7 +6,7 @@ Neo4j 12大分類驗證器
 
 import json
 import logging
-from typing import Dict, List, Any
+from typing import Any
 
 try:
     from neo4j import GraphDatabase
@@ -16,6 +16,7 @@ except ImportError:
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class Neo4j12CategoryValidator:
     """Neo4j 12大分類驗證器"""
@@ -41,7 +42,7 @@ class Neo4j12CategoryValidator:
         if self.driver:
             self.driver.close()
 
-    def execute_query(self, cypher: str) -> List[Dict]:
+    def execute_query(self, cypher: str) -> list[dict]:
         """執行Cypher查詢"""
         if not self.driver:
             logger.error("❌ 未連接到Neo4j")
@@ -55,7 +56,7 @@ class Neo4j12CategoryValidator:
             logger.error(f"❌ 查詢執行失敗: {e}")
             return []
 
-    def validate_12_categories(self) -> Dict[str, Any]:
+    def validate_12_categories(self) -> dict[str, Any]:
         """驗證12大分類節點"""
         print("🔍 驗證12大分類節點結構...")
         print("=" * 50)
@@ -66,7 +67,7 @@ class Neo4j12CategoryValidator:
             "total_relationships": 0,
             "category_stats": {},
             "sample_nodes": {},
-            "validation_status": "success"
+            "validation_status": "success",
         }
 
         # 1. 檢查總節點數
@@ -85,12 +86,21 @@ class Neo4j12CategoryValidator:
 
         # 3. 檢查12大分類
         categories_expected = [
-            "People", "Artworks", "Movements", "Techniques",
-            "Themes", "Chronology", "Places", "Institutions",
-            "Events", "Sources", "Concepts", "Translations"
+            "People",
+            "Artworks",
+            "Movements",
+            "Techniques",
+            "Themes",
+            "Chronology",
+            "Places",
+            "Institutions",
+            "Events",
+            "Sources",
+            "Concepts",
+            "Translations",
         ]
 
-        print(f"\n🏷️ 分類驗證:")
+        print("\n🏷️ 分類驗證:")
         for category in categories_expected:
             category_query = f"MATCH (n {{category: '{category}'}}) RETURN count(n) as count, collect(DISTINCT labels(n)[0]) as labels"
             category_result = self.execute_query(category_query)
@@ -100,7 +110,7 @@ class Neo4j12CategoryValidator:
                 labels = category_result[0]["labels"]
                 validation_results["categories_found"][category] = {
                     "count": count,
-                    "labels": labels
+                    "labels": labels,
                 }
                 print(f"   ✅ {category}: {count} 個節點 (標籤: {', '.join(labels)})")
             else:
@@ -108,7 +118,7 @@ class Neo4j12CategoryValidator:
                 validation_results["validation_status"] = "partial_failure"
 
         # 4. 檢查具體節點標籤
-        print(f"\n🏷️ 節點標籤統計:")
+        print("\n🏷️ 節點標籤統計:")
         labels_query = """
         MATCH (n)
         RETURN labels(n)[0] as label, count(n) as count
@@ -122,7 +132,7 @@ class Neo4j12CategoryValidator:
             validation_results["category_stats"][label] = count
 
         # 5. 抽樣檢查每個分類的節點
-        print(f"\n🔍 節點內容抽樣:")
+        print("\n🔍 節點內容抽樣:")
         for category in categories_expected:
             sample_query = f"""
             MATCH (n {{category: '{category}'}})
@@ -151,7 +161,7 @@ class Neo4j12CategoryValidator:
 
     def test_12_category_queries(self):
         """測試12大分類的典型查詢"""
-        print(f"\n🧪 測試12大分類GraphRAG查詢:")
+        print("\n🧪 測試12大分類GraphRAG查詢:")
         print("=" * 50)
 
         test_queries = [
@@ -165,7 +175,7 @@ class Neo4j12CategoryValidator:
                        artwork.title as artwork_title
                 LIMIT 5
                 """,
-                "description": "查詢藝術家創作的作品"
+                "description": "查詢藝術家創作的作品",
             },
             {
                 "name": "技法-作品關係",
@@ -177,7 +187,7 @@ class Neo4j12CategoryValidator:
                        artwork.title as artwork_title
                 LIMIT 5
                 """,
-                "description": "查詢技法與作品的關係"
+                "description": "查詢技法與作品的關係",
             },
             {
                 "name": "地點-人物關係",
@@ -189,7 +199,7 @@ class Neo4j12CategoryValidator:
                        person.name as person_name
                 LIMIT 5
                 """,
-                "description": "查詢地點與人物的關係"
+                "description": "查詢地點與人物的關係",
             },
             {
                 "name": "時間-流派關係",
@@ -201,7 +211,7 @@ class Neo4j12CategoryValidator:
                        movement.chinese_name as chinese_name
                 LIMIT 5
                 """,
-                "description": "查詢時間與藝術流派的關係"
+                "description": "查詢時間與藝術流派的關係",
             },
             {
                 "name": "術語翻譯關係",
@@ -213,7 +223,7 @@ class Neo4j12CategoryValidator:
                        translation.english_term as english_term
                 LIMIT 5
                 """,
-                "description": "查詢義大利-中文-英文術語對照"
+                "description": "查詢義大利-中文-英文術語對照",
             },
             {
                 "name": "機構-人物關係",
@@ -225,8 +235,8 @@ class Neo4j12CategoryValidator:
                        person.name as person_name
                 LIMIT 5
                 """,
-                "description": "查詢機構與人物的關係"
-            }
+                "description": "查詢機構與人物的關係",
+            },
         ]
 
         test_results = {}
@@ -245,30 +255,30 @@ class Neo4j12CategoryValidator:
                     for key, value in result.items():
                         if value is not None:
                             result_items.append(f"{key}: {value}")
-                    print(f"   {i+1}. {' | '.join(result_items)}")
+                    print(f"   {i + 1}. {' | '.join(result_items)}")
                 if len(results) > 3:
                     print(f"   ... 還有 {len(results) - 3} 條記錄")
             else:
-                print(f"   結果: ❌ 未找到相關數據")
+                print("   結果: ❌ 未找到相關數據")
 
         return test_results
 
-    def generate_summary_report(self, validation_results: Dict, test_results: Dict):
+    def generate_summary_report(self, validation_results: dict, test_results: dict):
         """生成總結報告"""
-        print(f"\n📋 12大分類Neo4j驗證報告")
+        print("\n📋 12大分類Neo4j驗證報告")
         print("=" * 50)
 
         print(f"🎯 驗證狀態: {validation_results['validation_status']}")
-        print(f"📊 數據統計:")
+        print("📊 數據統計:")
         print(f"   總節點數: {validation_results['total_nodes']}")
         print(f"   總關係數: {validation_results['total_relationships']}")
         print(f"   發現分類: {len(validation_results['categories_found'])}/12")
 
-        print(f"\n✅ 成功創建的分類:")
+        print("\n✅ 成功創建的分類:")
         for category, info in validation_results["categories_found"].items():
             print(f"   {category}: {info['count']} 個節點")
 
-        print(f"\n🔧 GraphRAG查詢測試:")
+        print("\n🔧 GraphRAG查詢測試:")
         successful_queries = 0
         for query_name, results in test_results.items():
             if results:
@@ -277,7 +287,7 @@ class Neo4j12CategoryValidator:
             else:
                 print(f"   ❌ {query_name}: 無結果")
 
-        print(f"\n📈 總體評估:")
+        print("\n📈 總體評估:")
         if validation_results["total_nodes"] >= 30 and successful_queries >= 4:
             print("   🎉 12大分類Neo4j圖譜構建成功！")
             print("   📚 現在可以使用新的分類體系進行GraphRAG查詢")
@@ -285,6 +295,7 @@ class Neo4j12CategoryValidator:
             print("   ⚠️  部分成功，建議檢查缺失的分類和關係")
         else:
             print("   ❌ 構建失敗，請檢查Neo4j連接和腳本執行")
+
 
 def main():
     """主函數"""
@@ -295,7 +306,7 @@ def main():
     validator = Neo4j12CategoryValidator(
         uri="bolt://localhost:7687",
         username="neo4j",
-        password="CHANGE_ME_NEO4J_PASSWORD"  # 請根據您的Neo4j密碼修改
+        password="CHANGE_ME_NEO4J_PASSWORD",  # 請根據您的Neo4j密碼修改
     )
 
     if not validator.connect():
@@ -320,14 +331,15 @@ def main():
             report_data = {
                 "validation_results": validation_results,
                 "test_results": test_results,
-                "timestamp": "2024-01-01"  # 您可以添加實際時間戳
+                "timestamp": "2024-01-01",  # 您可以添加實際時間戳
             }
             json.dump(report_data, f, ensure_ascii=False, indent=2, default=str)
 
-        print(f"\n💾 驗證報告已保存: neo4j_12_category_validation_report.json")
+        print("\n💾 驗證報告已保存: neo4j_12_category_validation_report.json")
 
     finally:
         validator.close()
+
 
 if __name__ == "__main__":
     main()

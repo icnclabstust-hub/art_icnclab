@@ -4,13 +4,14 @@
 定義實體類型、屬性和關係
 """
 
-from typing import Dict, List, Any, Optional
+import json
 from dataclasses import dataclass, field
 from enum import Enum
-import json
+
 
 class NodeType(Enum):
     """節點類型定義"""
+
     ARTIST = "Artist"
     ARTWORK = "Artwork"
     MOVEMENT = "Movement"
@@ -24,8 +25,10 @@ class NodeType(Enum):
     PATRON = "Patron"
     COLLECTION = "Collection"
 
+
 class RelationType(Enum):
     """關係類型定義"""
+
     # 藝術家關係
     CREATED_BY = "CREATED_BY"
     INFLUENCED_BY = "INFLUENCED_BY"
@@ -55,22 +58,27 @@ class RelationType(Enum):
     PATRONIZED_BY = "PATRONIZED_BY"
     HOUSED_IN = "HOUSED_IN"
 
+
 @dataclass
 class NodeDefinition:
     """節點定義"""
+
     type: NodeType
-    properties: Dict[str, type]
-    required_properties: List[str]
+    properties: dict[str, type]
+    required_properties: list[str]
     description: str
+
 
 @dataclass
 class RelationshipDefinition:
     """關係定義"""
+
     type: RelationType
     from_node: NodeType
     to_node: NodeType
-    properties: Dict[str, type] = field(default_factory=dict)
+    properties: dict[str, type] = field(default_factory=dict)
     description: str = ""
+
 
 class ArtHistoryKnowledgeGraphSchema:
     """藝術史知識圖譜架構"""
@@ -79,7 +87,7 @@ class ArtHistoryKnowledgeGraphSchema:
         self.nodes = self._define_nodes()
         self.relationships = self._define_relationships()
 
-    def _define_nodes(self) -> Dict[NodeType, NodeDefinition]:
+    def _define_nodes(self) -> dict[NodeType, NodeDefinition]:
         """定義所有節點類型"""
         return {
             NodeType.ARTIST: NodeDefinition(
@@ -91,14 +99,13 @@ class ArtHistoryKnowledgeGraphSchema:
                     "nationality": str,
                     "biography": str,
                     "gender": str,
-                    "art_movements": List[str],
-                    "notable_works": List[str],
-                    "techniques_used": List[str]
+                    "art_movements": list[str],
+                    "notable_works": list[str],
+                    "techniques_used": list[str],
                 },
                 required_properties=["name"],
-                description="藝術家實體，包含個人信息和藝術背景"
+                description="藝術家實體，包含個人信息和藝術背景",
             ),
-
             NodeType.ARTWORK: NodeDefinition(
                 type=NodeType.ARTWORK,
                 properties={
@@ -110,15 +117,14 @@ class ArtHistoryKnowledgeGraphSchema:
                     "technique": str,
                     "provenance": str,
                     "significance": str,
-                    "theme": List[str],
+                    "theme": list[str],
                     "style": str,
                     "condition": str,
-                    "estimated_value": float
+                    "estimated_value": float,
                 },
                 required_properties=["title"],
-                description="藝術作品實體，包含作品詳細信息"
+                description="藝術作品實體，包含作品詳細信息",
             ),
-
             NodeType.MOVEMENT: NodeDefinition(
                 type=NodeType.MOVEMENT,
                 properties={
@@ -127,14 +133,13 @@ class ArtHistoryKnowledgeGraphSchema:
                     "end_period": int,
                     "origin_location": str,
                     "characteristics": str,
-                    "key_principles": List[str],
-                    "major_figures": List[str],
-                    "historical_context": str
+                    "key_principles": list[str],
+                    "major_figures": list[str],
+                    "historical_context": str,
                 },
                 required_properties=["name"],
-                description="藝術運動實體，如印象派、巴洛克等"
+                description="藝術運動實體，如印象派、巴洛克等",
             ),
-
             NodeType.PERIOD: NodeDefinition(
                 type=NodeType.PERIOD,
                 properties={
@@ -143,13 +148,12 @@ class ArtHistoryKnowledgeGraphSchema:
                     "end_year": int,
                     "region": str,
                     "cultural_context": str,
-                    "major_events": List[str],
-                    "artistic_trends": List[str]
+                    "major_events": list[str],
+                    "artistic_trends": list[str],
                 },
                 required_properties=["name", "start_year", "end_year"],
-                description="歷史時期實體，如文藝復興、中世紀等"
+                description="歷史時期實體，如文藝復興、中世紀等",
             ),
-
             NodeType.LOCATION: NodeDefinition(
                 type=NodeType.LOCATION,
                 properties={
@@ -159,41 +163,38 @@ class ArtHistoryKnowledgeGraphSchema:
                     "coordinates": str,
                     "cultural_significance": str,
                     "artistic_importance": str,
-                    "notable_sites": List[str]
+                    "notable_sites": list[str],
                 },
                 required_properties=["name", "country"],
-                description="地理位置實體"
+                description="地理位置實體",
             ),
-
             NodeType.MUSEUM: NodeDefinition(
                 type=NodeType.MUSEUM,
                 properties={
                     "name": str,
                     "location": str,
                     "founded_year": int,
-                    "specialization": List[str],
-                    "notable_collections": List[str],
+                    "specialization": list[str],
+                    "notable_collections": list[str],
                     "visitor_count": int,
-                    "website": str
+                    "website": str,
                 },
                 required_properties=["name", "location"],
-                description="博物館實體"
+                description="博物館實體",
             ),
-
             NodeType.TECHNIQUE: NodeDefinition(
                 type=NodeType.TECHNIQUE,
                 properties={
                     "name": str,
                     "description": str,
                     "origin_period": str,
-                    "materials_required": List[str],
+                    "materials_required": list[str],
                     "difficulty_level": str,
-                    "famous_practitioners": List[str]
+                    "famous_practitioners": list[str],
                 },
                 required_properties=["name"],
-                description="藝術技法實體"
+                description="藝術技法實體",
             ),
-
             NodeType.MEDIUM: NodeDefinition(
                 type=NodeType.MEDIUM,
                 properties={
@@ -201,12 +202,11 @@ class ArtHistoryKnowledgeGraphSchema:
                     "type": str,  # 繪畫、雕塑、版畫等
                     "characteristics": str,
                     "historical_usage": str,
-                    "preservation_concerns": str
+                    "preservation_concerns": str,
                 },
                 required_properties=["name"],
-                description="藝術媒材實體"
+                description="藝術媒材實體",
             ),
-
             NodeType.THEME: NodeDefinition(
                 type=NodeType.THEME,
                 properties={
@@ -214,27 +214,25 @@ class ArtHistoryKnowledgeGraphSchema:
                     "description": str,
                     "cultural_context": str,
                     "symbolic_meaning": str,
-                    "common_elements": List[str],
-                    "historical_prevalence": str
+                    "common_elements": list[str],
+                    "historical_prevalence": str,
                 },
                 required_properties=["name"],
-                description="藝術主題實體"
+                description="藝術主題實體",
             ),
-
             NodeType.STYLE: NodeDefinition(
                 type=NodeType.STYLE,
                 properties={
                     "name": str,
                     "characteristics": str,
                     "time_period": str,
-                    "regional_variations": List[str],
-                    "visual_elements": List[str],
-                    "representative_works": List[str]
+                    "regional_variations": list[str],
+                    "visual_elements": list[str],
+                    "representative_works": list[str],
                 },
                 required_properties=["name"],
-                description="藝術風格實體"
+                description="藝術風格實體",
             ),
-
             NodeType.PATRON: NodeDefinition(
                 type=NodeType.PATRON,
                 properties={
@@ -242,29 +240,28 @@ class ArtHistoryKnowledgeGraphSchema:
                     "type": str,  # 個人、教會、政府等
                     "time_period": str,
                     "patronage_style": str,
-                    "commissioned_works": List[str],
-                    "influence": str
+                    "commissioned_works": list[str],
+                    "influence": str,
                 },
                 required_properties=["name"],
-                description="藝術贊助者實體"
+                description="藝術贊助者實體",
             ),
-
             NodeType.COLLECTION: NodeDefinition(
                 type=NodeType.COLLECTION,
                 properties={
                     "name": str,
                     "collector": str,
                     "period_collected": str,
-                    "focus_area": List[str],
-                    "notable_pieces": List[str],
-                    "current_status": str
+                    "focus_area": list[str],
+                    "notable_pieces": list[str],
+                    "current_status": str,
                 },
                 required_properties=["name"],
-                description="藝術收藏實體"
-            )
+                description="藝術收藏實體",
+            ),
         }
 
-    def _define_relationships(self) -> List[RelationshipDefinition]:
+    def _define_relationships(self) -> list[RelationshipDefinition]:
         """定義所有關係類型"""
         return [
             # 藝術家創作作品
@@ -273,154 +270,138 @@ class ArtHistoryKnowledgeGraphSchema:
                 from_node=NodeType.ARTWORK,
                 to_node=NodeType.ARTIST,
                 properties={"creation_year": int, "commission_type": str},
-                description="作品由藝術家創作"
+                description="作品由藝術家創作",
             ),
-
             # 藝術家影響關係
             RelationshipDefinition(
                 type=RelationType.INFLUENCED_BY,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.ARTIST,
                 properties={"influence_type": str, "evidence": str},
-                description="藝術家受其他藝術家影響"
+                description="藝術家受其他藝術家影響",
             ),
-
             # 師承關係
             RelationshipDefinition(
                 type=RelationType.TAUGHT_BY,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.ARTIST,
                 properties={"teaching_period": str, "teaching_location": str},
-                description="藝術家師承關係"
+                description="藝術家師承關係",
             ),
-
             # 合作關係
             RelationshipDefinition(
                 type=RelationType.COLLABORATED_WITH,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.ARTIST,
                 properties={"collaboration_type": str, "project": str, "period": str},
-                description="藝術家合作關係"
+                description="藝術家合作關係",
             ),
-
             # 作品描繪主題
             RelationshipDefinition(
                 type=RelationType.DEPICTS,
                 from_node=NodeType.ARTWORK,
                 to_node=NodeType.THEME,
                 properties={"prominence": float, "interpretation": str},
-                description="作品描繪特定主題"
+                description="作品描繪特定主題",
             ),
-
             # 使用技法
             RelationshipDefinition(
                 type=RelationType.USES_TECHNIQUE,
                 from_node=NodeType.ARTWORK,
                 to_node=NodeType.TECHNIQUE,
                 properties={"skill_level": str, "innovation": str},
-                description="作品使用特定技法"
+                description="作品使用特定技法",
             ),
-
             # 使用媒材
             RelationshipDefinition(
                 type=RelationType.USES_MEDIUM,
                 from_node=NodeType.ARTWORK,
                 to_node=NodeType.MEDIUM,
                 properties={"primary": bool, "quality": str},
-                description="作品使用特定媒材"
+                description="作品使用特定媒材",
             ),
-
             # 屬於藝術運動
             RelationshipDefinition(
                 type=RelationType.BELONGS_TO_MOVEMENT,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.MOVEMENT,
                 properties={"involvement_level": str, "period": str},
-                description="藝術家屬於特定藝術運動"
+                description="藝術家屬於特定藝術運動",
             ),
-
             # 活躍於歷史時期
             RelationshipDefinition(
                 type=RelationType.ACTIVE_IN_PERIOD,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.PERIOD,
-                properties={"activity_type": List[str], "productivity": str},
-                description="藝術家活躍於特定歷史時期"
+                properties={"activity_type": list[str], "productivity": str},
+                description="藝術家活躍於特定歷史時期",
             ),
-
             # 出生地
             RelationshipDefinition(
                 type=RelationType.BORN_IN,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.LOCATION,
                 properties={"birth_year": int},
-                description="藝術家出生地"
+                description="藝術家出生地",
             ),
-
             # 工作地點
             RelationshipDefinition(
                 type=RelationType.WORKED_IN,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.LOCATION,
-                properties={"work_period": str, "major_works_created": List[str]},
-                description="藝術家工作地點"
+                properties={"work_period": str, "major_works_created": list[str]},
+                description="藝術家工作地點",
             ),
-
             # 博物館位置
             RelationshipDefinition(
                 type=RelationType.LOCATED_IN,
                 from_node=NodeType.MUSEUM,
                 to_node=NodeType.LOCATION,
-                description="博物館位置"
+                description="博物館位置",
             ),
-
             # 作品收藏於博物館
             RelationshipDefinition(
                 type=RelationType.HOUSED_IN,
                 from_node=NodeType.ARTWORK,
                 to_node=NodeType.MUSEUM,
                 properties={"acquisition_date": str, "display_status": str},
-                description="作品收藏於博物館"
+                description="作品收藏於博物館",
             ),
-
             # 贊助關係
             RelationshipDefinition(
                 type=RelationType.PATRONIZED_BY,
                 from_node=NodeType.ARTIST,
                 to_node=NodeType.PATRON,
                 properties={"patronage_period": str, "support_type": str},
-                description="藝術家受贊助者支持"
+                description="藝術家受贊助者支持",
             ),
-
             # 運動起源地
             RelationshipDefinition(
                 type=RelationType.ORIGINATED_IN,
                 from_node=NodeType.MOVEMENT,
                 to_node=NodeType.LOCATION,
                 properties={"origin_year": int, "founding_context": str},
-                description="藝術運動起源地"
+                description="藝術運動起源地",
             ),
-
             # 運動發展關係
             RelationshipDefinition(
                 type=RelationType.DEVELOPED_FROM,
                 from_node=NodeType.MOVEMENT,
                 to_node=NodeType.MOVEMENT,
-                properties={"development_type": str, "key_changes": List[str]},
-                description="藝術運動發展關係"
+                properties={"development_type": str, "key_changes": list[str]},
+                description="藝術運動發展關係",
             ),
-
             # 收藏關係
             RelationshipDefinition(
                 type=RelationType.PART_OF_COLLECTION,
                 from_node=NodeType.ARTWORK,
                 to_node=NodeType.COLLECTION,
                 properties={"acquisition_method": str, "acquisition_date": str},
-                description="作品為收藏的一部分"
-            )
+                description="作品為收藏的一部分",
+            ),
         ]
 
-    def get_cypher_schema_creation(self) -> List[str]:
+    def get_cypher_schema_creation(self) -> list[str]:
         """生成創建圖譜架構的Cypher語句"""
         cypher_statements = []
 
@@ -442,7 +423,7 @@ class ArtHistoryKnowledgeGraphSchema:
 
         return cypher_statements
 
-    def get_sample_data_cypher(self) -> List[str]:
+    def get_sample_data_cypher(self) -> list[str]:
         """生成示例數據的Cypher語句"""
         return [
             # 創建藝術家節點
@@ -459,7 +440,6 @@ class ArtHistoryKnowledgeGraphSchema:
                 techniques_used: ["Sfumato", "Chiaroscuro", "Oil painting"]
             })
             """,
-
             # 創建作品節點
             """
             CREATE (monalisa:Artwork {
@@ -474,7 +454,6 @@ class ArtHistoryKnowledgeGraphSchema:
                 style: "High Renaissance"
             })
             """,
-
             # 創建藝術運動節點
             """
             CREATE (renaissance:Movement {
@@ -488,10 +467,9 @@ class ArtHistoryKnowledgeGraphSchema:
                 historical_context: "Transition from Medieval to Early Modern Europe"
             })
             """,
-
             # 創建關係
             "MATCH (m:Artwork {title: 'Mona Lisa'}), (a:Artist {name: 'Leonardo da Vinci'}) CREATE (m)-[:CREATED_BY {creation_year: 1503}]->(a)",
-            "MATCH (a:Artist {name: 'Leonardo da Vinci'}), (mov:Movement {name: 'Renaissance'}) CREATE (a)-[:BELONGS_TO_MOVEMENT {involvement_level: 'Leading figure'}]->(mov)"
+            "MATCH (a:Artist {name: 'Leonardo da Vinci'}), (mov:Movement {name: 'Renaissance'}) CREATE (a)-[:BELONGS_TO_MOVEMENT {involvement_level: 'Leading figure'}]->(mov)",
         ]
 
     def export_schema(self, format: str = "json") -> str:
@@ -499,9 +477,12 @@ class ArtHistoryKnowledgeGraphSchema:
         schema_data = {
             "nodes": {
                 node_type.value: {
-                    "properties": {prop: str(prop_type.__name__) for prop, prop_type in node_def.properties.items()},
+                    "properties": {
+                        prop: str(prop_type.__name__)
+                        for prop, prop_type in node_def.properties.items()
+                    },
                     "required_properties": node_def.required_properties,
-                    "description": node_def.description
+                    "description": node_def.description,
                 }
                 for node_type, node_def in self.nodes.items()
             },
@@ -510,17 +491,21 @@ class ArtHistoryKnowledgeGraphSchema:
                     "type": rel_def.type.value,
                     "from_node": rel_def.from_node.value,
                     "to_node": rel_def.to_node.value,
-                    "properties": {prop: str(prop_type.__name__) for prop, prop_type in rel_def.properties.items()},
-                    "description": rel_def.description
+                    "properties": {
+                        prop: str(prop_type.__name__)
+                        for prop, prop_type in rel_def.properties.items()
+                    },
+                    "description": rel_def.description,
                 }
                 for rel_def in self.relationships
-            ]
+            ],
         }
 
         if format.lower() == "json":
             return json.dumps(schema_data, ensure_ascii=False, indent=2)
         else:
             raise ValueError(f"不支持的格式: {format}")
+
 
 # 使用示例
 if __name__ == "__main__":

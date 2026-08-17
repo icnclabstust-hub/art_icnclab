@@ -7,9 +7,10 @@ description: 個人筆記知識庫。使用者查到資料想保存時用 save_r
 全文搜尋用 search_notes，列出筆記用 list_notes。
 """
 
+from datetime import date
+
 import requests
 import urllib3
-from datetime import date
 from pydantic import BaseModel, Field
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

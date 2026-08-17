@@ -6,27 +6,28 @@
 
 import json
 import logging
-from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
+from typing import Any
 
-from enhanced_art_history_schema import (
-    NodeType, RelationType, EnhancedArtHistorySchema
-)
+from enhanced_art_history_schema import EnhancedArtHistorySchema, NodeType, RelationType
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass
 class EnhancedArtEntity:
     """增強的藝術史實體"""
+
     entity_type: NodeType
     name: str
-    properties: Dict[str, Any]
-    subcategory: Optional[str] = None
-    aliases: List[str] = None
+    properties: dict[str, Any]
+    subcategory: str | None = None
+    aliases: list[str] = None
 
     def __post_init__(self):
         if self.aliases is None:
             self.aliases = []
+
 
 class EnhancedArtHistoryGraphBuilder:
     """增強的藝術史知識圖譜構建器"""
@@ -59,7 +60,12 @@ class EnhancedArtHistoryGraphBuilder:
                 "periods": ["Early Renaissance", "High Renaissance"],
                 "primary_medium": ["Oil painting", "Drawing", "Fresco"],
                 "signature_techniques": ["Sfumato", "Chiaroscuro", "Anatomical accuracy"],
-                "notable_works": ["Mona Lisa", "The Last Supper", "Vitruvian Man", "Lady with an Ermine"],
+                "notable_works": [
+                    "Mona Lisa",
+                    "The Last Supper",
+                    "Vitruvian Man",
+                    "Lady with an Ermine",
+                ],
                 "awards_honors": ["Court artist to Francis I of France"],
                 "exhibitions": ["Leonardo da Vinci: Painter at the Court of Milan"],
                 "collections": ["Louvre", "National Gallery London", "Uffizi"],
@@ -71,7 +77,7 @@ class EnhancedArtHistoryGraphBuilder:
                 "workshop_location": "Milan, Florence, France",
                 "patrons": ["Ludovico Sforza", "Francis I of France", "Cesare Borgia"],
                 "influences": ["Classical antiquity", "Nature observation", "Verrocchio"],
-                "legacy": "Scientific method in art, perfectionism, interdisciplinary approach"
+                "legacy": "Scientific method in art, perfectionism, interdisciplinary approach",
             },
             {
                 "name": "Claude Monet",
@@ -90,15 +96,24 @@ class EnhancedArtHistoryGraphBuilder:
                 "periods": ["Late 19th century", "Early 20th century"],
                 "primary_medium": ["Oil painting", "Pastels"],
                 "signature_techniques": ["Plein air painting", "Broken color", "Light studies"],
-                "notable_works": ["Water Lilies", "Impression, Sunrise", "Rouen Cathedral", "Haystacks"],
+                "notable_works": [
+                    "Water Lilies",
+                    "Impression, Sunrise",
+                    "Rouen Cathedral",
+                    "Haystacks",
+                ],
                 "exhibitions": ["First Impressionist Exhibition 1874", "Salon des Indépendants"],
-                "collections": ["Musée Marmottan", "Metropolitan Museum", "National Gallery London"],
+                "collections": [
+                    "Musée Marmottan",
+                    "Metropolitan Museum",
+                    "National Gallery London",
+                ],
                 "artistic_evolution": "From landscape realism to light abstraction",
                 "historical_significance": "Revolutionized modern painting through light studies",
                 "workshop_location": "Giverny gardens",
                 "patrons": ["Paul Durand-Ruel", "Gustave Caillebotte"],
                 "influences": ["Eugène Boudin", "Japanese prints", "Turner"],
-                "legacy": "Foundation of modern art through Impressionism"
+                "legacy": "Foundation of modern art through Impressionism",
             },
             {
                 "name": "Frida Kahlo",
@@ -115,14 +130,21 @@ class EnhancedArtHistoryGraphBuilder:
                 "periods": ["20th century modernism"],
                 "primary_medium": ["Oil painting", "Mixed media"],
                 "signature_techniques": ["Symbolic self-portraiture", "Mexican folk art elements"],
-                "notable_works": ["The Two Fridas", "Self-Portrait with Thorn Necklace", "The Broken Column"],
-                "exhibitions": ["First solo exhibition 1953", "Posthumous international recognition"],
+                "notable_works": [
+                    "The Two Fridas",
+                    "Self-Portrait with Thorn Necklace",
+                    "The Broken Column",
+                ],
+                "exhibitions": [
+                    "First solo exhibition 1953",
+                    "Posthumous international recognition",
+                ],
                 "historical_significance": "Icon of Mexican identity and feminist art",
                 "social_background": "Middle-class Mexican family, political activism",
                 "patrons": ["Diego Rivera", "André Breton"],
                 "influences": ["Mexican folk art", "Pre-Columbian art", "European Surrealism"],
-                "legacy": "Feminist icon, Mexican cultural ambassador through art"
-            }
+                "legacy": "Feminist icon, Mexican cultural ambassador through art",
+            },
         ]
 
         # === 2. 細分的作品類型 ===
@@ -145,7 +167,11 @@ class EnhancedArtHistoryGraphBuilder:
                 "composition": "Three-quarter view with pyramidal composition",
                 "color_palette": ["Earth tones", "Subtle greens", "Warm flesh tones"],
                 "condition": "Good with minor cracking",
-                "provenance": ["Francis I of France", "French Royal Collection", "Louvre acquisition 1797"],
+                "provenance": [
+                    "Francis I of France",
+                    "French Royal Collection",
+                    "Louvre acquisition 1797",
+                ],
                 "exhibitions": ["Permanent display Louvre", "Rare loans to other museums"],
                 "publications": ["Countless scholarly articles", "Popular culture references"],
                 "current_location": "Louvre Museum, Paris",
@@ -157,8 +183,12 @@ class EnhancedArtHistoryGraphBuilder:
                 "historical_context": "Renaissance humanism and portraiture innovation",
                 "cultural_significance": "Global icon of art and culture",
                 "technical_analysis": "X-ray reveals under-drawings and painting process",
-                "conservation_history": ["1911 theft recovery", "Modern climate control", "Protective glass"],
-                "related_works": ["Lady with an Ermine", "Portrait of Ginevra de' Benci"]
+                "conservation_history": [
+                    "1911 theft recovery",
+                    "Modern climate control",
+                    "Protective glass",
+                ],
+                "related_works": ["Lady with an Ermine", "Portrait of Ginevra de' Benci"],
             },
             {
                 "title": "Water Lilies (Nymphéas)",
@@ -183,8 +213,8 @@ class EnhancedArtHistoryGraphBuilder:
                 "current_location": "Multiple museums worldwide",
                 "historical_context": "Late Impressionism and abstraction development",
                 "cultural_significance": "Bridge between Impressionism and abstract art",
-                "related_works": ["Japanese Bridge series", "Rouen Cathedral series"]
-            }
+                "related_works": ["Japanese Bridge series", "Rouen Cathedral series"],
+            },
         ]
 
         # === 3. 詳細博物館數據 ===
@@ -221,7 +251,7 @@ class EnhancedArtHistoryGraphBuilder:
                 "funding_sources": ["French government", "Admissions", "Donations", "Sponsorships"],
                 "mission_statement": "Preserve and present art heritage for public education",
                 "acquisition_policy": "Strategic acquisitions filling collection gaps",
-                "deaccession_policy": "Rarely deaccessions due to national treasure status"
+                "deaccession_policy": "Rarely deaccessions due to national treasure status",
             },
             {
                 "name": "Museum of Modern Art",
@@ -234,8 +264,16 @@ class EnhancedArtHistoryGraphBuilder:
                 "museum_type": "Modern and contemporary art museum",
                 "specialization": ["Modern art", "Contemporary art", "Design", "Film"],
                 "collection_size": 200000,
-                "permanent_collection": ["The Starry Night", "Les Demoiselles d'Avignon", "Campbell's Soup Cans"],
-                "notable_works": ["The Starry Night", "The Persistence of Memory", "Broadway Boogie-Woogie"],
+                "permanent_collection": [
+                    "The Starry Night",
+                    "Les Demoiselles d'Avignon",
+                    "Campbell's Soup Cans",
+                ],
+                "notable_works": [
+                    "The Starry Night",
+                    "The Persistence of Memory",
+                    "Broadway Boogie-Woogie",
+                ],
                 "annual_visitors": 3000000,
                 "director": "Glenn D. Lowry",
                 "building_architect": "Yoshio Taniguchi (2004 renovation)",
@@ -245,8 +283,8 @@ class EnhancedArtHistoryGraphBuilder:
                 "research_facilities": True,
                 "conservation_lab": True,
                 "library": True,
-                "mission_statement": "Help people understand and enjoy modern and contemporary art"
-            }
+                "mission_statement": "Help people understand and enjoy modern and contemporary art",
+            },
         ]
 
         # === 4. 詳細展覽數據 ===
@@ -278,7 +316,10 @@ class EnhancedArtHistoryGraphBuilder:
                 "audio_guide": True,
                 "multimedia": ["Interactive displays", "Digital reconstructions"],
                 "significance": "Unprecedented gathering of Leonardo paintings",
-                "innovations": ["Advanced technical analysis display", "Digital x-ray presentations"]
+                "innovations": [
+                    "Advanced technical analysis display",
+                    "Digital x-ray presentations",
+                ],
             }
         ]
 
@@ -299,7 +340,11 @@ class EnhancedArtHistoryGraphBuilder:
                 "difficulty_level": "Expert",
                 "time_required": "Months to years",
                 "notable_practitioners": ["Leonardo da Vinci", "Correggio", "Later followers"],
-                "masterpieces_using": ["Mona Lisa", "Lady with an Ermine", "The Virgin of the Rocks"],
+                "masterpieces_using": [
+                    "Mona Lisa",
+                    "Lady with an Ermine",
+                    "The Virgin of the Rocks",
+                ],
                 "variations": ["Venetian sfumato", "Northern European adaptations"],
                 "related_techniques": ["Chiaroscuro", "Glazing", "Impasto"],
                 "advantages": ["Atmospheric effects", "Psychological depth", "Luminous quality"],
@@ -307,7 +352,7 @@ class EnhancedArtHistoryGraphBuilder:
                 "preservation_concerns": ["Layer separation", "Darkening glazes"],
                 "modern_adaptations": ["Digital sfumato effects", "Contemporary oil techniques"],
                 "teaching_traditions": ["Academic art education", "Classical ateliers"],
-                "cultural_significance": "Epitome of Renaissance painting sophistication"
+                "cultural_significance": "Epitome of Renaissance painting sophistication",
             }
         ]
 
@@ -325,7 +370,9 @@ class EnhancedArtHistoryGraphBuilder:
             self.entities.append(entity)
 
         for exhibition_data in exhibitions:
-            entity = EnhancedArtEntity(NodeType.EXHIBITION, exhibition_data["title"], exhibition_data)
+            entity = EnhancedArtEntity(
+                NodeType.EXHIBITION, exhibition_data["title"], exhibition_data
+            )
             self.entities.append(entity)
 
         for technique_data in techniques:
@@ -345,7 +392,7 @@ class EnhancedArtHistoryGraphBuilder:
                 "specialization": ["Art criticism", "Social criticism", "Architecture"],
                 "major_works": ["Modern Painters", "The Stones of Venice"],
                 "influence": "Champion of Turner and Pre-Raphaelites",
-                "writing_style": "Detailed aesthetic analysis with moral philosophy"
+                "writing_style": "Detailed aesthetic analysis with moral philosophy",
             }
         ]
 
@@ -363,7 +410,7 @@ class EnhancedArtHistoryGraphBuilder:
                 "specialization": ["Contemporary art", "Avant-garde movements"],
                 "major_exhibitions": ["When Attitudes Become Form", "Documenta 5"],
                 "curatorial_philosophy": "Art as research and experimentation",
-                "institutions": ["Kunsthalle Bern", "Independent curator"]
+                "institutions": ["Kunsthalle Bern", "Independent curator"],
             }
         ]
 
@@ -377,99 +424,130 @@ class EnhancedArtHistoryGraphBuilder:
         """構建增強的實體間關係"""
         relationships = [
             # === 創作關係 ===
-            ("Mona Lisa", RelationType.CREATED_BY, "Leonardo da Vinci", {
-                "creation_year": 1503,
-                "creation_location": "Florence/France",
-                "commission_type": "Portrait commission",
-                "attribution_certainty": 1.0
-            }),
-
-            ("Water Lilies (Nymphéas)", RelationType.CREATED_BY, "Claude Monet", {
-                "creation_year": 1919,
-                "creation_location": "Giverny",
-                "commission_type": "Personal project",
-                "attribution_certainty": 1.0
-            }),
-
+            (
+                "Mona Lisa",
+                RelationType.CREATED_BY,
+                "Leonardo da Vinci",
+                {
+                    "creation_year": 1503,
+                    "creation_location": "Florence/France",
+                    "commission_type": "Portrait commission",
+                    "attribution_certainty": 1.0,
+                },
+            ),
+            (
+                "Water Lilies (Nymphéas)",
+                RelationType.CREATED_BY,
+                "Claude Monet",
+                {
+                    "creation_year": 1919,
+                    "creation_location": "Giverny",
+                    "commission_type": "Personal project",
+                    "attribution_certainty": 1.0,
+                },
+            ),
             # === 技法使用 ===
-            ("Mona Lisa", RelationType.USES_TECHNIQUE, "Sfumato", {
-                "skill_level": "Master",
-                "innovation": "Perfected the technique"
-            }),
-
+            (
+                "Mona Lisa",
+                RelationType.USES_TECHNIQUE,
+                "Sfumato",
+                {"skill_level": "Master", "innovation": "Perfected the technique"},
+            ),
             # === 收藏關係 ===
-            ("Mona Lisa", RelationType.HOUSED_IN, "Louvre Museum", {
-                "acquisition_date": "1797",
-                "display_status": "Permanent display"
-            }),
-
-            ("Water Lilies (Nymphéas)", RelationType.HOUSED_IN, "Museum of Modern Art", {
-                "acquisition_date": "Various",
-                "display_status": "Rotating display"
-            }),
-
+            (
+                "Mona Lisa",
+                RelationType.HOUSED_IN,
+                "Louvre Museum",
+                {"acquisition_date": "1797", "display_status": "Permanent display"},
+            ),
+            (
+                "Water Lilies (Nymphéas)",
+                RelationType.HOUSED_IN,
+                "Museum of Modern Art",
+                {"acquisition_date": "Various", "display_status": "Rotating display"},
+            ),
             # === 展覽關係 ===
-            ("Mona Lisa", RelationType.EXHIBITED_AT, "Leonardo da Vinci: Painter at the Court of Milan", {
-                "exhibition_title": "Leonardo da Vinci: Painter at the Court of Milan",
-                "date": "2011-2012",
-                "venue": "National Gallery London",
-                "role": "Featured work",
-                "significance": "Rare loan"
-            }),
-
+            (
+                "Mona Lisa",
+                RelationType.EXHIBITED_AT,
+                "Leonardo da Vinci: Painter at the Court of Milan",
+                {
+                    "exhibition_title": "Leonardo da Vinci: Painter at the Court of Milan",
+                    "date": "2011-2012",
+                    "venue": "National Gallery London",
+                    "role": "Featured work",
+                    "significance": "Rare loan",
+                },
+            ),
             # === 影響關係 ===
-            ("Claude Monet", RelationType.INFLUENCED_BY, "Leonardo da Vinci", {
-                "influence_type": "Light studies and atmospheric effects",
-                "evidence": "Documented in Monet's writings",
-                "period": "1860s onwards",
-                "degree": 0.7,
-                "specific_aspects": ["Light observation", "Atmospheric perspective"]
-            }),
-
+            (
+                "Claude Monet",
+                RelationType.INFLUENCED_BY,
+                "Leonardo da Vinci",
+                {
+                    "influence_type": "Light studies and atmospheric effects",
+                    "evidence": "Documented in Monet's writings",
+                    "period": "1860s onwards",
+                    "degree": 0.7,
+                    "specific_aspects": ["Light observation", "Atmospheric perspective"],
+                },
+            ),
             # === 地理關係 ===
-            ("Leonardo da Vinci", RelationType.BORN_IN, "Italy", {
-                "birth_year": 1452
-            }),
-
-            ("Leonardo da Vinci", RelationType.WORKED_IN, "France", {
-                "work_period": "1516-1519",
-                "major_works_created": ["Late period works"]
-            }),
-
-            ("Claude Monet", RelationType.WORKED_IN, "France", {
-                "work_period": "1840-1926",
-                "major_works_created": ["Impression Sunrise", "Water Lilies"]
-            }),
-
+            ("Leonardo da Vinci", RelationType.BORN_IN, "Italy", {"birth_year": 1452}),
+            (
+                "Leonardo da Vinci",
+                RelationType.WORKED_IN,
+                "France",
+                {"work_period": "1516-1519", "major_works_created": ["Late period works"]},
+            ),
+            (
+                "Claude Monet",
+                RelationType.WORKED_IN,
+                "France",
+                {
+                    "work_period": "1840-1926",
+                    "major_works_created": ["Impression Sunrise", "Water Lilies"],
+                },
+            ),
             # === 機構關係 ===
             ("Louvre Museum", RelationType.CREATED_IN, "Paris", {}),
             ("Museum of Modern Art", RelationType.CREATED_IN, "New York", {}),
-
             # === 評論關係 ===
-            ("Leonardo da Vinci", RelationType.CRITIQUED_BY, "John Ruskin", {
-                "criticism_type": "Historical analysis",
-                "publication": "Modern Painters",
-                "assessment": "Praise for naturalistic observation"
-            }),
-
+            (
+                "Leonardo da Vinci",
+                RelationType.CRITIQUED_BY,
+                "John Ruskin",
+                {
+                    "criticism_type": "Historical analysis",
+                    "publication": "Modern Painters",
+                    "assessment": "Praise for naturalistic observation",
+                },
+            ),
             # === 策展關係 ===
-            ("Leonardo da Vinci: Painter at the Court of Milan", RelationType.CREATED_BY, "Luke Syson", {
-                "curatorial_approach": "Technical and historical analysis",
-                "exhibition_concept": "Complete painting oeuvre"
-            })
+            (
+                "Leonardo da Vinci: Painter at the Court of Milan",
+                RelationType.CREATED_BY,
+                "Luke Syson",
+                {
+                    "curatorial_approach": "Technical and historical analysis",
+                    "exhibition_concept": "Complete painting oeuvre",
+                },
+            ),
         ]
 
         for from_entity, relation_type, to_entity, properties in relationships:
-            self.relationships.append({
-                "from": from_entity,
-                "type": relation_type.value,
-                "to": to_entity,
-                "properties": properties
-            })
+            self.relationships.append(
+                {
+                    "from": from_entity,
+                    "type": relation_type.value,
+                    "to": to_entity,
+                    "properties": properties,
+                }
+            )
 
         logger.info(f"✅ 添加了 {len(self.relationships)} 個增強關係")
 
-    def generate_enhanced_cypher_script(self) -> List[str]:
+    def generate_enhanced_cypher_script(self) -> list[str]:
         """生成增強的Cypher創建腳本"""
         cypher_statements = []
 
@@ -515,7 +593,7 @@ class EnhancedArtHistoryGraphBuilder:
                 "name": entity.name,
                 "properties": entity.properties,
                 "subcategory": entity.subcategory,
-                "aliases": entity.aliases
+                "aliases": entity.aliases,
             }
             for entity in self.entities
         ]
@@ -538,7 +616,7 @@ class EnhancedArtHistoryGraphBuilder:
             "node_types": [node_type.value for node_type in self.schema.nodes.keys()],
             "relationship_types": [rel["type"].value for rel in self.schema.relationships],
             "total_entities": len(self.entities),
-            "total_relationships": len(self.relationships)
+            "total_relationships": len(self.relationships),
         }
         with open("enhanced_schema.json", "w", encoding="utf-8") as f:
             json.dump(schema_summary, f, ensure_ascii=False, indent=2)
@@ -552,12 +630,13 @@ class EnhancedArtHistoryGraphBuilder:
             entity_type = entity.entity_type.value
             entity_types[entity_type] = entity_types.get(entity_type, 0) + 1
 
-        print(f"📊 增強圖譜統計:")
+        print("📊 增強圖譜統計:")
         print(f"   總實體數量: {len(self.entities)}")
         print(f"   總關係數量: {len(self.relationships)}")
-        print(f"   節點類型分布:")
+        print("   節點類型分布:")
         for entity_type, count in sorted(entity_types.items()):
             print(f"     - {entity_type}: {count}")
+
 
 # 主程序
 if __name__ == "__main__":

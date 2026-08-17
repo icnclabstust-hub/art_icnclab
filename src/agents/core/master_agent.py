@@ -5,15 +5,15 @@ Master Agent - 實驗協調者
 """
 
 import asyncio
-import logging
 import uuid
 from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
-import json
+from typing import Any
 
-from .base_agent import BaseAgent, AgentCapability, AgentMessage, MessageType
-from scheduling.experiment_scheduler import ExperimentScheduler
 from monitoring.agent_monitor import AgentMonitor
+from scheduling.experiment_scheduler import ExperimentScheduler
+
+from .base_agent import AgentCapability, AgentMessage, BaseAgent, MessageType
+
 
 class MasterAgent(BaseAgent):
     """
@@ -23,9 +23,7 @@ class MasterAgent(BaseAgent):
 
     def __init__(self):
         super().__init__(
-            agent_id="master_agent",
-            name="實驗協調者",
-            description="多模態RAG實驗系統的主控制器"
+            agent_id="master_agent", name="實驗協調者", description="多模態RAG實驗系統的主控制器"
         )
 
         # 子系統組件
@@ -33,30 +31,31 @@ class MasterAgent(BaseAgent):
         self.agent_monitor = None
 
         # Agent管理
-        self.managed_agents: Dict[str, Dict[str, Any]] = {}
-        self.agent_assignments: Dict[str, List[str]] = {}  # agent_id -> task_ids
+        self.managed_agents: dict[str, dict[str, Any]] = {}
+        self.agent_assignments: dict[str, list[str]] = {}  # agent_id -> task_ids
 
         # 實驗管理
-        self.active_experiments: Dict[str, Dict[str, Any]] = {}
-        self.experiment_queue: List[Dict[str, Any]] = []
-        self.experiment_history: List[Dict[str, Any]] = []
+        self.active_experiments: dict[str, dict[str, Any]] = {}
+        self.experiment_queue: list[dict[str, Any]] = []
+        self.experiment_history: list[dict[str, Any]] = []
 
         # 資源管理
         self.resource_pool = {
             "vector_databases": ["chromadb", "qdrant", "weaviate"],
             "llm_providers": ["openai", "anthropic", "ollama", "huggingface"],
-            "processing_units": {"cpu_cores": 8, "memory_gb": 32, "gpu_count": 1}
+            "processing_units": {"cpu_cores": 8, "memory_gb": 32, "gpu_count": 1},
         }
 
         # 配置25組合實驗矩陣
         self.experiment_matrix = {
             "rag_frameworks": [
-                "advanced_rag", "vector_rag", "multilingual_rag",
-                "graph_rag", "self_reflection_rag"
+                "advanced_rag",
+                "vector_rag",
+                "multilingual_rag",
+                "graph_rag",
+                "self_reflection_rag",
             ],
-            "llm_models": [
-                "gpt4", "claude3", "gpt_oss", "gemma", "specialized"
-            ]
+            "llm_models": ["gpt4", "claude3", "gpt_oss", "gemma", "specialized"],
         }
 
         self.logger.info("Master Agent 初始化完成")
@@ -74,9 +73,11 @@ class MasterAgent(BaseAgent):
         # 註冊消息處理器
         self.register_message_handler(MessageType.TASK_REQUEST, self._handle_task_request)
         self.register_message_handler(MessageType.TASK_RESPONSE, self._handle_task_response)
-        self.register_message_handler(MessageType.COORDINATION_REQUEST, self._handle_coordination_request)
+        self.register_message_handler(
+            MessageType.COORDINATION_REQUEST, self._handle_coordination_request
+        )
 
-    async def _register_capabilities(self) -> List[AgentCapability]:
+    async def _register_capabilities(self) -> list[AgentCapability]:
         """註冊Master Agent的能力"""
         return [
             AgentCapability(
@@ -85,7 +86,7 @@ class MasterAgent(BaseAgent):
                 input_types=["experiment_config"],
                 output_types=["execution_plan"],
                 resource_requirements={"cpu": 1, "memory": "1GB"},
-                estimated_time=30.0
+                estimated_time=30.0,
             ),
             AgentCapability(
                 name="agent_coordination",
@@ -93,7 +94,7 @@ class MasterAgent(BaseAgent):
                 input_types=["coordination_request"],
                 output_types=["task_assignment"],
                 resource_requirements={"cpu": 0.5, "memory": "512MB"},
-                estimated_time=5.0
+                estimated_time=5.0,
             ),
             AgentCapability(
                 name="resource_management",
@@ -101,7 +102,7 @@ class MasterAgent(BaseAgent):
                 input_types=["resource_request"],
                 output_types=["resource_allocation"],
                 resource_requirements={"cpu": 0.5, "memory": "256MB"},
-                estimated_time=2.0
+                estimated_time=2.0,
             ),
             AgentCapability(
                 name="result_aggregation",
@@ -109,8 +110,8 @@ class MasterAgent(BaseAgent):
                 input_types=["experiment_results"],
                 output_types=["analysis_report"],
                 resource_requirements={"cpu": 2, "memory": "2GB"},
-                estimated_time=60.0
-            )
+                estimated_time=60.0,
+            ),
         ]
 
     async def _start(self):
@@ -132,7 +133,7 @@ class MasterAgent(BaseAgent):
         for agent_id in list(self.managed_agents.keys()):
             await self.stop_agent(agent_id)
 
-    async def _execute_task(self, task_id: str, task_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_task(self, task_id: str, task_data: dict[str, Any]) -> dict[str, Any]:
         """執行Master Agent任務"""
         task_type = task_data.get("type")
 
@@ -148,7 +149,7 @@ class MasterAgent(BaseAgent):
             raise ValueError(f"未知任務類型: {task_type}")
 
     # 實驗管理方法
-    async def plan_experiment_campaign(self, config: Dict[str, Any]) -> Dict[str, Any]:
+    async def plan_experiment_campaign(self, config: dict[str, Any]) -> dict[str, Any]:
         """規劃實驗活動"""
         try:
             campaign_id = str(uuid.uuid4())
@@ -163,7 +164,9 @@ class MasterAgent(BaseAgent):
                         "llm_model": llm_model,
                         "config": config.get("experiment_params", {}),
                         "priority": self._calculate_experiment_priority(rag_framework, llm_model),
-                        "estimated_duration": self._estimate_experiment_duration(rag_framework, llm_model)
+                        "estimated_duration": self._estimate_experiment_duration(
+                            rag_framework, llm_model
+                        ),
                     }
                     experiments.append(exp_config)
 
@@ -177,24 +180,19 @@ class MasterAgent(BaseAgent):
                 "execution_plan": execution_plan,
                 "created_at": datetime.now(),
                 "status": "planned",
-                "estimated_completion": datetime.now() + timedelta(
-                    seconds=sum(exp["estimated_duration"] for exp in experiments)
-                )
+                "estimated_completion": datetime.now()
+                + timedelta(seconds=sum(exp["estimated_duration"] for exp in experiments)),
             }
 
             self.logger.info(f"實驗活動 {campaign_id} 規劃完成，包含 {len(experiments)} 個實驗")
 
-            return {
-                "campaign_id": campaign_id,
-                "campaign": campaign,
-                "experiments": experiments
-            }
+            return {"campaign_id": campaign_id, "campaign": campaign, "experiments": experiments}
 
         except Exception as e:
             self.logger.error(f"實驗活動規劃失敗: {e}")
             raise
 
-    async def start_experiment(self, experiment_config: Dict[str, Any]) -> Dict[str, Any]:
+    async def start_experiment(self, experiment_config: dict[str, Any]) -> dict[str, Any]:
         """啟動單個實驗"""
         experiment_id = experiment_config["experiment_id"]
 
@@ -214,7 +212,7 @@ class MasterAgent(BaseAgent):
                 "status": "running",
                 "start_time": datetime.now(),
                 "progress": 0,
-                "results": {}
+                "results": {},
             }
 
             self.active_experiments[experiment_id] = experiment
@@ -227,14 +225,14 @@ class MasterAgent(BaseAgent):
             return {
                 "experiment_id": experiment_id,
                 "status": "started",
-                "assigned_agents": assigned_agents
+                "assigned_agents": assigned_agents,
             }
 
         except Exception as e:
             self.logger.error(f"啟動實驗 {experiment_id} 失敗: {e}")
             raise
 
-    async def stop_experiment(self, experiment_id: str) -> Dict[str, Any]:
+    async def stop_experiment(self, experiment_id: str) -> dict[str, Any]:
         """停止實驗"""
         if experiment_id not in self.active_experiments:
             raise ValueError(f"實驗 {experiment_id} 不存在")
@@ -248,11 +246,8 @@ class MasterAgent(BaseAgent):
                 sender_id=self.agent_id,
                 receiver_id=agent_id,
                 message_type=MessageType.TASK_REQUEST,
-                payload={
-                    "action": "stop_experiment_tasks",
-                    "experiment_id": experiment_id
-                },
-                timestamp=datetime.now()
+                payload={"action": "stop_experiment_tasks", "experiment_id": experiment_id},
+                timestamp=datetime.now(),
             )
             await self.send_message(stop_message)
 
@@ -266,20 +261,17 @@ class MasterAgent(BaseAgent):
 
         self.logger.info(f"實驗 {experiment_id} 已停止")
 
-        return {
-            "experiment_id": experiment_id,
-            "status": "stopped"
-        }
+        return {"experiment_id": experiment_id, "status": "stopped"}
 
     # Agent管理方法
-    async def register_managed_agent(self, agent_id: str, agent_info: Dict[str, Any]):
+    async def register_managed_agent(self, agent_id: str, agent_info: dict[str, Any]):
         """註冊受管理的Agent"""
         self.managed_agents[agent_id] = {
             **agent_info,
             "registered_at": datetime.now(),
             "status": "registered",
             "current_tasks": [],
-            "performance_metrics": {}
+            "performance_metrics": {},
         }
 
         # 初始化任務分配列表
@@ -287,7 +279,7 @@ class MasterAgent(BaseAgent):
 
         self.logger.info(f"註冊Agent {agent_id}: {agent_info.get('name')}")
 
-    async def start_agent(self, agent_id: str) -> Dict[str, Any]:
+    async def start_agent(self, agent_id: str) -> dict[str, Any]:
         """啟動Agent"""
         if agent_id not in self.managed_agents:
             raise ValueError(f"Agent {agent_id} 未註冊")
@@ -299,7 +291,7 @@ class MasterAgent(BaseAgent):
             receiver_id=agent_id,
             message_type=MessageType.TASK_REQUEST,
             payload={"action": "start"},
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
         await self.send_message(start_message)
 
@@ -307,7 +299,7 @@ class MasterAgent(BaseAgent):
 
         return {"agent_id": agent_id, "status": "starting"}
 
-    async def stop_agent(self, agent_id: str) -> Dict[str, Any]:
+    async def stop_agent(self, agent_id: str) -> dict[str, Any]:
         """停止Agent"""
         if agent_id not in self.managed_agents:
             raise ValueError(f"Agent {agent_id} 未註冊")
@@ -319,7 +311,7 @@ class MasterAgent(BaseAgent):
             receiver_id=agent_id,
             message_type=MessageType.TASK_REQUEST,
             payload={"action": "stop"},
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
         await self.send_message(stop_message)
 
@@ -328,7 +320,7 @@ class MasterAgent(BaseAgent):
         return {"agent_id": agent_id, "status": "stopping"}
 
     # 協調方法
-    async def coordinate_agents(self, coordination_request: Dict[str, Any]) -> Dict[str, Any]:
+    async def coordinate_agents(self, coordination_request: dict[str, Any]) -> dict[str, Any]:
         """協調多個Agent"""
         request_type = coordination_request.get("type")
 
@@ -341,7 +333,7 @@ class MasterAgent(BaseAgent):
         else:
             raise ValueError(f"未知協調類型: {request_type}")
 
-    async def aggregate_results(self, results: Dict[str, Any]) -> Dict[str, Any]:
+    async def aggregate_results(self, results: dict[str, Any]) -> dict[str, Any]:
         """聚合實驗結果"""
         try:
             experiment_id = results.get("experiment_id")
@@ -374,7 +366,7 @@ class MasterAgent(BaseAgent):
             return {
                 "experiment_id": experiment_id,
                 "status": experiment["status"],
-                "progress": experiment["progress"]
+                "progress": experiment["progress"],
             }
 
         except Exception as e:
@@ -395,7 +387,7 @@ class MasterAgent(BaseAgent):
                 message_type=MessageType.TASK_RESPONSE,
                 payload=result,
                 timestamp=datetime.now(),
-                correlation_id=message.correlation_id
+                correlation_id=message.correlation_id,
             )
             await self.send_message(response)
 
@@ -432,7 +424,7 @@ class MasterAgent(BaseAgent):
                 message_type=MessageType.TASK_RESPONSE,
                 payload=result,
                 timestamp=datetime.now(),
-                correlation_id=message.correlation_id
+                correlation_id=message.correlation_id,
             )
             await self.send_message(response)
 
@@ -444,8 +436,11 @@ class MasterAgent(BaseAgent):
         """計算實驗優先級"""
         # 基於重要性的簡單優先級計算
         priority_map = {
-            "advanced_rag": 1, "graph_rag": 2, "self_reflection_rag": 3,
-            "vector_rag": 4, "multilingual_rag": 5
+            "advanced_rag": 1,
+            "graph_rag": 2,
+            "self_reflection_rag": 3,
+            "vector_rag": 4,
+            "multilingual_rag": 5,
         }
         return priority_map.get(rag_framework, 5)
 
@@ -454,22 +449,27 @@ class MasterAgent(BaseAgent):
         # 基於復雜度的時間估算
         base_time = 600  # 10分鐘基礎時間
         framework_multiplier = {
-            "advanced_rag": 2.0, "graph_rag": 1.8, "self_reflection_rag": 1.5,
-            "vector_rag": 1.0, "multilingual_rag": 1.3
+            "advanced_rag": 2.0,
+            "graph_rag": 1.8,
+            "self_reflection_rag": 1.5,
+            "vector_rag": 1.0,
+            "multilingual_rag": 1.3,
         }
         return base_time * framework_multiplier.get(rag_framework, 1.0)
 
-    async def _allocate_experiment_resources(self, experiment_config: Dict[str, Any]) -> Dict[str, Any]:
+    async def _allocate_experiment_resources(
+        self, experiment_config: dict[str, Any]
+    ) -> dict[str, Any]:
         """分配實驗資源"""
         # 簡化的資源分配邏輯
         return {
             "vector_db": "qdrant",  # 基於實驗配置選擇
             "cpu_cores": 2,
             "memory_gb": 4,
-            "gpu_allocated": False
+            "gpu_allocated": False,
         }
 
-    async def _assign_experiment_agents(self, experiment_config: Dict[str, Any]) -> List[str]:
+    async def _assign_experiment_agents(self, experiment_config: dict[str, Any]) -> list[str]:
         """分配實驗Agent"""
         # 基於實驗類型選擇相應Agent
         rag_framework = experiment_config["rag_framework"]
@@ -478,18 +478,18 @@ class MasterAgent(BaseAgent):
             "vector_rag": "vector_rag_agent",
             "graph_rag": "graph_rag_agent",
             "multilingual_rag": "multilingual_rag_agent",
-            "self_reflection_rag": "self_reflection_rag_agent"
+            "self_reflection_rag": "self_reflection_rag_agent",
         }
 
         assigned_agents = [
             agent_mapping.get(rag_framework, "vector_rag_agent"),
             "data_processing_agent",
-            "evaluation_agent"
+            "evaluation_agent",
         ]
 
         return assigned_agents
 
-    async def _dispatch_experiment_tasks(self, experiment: Dict[str, Any]):
+    async def _dispatch_experiment_tasks(self, experiment: dict[str, Any]):
         """分發實驗任務"""
         experiment_id = experiment["experiment_id"]
 
@@ -502,20 +502,20 @@ class MasterAgent(BaseAgent):
                 payload={
                     "action": "execute_experiment",
                     "experiment_id": experiment_id,
-                    "experiment_config": experiment["config"]
+                    "experiment_config": experiment["config"],
                 },
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
             )
             await self.send_message(task_message)
 
-    async def _generate_experiment_report(self, experiment: Dict[str, Any]) -> Dict[str, Any]:
+    async def _generate_experiment_report(self, experiment: dict[str, Any]) -> dict[str, Any]:
         """生成實驗報告"""
         return {
             "experiment_id": experiment["experiment_id"],
             "summary": "實驗完成",
             "results": experiment["results"],
             "duration": (experiment["end_time"] - experiment["start_time"]).total_seconds(),
-            "generated_at": datetime.now()
+            "generated_at": datetime.now(),
         }
 
     # 監控任務
@@ -556,7 +556,8 @@ class MasterAgent(BaseAgent):
                 # 清理超過24小時的歷史記錄
                 cutoff_time = datetime.now() - timedelta(hours=24)
                 self.experiment_history = [
-                    exp for exp in self.experiment_history
+                    exp
+                    for exp in self.experiment_history
                     if exp.get("end_time", datetime.now()) > cutoff_time
                 ]
 
@@ -570,7 +571,7 @@ class MasterAgent(BaseAgent):
         # 實現性能指標更新邏輯
         pass
 
-    def get_system_status(self) -> Dict[str, Any]:
+    def get_system_status(self) -> dict[str, Any]:
         """獲取系統狀態"""
         return {
             "master_agent": self.get_status(),
@@ -578,14 +579,10 @@ class MasterAgent(BaseAgent):
             "active_experiments": len(self.active_experiments),
             "experiment_queue": len(self.experiment_queue),
             "completed_experiments": len(self.experiment_history),
-            "resource_utilization": self._calculate_resource_utilization()
+            "resource_utilization": self._calculate_resource_utilization(),
         }
 
-    def _calculate_resource_utilization(self) -> Dict[str, float]:
+    def _calculate_resource_utilization(self) -> dict[str, float]:
         """計算資源利用率"""
         # 簡化的資源利用率計算
-        return {
-            "cpu": 0.0,
-            "memory": 0.0,
-            "gpu": 0.0
-        }
+        return {"cpu": 0.0, "memory": 0.0, "gpu": 0.0}

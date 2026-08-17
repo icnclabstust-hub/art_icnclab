@@ -7,13 +7,13 @@
 才會被拆成多塊。
 """
 
-from typing import List
-
 DEFAULT_CHUNK_SIZE = 512
 DEFAULT_CHUNK_OVERLAP = 64
 
 
-def chunk_text(text: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_CHUNK_OVERLAP) -> List[str]:
+def chunk_text(
+    text: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_CHUNK_OVERLAP
+) -> list[str]:
     """把文字切成多塊，塊與塊之間保留 overlap 字元的重疊。
 
     :param text: 原始文字
@@ -34,8 +34,13 @@ def chunk_text(text: str, chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = D
     return chunks
 
 
-def build_chunk_records(doc_id: str, text: str, metadata: dict,
-                         chunk_size: int = DEFAULT_CHUNK_SIZE, overlap: int = DEFAULT_CHUNK_OVERLAP):
+def build_chunk_records(
+    doc_id: str,
+    text: str,
+    metadata: dict,
+    chunk_size: int = DEFAULT_CHUNK_SIZE,
+    overlap: int = DEFAULT_CHUNK_OVERLAP,
+):
     """把一筆文件切塊後，組成可以直接送進 ChromaDB upsert 的 (ids, documents, metadatas) 三個 list。
 
     只有 1 塊時沿用原本的 doc_id（不加後綴），維持跟既有資料的 id 相容，重複匯入

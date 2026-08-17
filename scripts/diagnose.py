@@ -12,8 +12,8 @@ import glob
 import json
 import os
 import re
-import sys
 import socket
+import sys
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).parent
@@ -36,7 +36,7 @@ HEALTH_CHECKS = [
 
 
 def load_kb():
-    with open(KB_FILE, "r", encoding="utf-8") as f:
+    with open(KB_FILE, encoding="utf-8") as f:
         return json.load(f)["entries"]
 
 
@@ -52,7 +52,7 @@ def tail(path, n=TAIL_LINES):
     if not os.path.exists(path):
         return ""
     try:
-        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+        with open(path, encoding="utf-8", errors="ignore") as f:
             lines = f.readlines()
         return "".join(lines[-n:])
     except Exception:

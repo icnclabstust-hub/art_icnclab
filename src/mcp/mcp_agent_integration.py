@@ -4,20 +4,18 @@ MCP Agent集成系統
 將MCP工具無縫集成到現有的Agent框架中
 """
 
-import asyncio
 import logging
-from typing import Dict, List, Any, Optional, Type
-from abc import ABC, abstractmethod
+from typing import Any
 
 # 導入現有Agent框架
-from agents.core.base_agent import BaseAgent, AgentMessage, MessageType, AgentStatus, AgentCapability
+from agents.core.base_agent import AgentCapability, BaseAgent
 from agents.core.master_agent import MasterAgent
-from agents.rag.base_rag_agent import BaseRAGAgent
 from agents.rag.vector_rag_agent import VectorRAGAgent
+from mcp.mcp_tool_proxy import ProxyResponse, get_proxy_manager
 
 # 導入MCP組件
-from mcp.mcp_tool_registry import MCPToolRegistry, get_mcp_registry, MCPToolType
-from mcp.mcp_tool_proxy import MCPProxyManager, get_proxy_manager, ProxyRequest, ProxyResponse
+from mcp.mcp_tool_registry import MCPToolType, get_mcp_registry
+
 
 class MCPCapableAgent(BaseAgent):
     """
@@ -33,8 +31,8 @@ class MCPCapableAgent(BaseAgent):
         self.mcp_proxy_manager = get_proxy_manager()
 
         # 分配的MCP工具
-        self.assigned_tools: List[str] = []
-        self.tool_capabilities: Dict[str, List[str]] = {}
+        self.assigned_tools: list[str] = []
+        self.tool_capabilities: dict[str, list[str]] = {}
 
         self.logger.info(f"MCP支持Agent {self.agent_id} 初始化完成")
 
@@ -62,14 +60,12 @@ class MCPCapableAgent(BaseAgent):
         # 默認實現，子類可以重寫
         pass
 
-    async def call_mcp_tool(self, tool_name: str, method: str,
-                          params: Dict[str, Any] = None, **kwargs) -> ProxyResponse:
+    async def call_mcp_tool(
+        self, tool_name: str, method: str, params: dict[str, Any] = None, **kwargs
+    ) -> ProxyResponse:
         """調用MCP工具"""
         if tool_name not in self.assigned_tools:
-            return ProxyResponse(
-                success=False,
-                error=f"工具 {tool_name} 未分配給當前Agent"
-            )
+            return ProxyResponse(success=False, error=f"工具 {tool_name} 未分配給當前Agent")
 
         try:
             response = await self.mcp_proxy_manager.execute_tool_request(
@@ -87,20 +83,14 @@ class MCPCapableAgent(BaseAgent):
 
         except Exception as e:
             self.logger.error(f"調用MCP工具 {tool_name} 時發生錯誤: {str(e)}")
-            return ProxyResponse(
-                success=False,
-                error=str(e)
-            )
+            return ProxyResponse(success=False, error=str(e))
 
-    async def call_multiple_tools(self, requests: List[Dict[str, Any]]) -> Dict[str, ProxyResponse]:
+    async def call_multiple_tools(self, requests: list[dict[str, Any]]) -> dict[str, ProxyResponse]:
         """並行調用多個MCP工具"""
         tasks = []
         for req in requests:
             task = self.call_mcp_tool(
-                req["tool_name"],
-                req["method"],
-                req.get("params"),
-                **req.get("kwargs", {})
+                req["tool_name"], req["method"], req.get("params"), **req.get("kwargs", {})
             )
             tasks.append((req["tool_name"], task))
 
@@ -110,18 +100,16 @@ class MCPCapableAgent(BaseAgent):
                 result = await task
                 results[tool_name] = result
             except Exception as e:
-                results[tool_name] = ProxyResponse(
-                    success=False,
-                    error=f"並行調用失敗: {str(e)}"
-                )
+                results[tool_name] = ProxyResponse(success=False, error=f"並行調用失敗: {str(e)}")
 
         return results
 
-    def get_tool_capabilities(self, tool_name: str = None) -> Dict[str, List[str]]:
+    def get_tool_capabilities(self, tool_name: str = None) -> dict[str, list[str]]:
         """獲取工具能力"""
         if tool_name:
             return {tool_name: self.tool_capabilities.get(tool_name, [])}
         return self.tool_capabilities.copy()
+
 
 class MCPMasterAgent(MasterAgent, MCPCapableAgent):
     """
@@ -135,8 +123,8 @@ class MCPMasterAgent(MasterAgent, MCPCapableAgent):
         # 然後手動添加MCP功能屬性
         self.mcp_registry = get_mcp_registry()
         self.mcp_proxy_manager = get_proxy_manager()
-        self.assigned_tools: List[str] = []
-        self.tool_capabilities: Dict[str, List[str]] = {}
+        self.assigned_tools: list[str] = []
+        self.tool_capabilities: dict[str, list[str]] = {}
 
         # 更新agent_id以區分MCP版本
         self.agent_id = "mcp_master_agent"
@@ -160,7 +148,7 @@ class MCPMasterAgent(MasterAgent, MCPCapableAgent):
         for tool_name in self.assigned_tools:
             await self.mcp_registry.assign_tool_to_agent(tool_name, self.agent_id)
 
-    async def distribute_tools_to_agents(self, agent_tool_mapping: Dict[str, List[str]]):
+    async def distribute_tools_to_agents(self, agent_tool_mapping: dict[str, list[str]]):
         """將MCP工具分發給子Agent"""
         for agent_id, tool_names in agent_tool_mapping.items():
             for tool_name in tool_names:
@@ -168,7 +156,7 @@ class MCPMasterAgent(MasterAgent, MCPCapableAgent):
                 if success:
                     self.logger.info(f"工具 {tool_name} 已分配給Agent {agent_id}")
 
-    async def monitor_mcp_tools_health(self) -> Dict[str, Any]:
+    async def monitor_mcp_tools_health(self) -> dict[str, Any]:
         """監控MCP工具健康狀況"""
         registry_stats = self.mcp_registry.get_registry_stats()
         proxy_stats = self.mcp_proxy_manager.get_proxy_stats()
@@ -176,7 +164,7 @@ class MCPMasterAgent(MasterAgent, MCPCapableAgent):
         health_report = {
             "registry_stats": registry_stats,
             "proxy_stats": proxy_stats,
-            "tool_health": {}
+            "tool_health": {},
         }
 
         # 檢查每個工具的健康狀況
@@ -185,6 +173,7 @@ class MCPMasterAgent(MasterAgent, MCPCapableAgent):
             health_report["tool_health"][tool_name] = status.value if status else "unknown"
 
         return health_report
+
 
 class MCPVectorRAGAgent(VectorRAGAgent, MCPCapableAgent):
     """
@@ -198,8 +187,8 @@ class MCPVectorRAGAgent(VectorRAGAgent, MCPCapableAgent):
         # 然後手動添加MCP功能屬性
         self.mcp_registry = get_mcp_registry()
         self.mcp_proxy_manager = get_proxy_manager()
-        self.assigned_tools: List[str] = []
-        self.tool_capabilities: Dict[str, List[str]] = {}
+        self.assigned_tools: list[str] = []
+        self.tool_capabilities: dict[str, list[str]] = {}
 
         # 更新agent_id以區分MCP版本
         self.agent_id = "mcp_vector_rag_agent"
@@ -223,14 +212,15 @@ class MCPVectorRAGAgent(VectorRAGAgent, MCPCapableAgent):
         for tool_name in self.assigned_tools:
             await self.mcp_registry.assign_tool_to_agent(tool_name, self.agent_id)
 
-    async def mcp_semantic_search(self, query: str, vector_db: str = "chromadb",
-                                 collection: str = "default", top_k: int = 5) -> ProxyResponse:
+    async def mcp_semantic_search(
+        self, query: str, vector_db: str = "chromadb", collection: str = "default", top_k: int = 5
+    ) -> ProxyResponse:
         """使用MCP工具執行語義搜索"""
         # 首先將查詢轉換為嵌入向量
         embedding_response = await self.call_mcp_tool(
             "openai",  # 使用OpenAI生成嵌入
             "embeddings",
-            {"input": query, "model": "text-embedding-ada-002"}
+            {"input": query, "model": "text-embedding-ada-002"},
         )
 
         if not embedding_response.success:
@@ -242,34 +232,29 @@ class MCPVectorRAGAgent(VectorRAGAgent, MCPCapableAgent):
         search_response = await self.call_mcp_tool(
             vector_db,
             "vectors/search",
-            {
-                "collection_name": collection,
-                "query_vector": query_vector,
-                "top_k": top_k
-            }
+            {"collection_name": collection, "query_vector": query_vector, "top_k": top_k},
         )
 
         return search_response
 
-    async def mcp_generate_answer(self, query: str, context_docs: List[str],
-                                llm_model: str = "openai") -> ProxyResponse:
+    async def mcp_generate_answer(
+        self, query: str, context_docs: list[str], llm_model: str = "openai"
+    ) -> ProxyResponse:
         """使用MCP LLM工具生成答案"""
         # 構建提示詞
-        context = "\n".join([f"文檔{i+1}: {doc}" for i, doc in enumerate(context_docs)])
+        context = "\n".join([f"文檔{i + 1}: {doc}" for i, doc in enumerate(context_docs)])
         messages = [
             {"role": "system", "content": "你是一個專業的藝術史助理，基於提供的文檔回答問題。"},
-            {"role": "user", "content": f"基於以下文檔回答問題:\n\n{context}\n\n問題: {query}"}
+            {"role": "user", "content": f"基於以下文檔回答問題:\n\n{context}\n\n問題: {query}"},
         ]
 
         response = await self.call_mcp_tool(
-            llm_model,
-            "chat/completions",
-            {"messages": messages, "model": "gpt-4"}
+            llm_model, "chat/completions", {"messages": messages, "model": "gpt-4"}
         )
 
         return response
 
-    async def mcp_rag_pipeline(self, query: str, **kwargs) -> Dict[str, Any]:
+    async def mcp_rag_pipeline(self, query: str, **kwargs) -> dict[str, Any]:
         """完整的MCP RAG管道"""
         try:
             # 1. 語義搜索
@@ -293,13 +278,14 @@ class MCPVectorRAGAgent(VectorRAGAgent, MCPCapableAgent):
                 "metadata": {
                     "search_time": search_result.execution_time,
                     "generation_time": answer_result.execution_time,
-                    "total_time": search_result.execution_time + answer_result.execution_time
-                }
+                    "total_time": search_result.execution_time + answer_result.execution_time,
+                },
             }
 
         except Exception as e:
             self.logger.error(f"MCP RAG管道執行失敗: {str(e)}")
             return {"success": False, "error": str(e)}
+
 
 class MCPMultimodalAgent(BaseAgent):
     """
@@ -311,14 +297,14 @@ class MCPMultimodalAgent(BaseAgent):
         super().__init__(
             agent_id="mcp_multimodal_agent",
             name="MCP Multimodal Agent",
-            description="多模態處理專用Agent"
+            description="多模態處理專用Agent",
         )
 
         # 添加MCP功能屬性
         self.mcp_registry = get_mcp_registry()
         self.mcp_proxy_manager = get_proxy_manager()
-        self.assigned_tools: List[str] = []
-        self.tool_capabilities: Dict[str, List[str]] = {}
+        self.assigned_tools: list[str] = []
+        self.tool_capabilities: dict[str, list[str]] = {}
 
     async def _initialize(self):
         """初始化Agent"""
@@ -339,18 +325,18 @@ class MCPMultimodalAgent(BaseAgent):
                 name="image_processing",
                 description="圖像處理和分析",
                 parameters={"supported_formats": ["jpeg", "png", "webp"]},
-                output_type="dict"
+                output_type="dict",
             ),
             AgentCapability(
                 name="audio_processing",
                 description="音頻處理和轉錄",
                 parameters={"supported_formats": ["wav", "mp3", "flac"]},
-                output_type="dict"
-            )
+                output_type="dict",
+            ),
         ]
         return capabilities
 
-    async def _execute_task(self, task: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_task(self, task: dict[str, Any]) -> dict[str, Any]:
         """執行任務"""
         task_type = task.get("type")
 
@@ -379,37 +365,31 @@ class MCPMultimodalAgent(BaseAgent):
                 tool_spec = self.mcp_registry.tool_specs[tool_name]
                 self.tool_capabilities[tool_name] = tool_spec.capabilities
 
-    async def call_mcp_tool(self, tool_name: str, method: str,
-                          params: Dict[str, Any] = None, **kwargs) -> ProxyResponse:
+    async def call_mcp_tool(
+        self, tool_name: str, method: str, params: dict[str, Any] = None, **kwargs
+    ) -> ProxyResponse:
         """調用MCP工具"""
         if tool_name not in self.assigned_tools:
-            return ProxyResponse(
-                success=False,
-                error=f"工具 {tool_name} 未分配給當前Agent"
-            )
+            return ProxyResponse(success=False, error=f"工具 {tool_name} 未分配給當前Agent")
 
         return await self.mcp_proxy_manager.execute_tool_request(
             tool_name, method, params, **kwargs
         )
 
-    async def process_artwork_image(self, image_data: bytes) -> Dict[str, Any]:
+    async def process_artwork_image(self, image_data: bytes) -> dict[str, Any]:
         """處理藝術品圖像"""
         results = {}
 
         # 使用CLIP進行圖像理解
         clip_response = await self.call_mcp_tool(
-            "clip",
-            "image/process",
-            {"image": image_data, "task": "understand"}
+            "clip", "image/process", {"image": image_data, "task": "understand"}
         )
         if clip_response.success:
             results["clip_analysis"] = clip_response.data
 
         # 使用BLIP生成圖像描述
         blip_response = await self.call_mcp_tool(
-            "blip",
-            "image/process",
-            {"image": image_data, "task": "caption"}
+            "blip", "image/process", {"image": image_data, "task": "caption"}
         )
         if blip_response.success:
             results["image_caption"] = blip_response.data
@@ -419,10 +399,9 @@ class MCPMultimodalAgent(BaseAgent):
     async def transcribe_audio(self, audio_data: bytes) -> ProxyResponse:
         """轉錄音頻內容"""
         return await self.call_mcp_tool(
-            "whisper",
-            "audio/process",
-            {"audio": audio_data, "task": "transcribe"}
+            "whisper", "audio/process", {"audio": audio_data, "task": "transcribe"}
         )
+
 
 class MCPAgentFactory:
     """MCP Agent工廠"""
@@ -433,7 +412,7 @@ class MCPAgentFactory:
         agent_classes = {
             "master": MCPMasterAgent,
             "vector_rag": MCPVectorRAGAgent,
-            "multimodal": MCPMultimodalAgent
+            "multimodal": MCPMultimodalAgent,
         }
 
         if agent_type not in agent_classes:
@@ -442,6 +421,7 @@ class MCPAgentFactory:
         # 所有Agent都不接受額外參數
         return agent_classes[agent_type]()
 
+
 class MCPIntegrationManager:
     """MCP集成管理器"""
 
@@ -449,7 +429,7 @@ class MCPIntegrationManager:
         self.logger = logging.getLogger("mcp_integration_manager")
         self.registry = get_mcp_registry()
         self.proxy_manager = get_proxy_manager()
-        self.agents: Dict[str, MCPCapableAgent] = {}
+        self.agents: dict[str, MCPCapableAgent] = {}
 
     async def initialize_mcp_system(self):
         """初始化整個MCP系統"""
@@ -476,13 +456,9 @@ class MCPIntegrationManager:
             self.logger.error(f"MCP系統初始化失敗: {str(e)}")
             raise
 
-    async def create_and_register_agents(self) -> Dict[str, BaseAgent]:
+    async def create_and_register_agents(self) -> dict[str, BaseAgent]:
         """創建和註冊MCP支持的Agent"""
-        agent_configs = [
-            {"type": "master"},
-            {"type": "vector_rag"},
-            {"type": "multimodal"}
-        ]
+        agent_configs = [{"type": "master"}, {"type": "vector_rag"}, {"type": "multimodal"}]
 
         for config in agent_configs:
             try:
@@ -515,8 +491,10 @@ class MCPIntegrationManager:
 
         self.logger.info("MCP集成系統已關閉")
 
+
 # 全局集成管理器實例
 _integration_manager = None
+
 
 def get_mcp_integration_manager() -> MCPIntegrationManager:
     """獲取MCP集成管理器單例實例"""

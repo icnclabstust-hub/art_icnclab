@@ -5,27 +5,25 @@
 """
 
 import asyncio
-import time
 import json
-import statistics
-from datetime import datetime
-from typing import List, Dict, Any
-import sys
 import os
+import statistics
+import sys
+import time
+from datetime import datetime
+from typing import Any
 
 # 添加當前目錄到Python路徑
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from enhanced_adaptive_strategies import EnhancedAdaptiveManager, QueryContext
 
+
 class SimpleStrategyComparison:
     """簡化版策略對比分析"""
 
     def __init__(self):
-        self.enhanced_manager = EnhancedAdaptiveManager(
-            learning_rate=0.15,
-            exploration_rate=0.3
-        )
+        self.enhanced_manager = EnhancedAdaptiveManager(learning_rate=0.15, exploration_rate=0.3)
 
         # 測試數據集
         self.test_scenarios = {
@@ -33,32 +31,32 @@ class SimpleStrategyComparison:
                 "莫內的代表作品有哪些？",
                 "巴洛克藝術起源於何時？",
                 "達芬奇是哪個時期的藝術家？",
-                "印象派的主要特徵是什麼？"
+                "印象派的主要特徵是什麼？",
             ],
             "分析推理": [
                 "為什麼印象派會在19世紀興起？",
                 "達芬奇為什麼被稱為文藝復興全才？",
                 "色彩在表現主義繪畫中的作用？",
-                "現代藝術與傳統藝術的本質區別？"
+                "現代藝術與傳統藝術的本質區別？",
             ],
             "對比分析": [
                 "比較印象派與後印象派的差異",
                 "巴洛克與洛可可風格的對比",
                 "東方藝術與西方藝術的區別",
-                "古典主義與浪漫主義的比較"
+                "古典主義與浪漫主義的比較",
             ],
             "視覺描述": [
                 "這幅畫的色彩構成如何？",
                 "描述星夜的筆觸技法",
                 "分析蒙娜麗莎的構圖特點",
-                "梵高自畫像的表現技法"
+                "梵高自畫像的表現技法",
             ],
             "歷史脈絡": [
                 "文藝復興時期的社會背景",
                 "印象派產生的歷史條件",
                 "工業革命對藝術的影響",
-                "二戰後現代藝術的發展"
-            ]
+                "二戰後現代藝術的發展",
+            ],
         }
 
     async def run_comprehensive_comparison(self):
@@ -88,13 +86,15 @@ class SimpleStrategyComparison:
 
         # 生成綜合報告
         print("\n📋 生成對比分析報告...")
-        self.generate_comparison_report({
-            'performance': performance_results,
-            'adaptability': adaptability_results,
-            'learning': learning_results,
-            'efficiency': efficiency_results,
-            'experience': experience_results
-        })
+        self.generate_comparison_report(
+            {
+                "performance": performance_results,
+                "adaptability": adaptability_results,
+                "learning": learning_results,
+                "efficiency": efficiency_results,
+                "experience": experience_results,
+            }
+        )
 
     async def test_performance_comparison(self):
         """性能指標對比測試"""
@@ -113,24 +113,42 @@ class SimpleStrategyComparison:
 
         # 計算改善幅度
         improvements = {
-            'response_time': ((baseline_metrics['avg_response_time'] - enhanced_metrics['avg_response_time']) / baseline_metrics['avg_response_time']) * 100,
-            'accuracy': ((enhanced_metrics['avg_accuracy'] - baseline_metrics['avg_accuracy']) / baseline_metrics['avg_accuracy']) * 100,
-            'success_rate': ((enhanced_metrics['success_rate'] - baseline_metrics['success_rate']) / baseline_metrics['success_rate']) * 100
+            "response_time": (
+                (baseline_metrics["avg_response_time"] - enhanced_metrics["avg_response_time"])
+                / baseline_metrics["avg_response_time"]
+            )
+            * 100,
+            "accuracy": (
+                (enhanced_metrics["avg_accuracy"] - baseline_metrics["avg_accuracy"])
+                / baseline_metrics["avg_accuracy"]
+            )
+            * 100,
+            "success_rate": (
+                (enhanced_metrics["success_rate"] - baseline_metrics["success_rate"])
+                / baseline_metrics["success_rate"]
+            )
+            * 100,
         }
 
         # 輸出結果
-        print(f"📈 性能對比結果:")
-        print(f"  響應時間: 增強系統 {enhanced_metrics['avg_response_time']:.3f}s vs 基線系統 {baseline_metrics['avg_response_time']:.3f}s (提升 {improvements['response_time']:+.1f}%)")
-        print(f"  準確度: 增強系統 {enhanced_metrics['avg_accuracy']:.3f} vs 基線系統 {baseline_metrics['avg_accuracy']:.3f} (提升 {improvements['accuracy']:+.1f}%)")
-        print(f"  成功率: 增強系統 {enhanced_metrics['success_rate']:.1%} vs 基線系統 {baseline_metrics['success_rate']:.1%} (提升 {improvements['success_rate']:+.1f}%)")
+        print("📈 性能對比結果:")
+        print(
+            f"  響應時間: 增強系統 {enhanced_metrics['avg_response_time']:.3f}s vs 基線系統 {baseline_metrics['avg_response_time']:.3f}s (提升 {improvements['response_time']:+.1f}%)"
+        )
+        print(
+            f"  準確度: 增強系統 {enhanced_metrics['avg_accuracy']:.3f} vs 基線系統 {baseline_metrics['avg_accuracy']:.3f} (提升 {improvements['accuracy']:+.1f}%)"
+        )
+        print(
+            f"  成功率: 增強系統 {enhanced_metrics['success_rate']:.1%} vs 基線系統 {baseline_metrics['success_rate']:.1%} (提升 {improvements['success_rate']:+.1f}%)"
+        )
 
         return {
-            'enhanced_metrics': enhanced_metrics,
-            'baseline_metrics': baseline_metrics,
-            'improvements': improvements
+            "enhanced_metrics": enhanced_metrics,
+            "baseline_metrics": baseline_metrics,
+            "improvements": improvements,
         }
 
-    async def benchmark_enhanced_system(self, queries: List[str]):
+    async def benchmark_enhanced_system(self, queries: list[str]):
         """基準測試增強系統"""
         response_times = []
         accuracy_scores = []
@@ -138,9 +156,7 @@ class SimpleStrategyComparison:
 
         for i, query in enumerate(queries):
             context = QueryContext(
-                query_text=query,
-                user_id=f"benchmark_user_{i}",
-                session_id=f"benchmark_session_{i}"
+                query_text=query, user_id=f"benchmark_user_{i}", session_id=f"benchmark_session_{i}"
             )
 
             start_time = time.time()
@@ -158,21 +174,23 @@ class SimpleStrategyComparison:
 
             # 提供反饋以改進系統
             await self.enhanced_manager.update_strategy_performance(
-                strategy, context, {
-                    'success': accuracy > 0.8,
-                    'response_time': response_time,
-                    'confidence': accuracy,
-                    'user_satisfaction': 3.0 + accuracy * 2.0
-                }
+                strategy,
+                context,
+                {
+                    "success": accuracy > 0.8,
+                    "response_time": response_time,
+                    "confidence": accuracy,
+                    "user_satisfaction": 3.0 + accuracy * 2.0,
+                },
             )
 
         return {
-            'avg_response_time': statistics.mean(response_times),
-            'avg_accuracy': statistics.mean(accuracy_scores),
-            'success_rate': successful_queries / len(queries)
+            "avg_response_time": statistics.mean(response_times),
+            "avg_accuracy": statistics.mean(accuracy_scores),
+            "success_rate": successful_queries / len(queries),
         }
 
-    async def benchmark_baseline_system(self, queries: List[str]):
+    async def benchmark_baseline_system(self, queries: list[str]):
         """基準測試基線系統（模擬固定策略）"""
         response_times = []
         accuracy_scores = []
@@ -194,9 +212,9 @@ class SimpleStrategyComparison:
                 successful_queries += 1
 
         return {
-            'avg_response_time': statistics.mean(response_times),
-            'avg_accuracy': statistics.mean(accuracy_scores),
-            'success_rate': successful_queries / len(queries)
+            "avg_response_time": statistics.mean(response_times),
+            "avg_accuracy": statistics.mean(accuracy_scores),
+            "success_rate": successful_queries / len(queries),
         }
 
     async def test_query_adaptability(self):
@@ -215,7 +233,7 @@ class SimpleStrategyComparison:
 
                 # 獲取策略推薦詳情
                 recommendation = self.enhanced_manager.get_strategy_recommendation(context)
-                confidence = max(recommendation['query_analysis']['intent_scores'].values())
+                confidence = max(recommendation["query_analysis"]["intent_scores"].values())
 
                 category_scores.append(confidence)
                 strategy_diversity.add(strategy.value)
@@ -224,12 +242,14 @@ class SimpleStrategyComparison:
             diversity_score = len(strategy_diversity) / len(queries)
 
             adaptability_scores[category] = {
-                'avg_confidence': avg_confidence,
-                'strategy_diversity': diversity_score,
-                'total_strategies': len(strategy_diversity)
+                "avg_confidence": avg_confidence,
+                "strategy_diversity": diversity_score,
+                "total_strategies": len(strategy_diversity),
             }
 
-            print(f"  {category}: 平均信心度 {avg_confidence:.3f}, 策略多樣性 {diversity_score:.2f}")
+            print(
+                f"  {category}: 平均信心度 {avg_confidence:.3f}, 策略多樣性 {diversity_score:.2f}"
+            )
 
         return adaptability_scores
 
@@ -247,7 +267,7 @@ class SimpleStrategyComparison:
                 "印象派的色彩理論",
                 "巴洛克藝術的空間感",
                 "現代雕塑的材料革新",
-                "東方水墨畫的意境表達"
+                "東方水墨畫的意境表達",
             ]
 
             round_performance = []
@@ -262,10 +282,10 @@ class SimpleStrategyComparison:
                 simulated_accuracy = 0.7 + (round_num * 0.05) + (hash(query) % 10) / 100.0
 
                 performance_feedback = {
-                    'success': simulated_accuracy > 0.75,
-                    'response_time': response_time,
-                    'confidence': simulated_accuracy,
-                    'user_satisfaction': 3.0 + simulated_accuracy * 1.5
+                    "success": simulated_accuracy > 0.75,
+                    "response_time": response_time,
+                    "confidence": simulated_accuracy,
+                    "user_satisfaction": 3.0 + simulated_accuracy * 1.5,
                 }
 
                 await self.enhanced_manager.update_strategy_performance(
@@ -280,17 +300,19 @@ class SimpleStrategyComparison:
             print(f"    輪次 {round_num + 1} 平均性能: {avg_round_performance:.3f}")
 
         # 計算學習改善
-        learning_improvement = (performance_history[-1] - performance_history[0]) / performance_history[0] * 100
+        learning_improvement = (
+            (performance_history[-1] - performance_history[0]) / performance_history[0] * 100
+        )
 
-        print(f"  🎯 學習能力分析:")
+        print("  🎯 學習能力分析:")
         print(f"    初始性能: {performance_history[0]:.3f}")
         print(f"    最終性能: {performance_history[-1]:.3f}")
         print(f"    學習改善: {learning_improvement:+.1f}%")
 
         return {
-            'performance_history': performance_history,
-            'learning_improvement': learning_improvement,
-            'final_exploration_rate': self.enhanced_manager.exploration_rate
+            "performance_history": performance_history,
+            "learning_improvement": learning_improvement,
+            "final_exploration_rate": self.enhanced_manager.exploration_rate,
         }
 
     async def test_resource_efficiency(self):
@@ -324,10 +346,10 @@ class SimpleStrategyComparison:
         print(f"  策略選擇多樣性: {len(strategy_distribution)} 種策略")
 
         return {
-            'batch_processing_time': batch_time,
-            'avg_query_time': batch_time / len(batch_queries),
-            'strategy_diversity': len(strategy_distribution),
-            'strategy_distribution': strategy_distribution
+            "batch_processing_time": batch_time,
+            "avg_query_time": batch_time / len(batch_queries),
+            "strategy_diversity": len(strategy_distribution),
+            "strategy_distribution": strategy_distribution,
         }
 
     async def test_user_experience(self):
@@ -339,18 +361,18 @@ class SimpleStrategyComparison:
             {
                 "user_type": "學術研究者",
                 "queries": ["文藝復興時期的人文主義思想對藝術的影響", "巴洛克藝術的宗教象徵意義"],
-                "expected_strategies": ["knowledge_graph", "contextual_adaptive"]
+                "expected_strategies": ["knowledge_graph", "contextual_adaptive"],
             },
             {
                 "user_type": "藝術愛好者",
                 "queries": ["莫內的睡蓮系列有什麼特色？", "如何欣賞抽象畫？"],
-                "expected_strategies": ["text_semantic", "visual_multimodal"]
+                "expected_strategies": ["text_semantic", "visual_multimodal"],
             },
             {
                 "user_type": "學生",
                 "queries": ["印象派和後印象派的差異", "現代藝術的主要流派"],
-                "expected_strategies": ["hybrid_fusion", "text_semantic"]
-            }
+                "expected_strategies": ["hybrid_fusion", "text_semantic"],
+            },
         ]
 
         user_experience_scores = {}
@@ -361,9 +383,7 @@ class SimpleStrategyComparison:
 
             for query in scenario["queries"]:
                 context = QueryContext(
-                    query_text=query,
-                    user_id=f"user_{user_type}",
-                    session_id=f"session_{user_type}"
+                    query_text=query, user_id=f"user_{user_type}", session_id=f"session_{user_type}"
                 )
 
                 strategy = await self.enhanced_manager.select_optimal_strategy(context)
@@ -374,12 +394,14 @@ class SimpleStrategyComparison:
 
                 # 提供用戶反饋
                 await self.enhanced_manager.update_strategy_performance(
-                    strategy, context, {
-                        'success': True,
-                        'response_time': 0.05,
-                        'confidence': satisfaction,
-                        'user_satisfaction': satisfaction * 5.0
-                    }
+                    strategy,
+                    context,
+                    {
+                        "success": True,
+                        "response_time": 0.05,
+                        "confidence": satisfaction,
+                        "user_satisfaction": satisfaction * 5.0,
+                    },
                 )
 
             avg_satisfaction = statistics.mean(user_scores)
@@ -391,82 +413,92 @@ class SimpleStrategyComparison:
         print(f"  🌟 整體用戶滿意度: {overall_satisfaction:.3f}")
 
         return {
-            'user_scenarios': user_experience_scores,
-            'overall_satisfaction': overall_satisfaction
+            "user_scenarios": user_experience_scores,
+            "overall_satisfaction": overall_satisfaction,
         }
 
-    def generate_comparison_report(self, results: Dict[str, Any]):
+    def generate_comparison_report(self, results: dict[str, Any]):
         """生成對比分析報告"""
-        print(f"\n" + "=" * 60)
+        print("\n" + "=" * 60)
         print("📋 新舊策略對比分析報告")
         print("=" * 60)
 
         # 性能提升總結
-        performance = results['performance']
-        print(f"\n🚀 核心性能提升:")
+        performance = results["performance"]
+        print("\n🚀 核心性能提升:")
         print(f"  ✅ 響應時間提升: {performance['improvements']['response_time']:+.1f}%")
         print(f"  ✅ 準確度提升: {performance['improvements']['accuracy']:+.1f}%")
         print(f"  ✅ 成功率提升: {performance['improvements']['success_rate']:+.1f}%")
 
         # 適應性分析
-        adaptability = results['adaptability']
-        print(f"\n🎭 查詢類型適應性:")
+        adaptability = results["adaptability"]
+        print("\n🎭 查詢類型適應性:")
         for category, scores in adaptability.items():
-            print(f"  {category}: 信心度 {scores['avg_confidence']:.3f}, 策略多樣性 {scores['strategy_diversity']:.2f}")
+            print(
+                f"  {category}: 信心度 {scores['avg_confidence']:.3f}, 策略多樣性 {scores['strategy_diversity']:.2f}"
+            )
 
         # 學習能力
-        learning = results['learning']
-        print(f"\n🧠 自適應學習能力:")
+        learning = results["learning"]
+        print("\n🧠 自適應學習能力:")
         print(f"  ✅ 學習改善幅度: {learning['learning_improvement']:+.1f}%")
         print(f"  🎯 當前探索率: {learning['final_exploration_rate']:.3f}")
 
         # 資源效率
-        efficiency = results['efficiency']
-        print(f"\n⚡ 資源使用效率:")
+        efficiency = results["efficiency"]
+        print("\n⚡ 資源使用效率:")
         print(f"  ✅ 平均查詢處理時間: {efficiency['avg_query_time']:.3f}s")
         print(f"  🔄 策略選擇多樣性: {efficiency['strategy_diversity']} 種策略")
 
         # 用戶體驗
-        experience = results['experience']
-        print(f"\n😊 用戶體驗評估:")
+        experience = results["experience"]
+        print("\n😊 用戶體驗評估:")
         print(f"  🌟 整體滿意度: {experience['overall_satisfaction']:.3f}")
-        for user_type, satisfaction in experience['user_scenarios'].items():
+        for user_type, satisfaction in experience["user_scenarios"].items():
             print(f"  {user_type}: {satisfaction:.3f}")
 
         # 總體評估
         overall_improvements = [
-            performance['improvements']['response_time'],
-            performance['improvements']['accuracy'],
-            performance['improvements']['success_rate'],
-            learning['learning_improvement']
+            performance["improvements"]["response_time"],
+            performance["improvements"]["accuracy"],
+            performance["improvements"]["success_rate"],
+            learning["learning_improvement"],
         ]
 
         total_improvement = statistics.mean(overall_improvements)
 
-        print(f"\n🏆 總體評估:")
+        print("\n🏆 總體評估:")
         print(f"  📊 綜合性能提升: {total_improvement:+.1f}%")
-        print(f"  🎯 推薦結論: {'✅ 建議部署增強型策略' if total_improvement > 10 else '⚠️ 需要進一步優化'}")
+        print(
+            f"  🎯 推薦結論: {'✅ 建議部署增強型策略' if total_improvement > 10 else '⚠️ 需要進一步優化'}"
+        )
 
         # 保存詳細報告
         report_data = {
-            'timestamp': datetime.now().isoformat(),
-            'summary': {
-                'total_improvement': total_improvement,
-                'recommendation': '建議部署增強型策略' if total_improvement > 10 else '需要進一步優化'
+            "timestamp": datetime.now().isoformat(),
+            "summary": {
+                "total_improvement": total_improvement,
+                "recommendation": "建議部署增強型策略"
+                if total_improvement > 10
+                else "需要進一步優化",
             },
-            'detailed_results': results
+            "detailed_results": results,
         }
 
-        report_filename = f"strategy_comparison_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(report_filename, 'w', encoding='utf-8') as f:
+        report_filename = (
+            f"strategy_comparison_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        )
+        with open(report_filename, "w", encoding="utf-8") as f:
             json.dump(report_data, f, ensure_ascii=False, indent=2)
 
         print(f"\n📄 詳細報告已保存: {report_filename}")
+
 
 async def main():
     """主函數"""
     comparison = SimpleStrategyComparison()
     await comparison.run_comprehensive_comparison()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

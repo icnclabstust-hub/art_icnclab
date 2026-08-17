@@ -6,29 +6,37 @@ Agent監控器
 
 import asyncio
 import logging
-import psutil
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional, Callable
+from collections.abc import Callable
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from enum import Enum
+from typing import Any
+
+import psutil
+
 
 class HealthStatus(Enum):
     """健康狀態"""
+
     HEALTHY = "healthy"
     WARNING = "warning"
     CRITICAL = "critical"
     UNKNOWN = "unknown"
 
+
 class AlertLevel(Enum):
     """告警級別"""
+
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"
     CRITICAL = "critical"
 
+
 @dataclass
 class HealthMetrics:
     """健康指標"""
+
     agent_id: str
     timestamp: datetime
     cpu_usage: float
@@ -39,7 +47,7 @@ class HealthMetrics:
     last_heartbeat: datetime
     status: HealthStatus
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "agent_id": self.agent_id,
             "timestamp": self.timestamp.isoformat(),
@@ -49,21 +57,23 @@ class HealthMetrics:
             "task_success_rate": self.task_success_rate,
             "error_count": self.error_count,
             "last_heartbeat": self.last_heartbeat.isoformat(),
-            "status": self.status.value
+            "status": self.status.value,
         }
+
 
 @dataclass
 class Alert:
     """告警"""
+
     alert_id: str
     agent_id: str
     level: AlertLevel
     message: str
     timestamp: datetime
     resolved: bool = False
-    resolved_at: Optional[datetime] = None
+    resolved_at: datetime | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "alert_id": self.alert_id,
             "agent_id": self.agent_id,
@@ -71,8 +81,9 @@ class Alert:
             "message": self.message,
             "timestamp": self.timestamp.isoformat(),
             "resolved": self.resolved,
-            "resolved_at": self.resolved_at.isoformat() if self.resolved_at else None
+            "resolved_at": self.resolved_at.isoformat() if self.resolved_at else None,
         }
+
 
 class HealthChecker:
     """健康檢查器"""
@@ -87,10 +98,10 @@ class HealthChecker:
             "response_time_critical": 30.0,
             "success_rate_warning": 0.8,
             "success_rate_critical": 0.6,
-            "heartbeat_timeout": 120  # 秒
+            "heartbeat_timeout": 120,  # 秒
         }
 
-    def check_health(self, agent_id: str, metrics: Dict[str, Any]) -> HealthStatus:
+    def check_health(self, agent_id: str, metrics: dict[str, Any]) -> HealthStatus:
         """檢查Agent健康狀況"""
         issues = []
 
@@ -141,6 +152,7 @@ class HealthChecker:
         else:
             return HealthStatus.HEALTHY
 
+
 class AgentMonitor:
     """Agent監控器"""
 
@@ -148,10 +160,10 @@ class AgentMonitor:
         self.logger = logging.getLogger("agent_monitor")
 
         # 監控數據
-        self.agents: Dict[str, Dict[str, Any]] = {}
-        self.health_history: Dict[str, List[HealthMetrics]] = {}
-        self.alerts: Dict[str, Alert] = {}
-        self.active_alerts: Dict[str, List[str]] = {}  # agent_id -> alert_ids
+        self.agents: dict[str, dict[str, Any]] = {}
+        self.health_history: dict[str, list[HealthMetrics]] = {}
+        self.alerts: dict[str, Alert] = {}
+        self.active_alerts: dict[str, list[str]] = {}  # agent_id -> alert_ids
 
         # 組件
         self.health_checker = HealthChecker()
@@ -162,7 +174,7 @@ class AgentMonitor:
         self.max_history_entries = 1000
 
         # 告警處理器
-        self.alert_handlers: List[Callable] = []
+        self.alert_handlers: list[Callable] = []
 
         # 運行狀態
         self.is_running = False
@@ -179,13 +191,13 @@ class AgentMonitor:
         self.is_running = False
         self.logger.info("Agent監控器已關閉")
 
-    def register_agent(self, agent_id: str, agent_info: Dict[str, Any]):
+    def register_agent(self, agent_id: str, agent_info: dict[str, Any]):
         """註冊Agent到監控"""
         self.agents[agent_id] = {
             **agent_info,
             "registered_at": datetime.now(),
             "last_seen": datetime.now(),
-            "status": "registered"
+            "status": "registered",
         }
 
         # 初始化歷史記錄
@@ -211,7 +223,7 @@ class AgentMonitor:
 
             self.logger.info(f"Agent {agent_id} 已從監控中註銷")
 
-    async def update_agent_metrics(self, agent_id: str, metrics: Dict[str, Any]):
+    async def update_agent_metrics(self, agent_id: str, metrics: dict[str, Any]):
         """更新Agent指標"""
         if agent_id not in self.agents:
             self.logger.warning(f"未註冊的Agent {agent_id} 嘗試更新指標")
@@ -234,7 +246,7 @@ class AgentMonitor:
             task_success_rate=metrics.get("task_success_rate", 1.0),
             error_count=metrics.get("error_count", 0),
             last_heartbeat=datetime.now(),
-            status=health_status
+            status=health_status,
         )
 
         # 添加到歷史記錄
@@ -242,7 +254,9 @@ class AgentMonitor:
 
         # 限制歷史記錄數量
         if len(self.health_history[agent_id]) > self.max_history_entries:
-            self.health_history[agent_id] = self.health_history[agent_id][-self.max_history_entries:]
+            self.health_history[agent_id] = self.health_history[agent_id][
+                -self.max_history_entries :
+            ]
 
         # 檢查是否需要產生告警
         await self._check_alerts(agent_id, health_metrics)
@@ -264,9 +278,7 @@ class AgentMonitor:
         time_since_seen = (datetime.now() - last_seen).total_seconds()
         if time_since_seen > 300:  # 5分鐘未見
             await self._create_alert(
-                agent_id,
-                AlertLevel.WARNING,
-                f"Agent {agent_id} 失聯 {time_since_seen:.0f} 秒"
+                agent_id, AlertLevel.WARNING, f"Agent {agent_id} 失聯 {time_since_seen:.0f} 秒"
             )
 
         # 獲取系統指標
@@ -276,7 +288,7 @@ class AgentMonitor:
         except Exception as e:
             self.logger.error(f"收集Agent {agent_id} 系統指標失敗: {e}")
 
-    async def _collect_system_metrics(self) -> Dict[str, Any]:
+    async def _collect_system_metrics(self) -> dict[str, Any]:
         """收集系統指標"""
         try:
             # CPU使用率
@@ -298,7 +310,7 @@ class AgentMonitor:
                 "process_memory": process_memory,
                 "response_time": 0.0,  # 需要從Agent獲取
                 "task_success_rate": 1.0,  # 需要從Agent獲取
-                "error_count": 0  # 需要從Agent獲取
+                "error_count": 0,  # 需要從Agent獲取
             }
 
         except Exception as e:
@@ -314,46 +326,45 @@ class AgentMonitor:
             previous_status = self.health_history[agent_id][-2].status
 
             # 狀態惡化
-            if (previous_status == HealthStatus.HEALTHY and
-                current_status in [HealthStatus.WARNING, HealthStatus.CRITICAL]):
-                level = AlertLevel.WARNING if current_status == HealthStatus.WARNING else AlertLevel.CRITICAL
-                await self._create_alert(
-                    agent_id,
-                    level,
-                    f"Agent健康狀況變為{current_status.value}"
+            if previous_status == HealthStatus.HEALTHY and current_status in [
+                HealthStatus.WARNING,
+                HealthStatus.CRITICAL,
+            ]:
+                level = (
+                    AlertLevel.WARNING
+                    if current_status == HealthStatus.WARNING
+                    else AlertLevel.CRITICAL
                 )
-            elif (previous_status == HealthStatus.WARNING and
-                  current_status == HealthStatus.CRITICAL):
                 await self._create_alert(
-                    agent_id,
-                    AlertLevel.CRITICAL,
-                    f"Agent健康狀況惡化為{current_status.value}"
+                    agent_id, level, f"Agent健康狀況變為{current_status.value}"
                 )
-            elif (previous_status in [HealthStatus.WARNING, HealthStatus.CRITICAL] and
-                  current_status == HealthStatus.HEALTHY):
+            elif (
+                previous_status == HealthStatus.WARNING and current_status == HealthStatus.CRITICAL
+            ):
+                await self._create_alert(
+                    agent_id, AlertLevel.CRITICAL, f"Agent健康狀況惡化為{current_status.value}"
+                )
+            elif (
+                previous_status in [HealthStatus.WARNING, HealthStatus.CRITICAL]
+                and current_status == HealthStatus.HEALTHY
+            ):
                 # 恢復正常，解決相關告警
                 await self._resolve_alerts(agent_id, "健康狀況恢復正常")
 
         # 特定指標檢查
         if health_metrics.cpu_usage > 90:
             await self._create_alert(
-                agent_id,
-                AlertLevel.CRITICAL,
-                f"CPU使用率過高: {health_metrics.cpu_usage:.1f}%"
+                agent_id, AlertLevel.CRITICAL, f"CPU使用率過高: {health_metrics.cpu_usage:.1f}%"
             )
 
         if health_metrics.memory_usage > 95:
             await self._create_alert(
-                agent_id,
-                AlertLevel.CRITICAL,
-                f"內存使用率過高: {health_metrics.memory_usage:.1f}%"
+                agent_id, AlertLevel.CRITICAL, f"內存使用率過高: {health_metrics.memory_usage:.1f}%"
             )
 
         if health_metrics.response_time > 30:
             await self._create_alert(
-                agent_id,
-                AlertLevel.WARNING,
-                f"響應時間過長: {health_metrics.response_time:.2f}秒"
+                agent_id, AlertLevel.WARNING, f"響應時間過長: {health_metrics.response_time:.2f}秒"
             )
 
     async def _create_alert(self, agent_id: str, level: AlertLevel, message: str):
@@ -366,7 +377,7 @@ class AgentMonitor:
             agent_id=agent_id,
             level=level,
             message=message,
-            timestamp=datetime.now()
+            timestamp=datetime.now(),
         )
 
         self.alerts[alert_id] = alert
@@ -423,13 +434,15 @@ class AgentMonitor:
         # 清理健康歷史
         for agent_id in self.health_history:
             self.health_history[agent_id] = [
-                metrics for metrics in self.health_history[agent_id]
+                metrics
+                for metrics in self.health_history[agent_id]
                 if metrics.timestamp > cutoff_time
             ]
 
         # 清理已解決的舊告警
         old_alerts = [
-            alert_id for alert_id, alert in self.alerts.items()
+            alert_id
+            for alert_id, alert in self.alerts.items()
             if alert.resolved and alert.resolved_at and alert.resolved_at < cutoff_time
         ]
 
@@ -442,7 +455,7 @@ class AgentMonitor:
         """添加告警處理器"""
         self.alert_handlers.append(handler)
 
-    def get_agent_health(self, agent_id: str) -> Optional[Dict[str, Any]]:
+    def get_agent_health(self, agent_id: str) -> dict[str, Any] | None:
         """獲取Agent健康狀況"""
         if agent_id not in self.agents:
             return None
@@ -462,10 +475,10 @@ class AgentMonitor:
             "last_seen": agent_info["last_seen"].isoformat(),
             "metrics": recent_metrics.to_dict() if recent_metrics else None,
             "active_alerts": active_alert_count,
-            "uptime": (datetime.now() - agent_info["registered_at"]).total_seconds()
+            "uptime": (datetime.now() - agent_info["registered_at"]).total_seconds(),
         }
 
-    def get_system_overview(self) -> Dict[str, Any]:
+    def get_system_overview(self) -> dict[str, Any]:
         """獲取系統概覽"""
         total_agents = len(self.agents)
         healthy_agents = 0
@@ -483,10 +496,13 @@ class AgentMonitor:
                     critical_agents += 1
 
         total_alerts = len([alert for alert in self.alerts.values() if not alert.resolved])
-        critical_alerts = len([
-            alert for alert in self.alerts.values()
-            if not alert.resolved and alert.level == AlertLevel.CRITICAL
-        ])
+        critical_alerts = len(
+            [
+                alert
+                for alert in self.alerts.values()
+                if not alert.resolved and alert.level == AlertLevel.CRITICAL
+            ]
+        )
 
         return {
             "total_agents": total_agents,
@@ -496,12 +512,11 @@ class AgentMonitor:
             "total_alerts": total_alerts,
             "critical_alerts": critical_alerts,
             "monitoring_since": min(
-                (agent["registered_at"] for agent in self.agents.values()),
-                default=datetime.now()
-            ).isoformat()
+                (agent["registered_at"] for agent in self.agents.values()), default=datetime.now()
+            ).isoformat(),
         }
 
-    def get_agent_history(self, agent_id: str, hours: int = 1) -> List[Dict[str, Any]]:
+    def get_agent_history(self, agent_id: str, hours: int = 1) -> list[dict[str, Any]]:
         """獲取Agent歷史數據"""
         if agent_id not in self.health_history:
             return []
@@ -514,17 +529,11 @@ class AgentMonitor:
             if metrics.timestamp > cutoff_time
         ]
 
-    def get_active_alerts(self, agent_id: str = None) -> List[Dict[str, Any]]:
+    def get_active_alerts(self, agent_id: str = None) -> list[dict[str, Any]]:
         """獲取活躍告警"""
-        active_alerts = [
-            alert for alert in self.alerts.values()
-            if not alert.resolved
-        ]
+        active_alerts = [alert for alert in self.alerts.values() if not alert.resolved]
 
         if agent_id:
-            active_alerts = [
-                alert for alert in active_alerts
-                if alert.agent_id == agent_id
-            ]
+            active_alerts = [alert for alert in active_alerts if alert.agent_id == agent_id]
 
         return [alert.to_dict() for alert in active_alerts]

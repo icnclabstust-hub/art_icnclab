@@ -4,13 +4,14 @@ Neo4j 索引設置腳本
 為藝術史資料庫創建向量索引和全文索引，提升檢索精確度
 """
 
-import sys
 import logging
+import sys
+
 from neo4j import GraphDatabase
-from typing import List, Dict
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 class Neo4jIndexSetup:
     """Neo4j 索引設置工具"""
@@ -19,7 +20,7 @@ class Neo4jIndexSetup:
         self,
         uri: str = "bolt://localhost:7687",
         username: str = "neo4j",
-        password: str = "CHANGE_ME_NEO4J_PASSWORD"
+        password: str = "CHANGE_ME_NEO4J_PASSWORD",
     ):
         self.driver = GraphDatabase.driver(uri, auth=(username, password))
         logger.info(f"✅ 連接到 Neo4j: {uri}")
@@ -32,8 +33,10 @@ class Neo4jIndexSetup:
     def check_neo4j_version(self) -> str:
         """檢查 Neo4j 版本"""
         with self.driver.session() as session:
-            result = session.run("CALL dbms.components() YIELD versions RETURN versions[0] AS version")
-            version = result.single()['version']
+            result = session.run(
+                "CALL dbms.components() YIELD versions RETURN versions[0] AS version"
+            )
+            version = result.single()["version"]
             logger.info(f"📊 Neo4j 版本: {version}")
             return version
 
@@ -43,18 +46,22 @@ class Neo4jIndexSetup:
             result = session.run("SHOW INDEXES")
             indexes = []
             for record in result:
-                indexes.append({
-                    'name': record.get('name'),
-                    'type': record.get('type'),
-                    'state': record.get('state'),
-                    'labels': record.get('labelsOrTypes'),
-                    'properties': record.get('properties')
-                })
+                indexes.append(
+                    {
+                        "name": record.get("name"),
+                        "type": record.get("type"),
+                        "state": record.get("state"),
+                        "labels": record.get("labelsOrTypes"),
+                        "properties": record.get("properties"),
+                    }
+                )
 
             if indexes:
                 logger.info(f"\n📋 現有索引 ({len(indexes)} 個):")
                 for idx in indexes:
-                    logger.info(f"  - {idx['name']} ({idx['type']}): {idx['labels']} - {idx['properties']}")
+                    logger.info(
+                        f"  - {idx['name']} ({idx['type']}): {idx['labels']} - {idx['properties']}"
+                    )
             else:
                 logger.info("📋 目前沒有索引")
 
@@ -66,26 +73,26 @@ class Neo4jIndexSetup:
 
         vector_indexes = [
             {
-                'name': 'artist_name_embeddings',
-                'label': 'Artist',
-                'property': 'name_embedding',
-                'dimensions': 1536,  # OpenAI text-embedding-3-small
-                'similarity': 'cosine'
+                "name": "artist_name_embeddings",
+                "label": "Artist",
+                "property": "name_embedding",
+                "dimensions": 1536,  # OpenAI text-embedding-3-small
+                "similarity": "cosine",
             },
             {
-                'name': 'artwork_title_embeddings',
-                'label': 'Artwork',
-                'property': 'title_embedding',
-                'dimensions': 1536,
-                'similarity': 'cosine'
+                "name": "artwork_title_embeddings",
+                "label": "Artwork",
+                "property": "title_embedding",
+                "dimensions": 1536,
+                "similarity": "cosine",
             },
             {
-                'name': 'movement_embeddings',
-                'label': 'Movement',
-                'property': 'description_embedding',
-                'dimensions': 1536,
-                'similarity': 'cosine'
-            }
+                "name": "movement_embeddings",
+                "label": "Movement",
+                "property": "description_embedding",
+                "dimensions": 1536,
+                "similarity": "cosine",
+            },
         ]
 
         with self.driver.session() as session:
@@ -101,13 +108,13 @@ class Neo4jIndexSetup:
 
                     # 創建向量索引
                     create_query = f"""
-                    CREATE VECTOR INDEX {idx_config['name']} IF NOT EXISTS
-                    FOR (n:{idx_config['label']})
-                    ON (n.{idx_config['property']})
+                    CREATE VECTOR INDEX {idx_config["name"]} IF NOT EXISTS
+                    FOR (n:{idx_config["label"]})
+                    ON (n.{idx_config["property"]})
                     OPTIONS {{
                         indexConfig: {{
-                            `vector.dimensions`: {idx_config['dimensions']},
-                            `vector.similarity_function`: '{idx_config['similarity']}'
+                            `vector.dimensions`: {idx_config["dimensions"]},
+                            `vector.similarity_function`: '{idx_config["similarity"]}'
                         }}
                     }}
                     """
@@ -124,25 +131,25 @@ class Neo4jIndexSetup:
 
         fulltext_indexes = [
             {
-                'name': 'artist_fulltext',
-                'labels': ['Artist'],
-                'properties': ['name', 'biography', 'nationality', 'birth_place']
+                "name": "artist_fulltext",
+                "labels": ["Artist"],
+                "properties": ["name", "biography", "nationality", "birth_place"],
             },
             {
-                'name': 'artwork_fulltext',
-                'labels': ['Artwork'],
-                'properties': ['title', 'description', 'medium', 'subject']
+                "name": "artwork_fulltext",
+                "labels": ["Artwork"],
+                "properties": ["title", "description", "medium", "subject"],
             },
             {
-                'name': 'movement_fulltext',
-                'labels': ['Movement'],
-                'properties': ['name', 'characteristics', 'description']
+                "name": "movement_fulltext",
+                "labels": ["Movement"],
+                "properties": ["name", "characteristics", "description"],
             },
             {
-                'name': 'period_fulltext',
-                'labels': ['Period'],
-                'properties': ['name', 'description', 'characteristics']
-            }
+                "name": "period_fulltext",
+                "labels": ["Period"],
+                "properties": ["name", "description", "characteristics"],
+            },
         ]
 
         with self.driver.session() as session:
@@ -157,11 +164,11 @@ class Neo4jIndexSetup:
                         continue
 
                     # 創建全文索引
-                    labels = ', '.join(f"n:{label}" for label in idx_config['labels'])
-                    properties = ', '.join(f"n.{prop}" for prop in idx_config['properties'])
+                    labels = ", ".join(f"n:{label}" for label in idx_config["labels"])
+                    properties = ", ".join(f"n.{prop}" for prop in idx_config["properties"])
 
                     create_query = f"""
-                    CREATE FULLTEXT INDEX {idx_config['name']} IF NOT EXISTS
+                    CREATE FULLTEXT INDEX {idx_config["name"]} IF NOT EXISTS
                     FOR ({labels})
                     ON EACH [{properties}]
                     """
@@ -177,26 +184,10 @@ class Neo4jIndexSetup:
         logger.info("\n🔧 創建屬性索引...")
 
         property_indexes = [
-            {
-                'name': 'artist_name_idx',
-                'label': 'Artist',
-                'property': 'name'
-            },
-            {
-                'name': 'artwork_title_idx',
-                'label': 'Artwork',
-                'property': 'title'
-            },
-            {
-                'name': 'artwork_year_idx',
-                'label': 'Artwork',
-                'property': 'year'
-            },
-            {
-                'name': 'movement_name_idx',
-                'label': 'Movement',
-                'property': 'name'
-            }
+            {"name": "artist_name_idx", "label": "Artist", "property": "name"},
+            {"name": "artwork_title_idx", "label": "Artwork", "property": "title"},
+            {"name": "artwork_year_idx", "label": "Artwork", "property": "year"},
+            {"name": "movement_name_idx", "label": "Movement", "property": "name"},
         ]
 
         with self.driver.session() as session:
@@ -212,9 +203,9 @@ class Neo4jIndexSetup:
 
                     # 創建屬性索引
                     create_query = f"""
-                    CREATE INDEX {idx_config['name']} IF NOT EXISTS
-                    FOR (n:{idx_config['label']})
-                    ON (n.{idx_config['property']})
+                    CREATE INDEX {idx_config["name"]} IF NOT EXISTS
+                    FOR (n:{idx_config["label"]})
+                    ON (n.{idx_config["property"]})
                     """
 
                     session.run(create_query)
@@ -228,16 +219,8 @@ class Neo4jIndexSetup:
         logger.info("\n🔧 創建唯一性約束...")
 
         constraints = [
-            {
-                'name': 'artist_name_unique',
-                'label': 'Artist',
-                'property': 'name'
-            },
-            {
-                'name': 'artwork_id_unique',
-                'label': 'Artwork',
-                'property': 'artwork_id'
-            }
+            {"name": "artist_name_unique", "label": "Artist", "property": "name"},
+            {"name": "artwork_id_unique", "label": "Artwork", "property": "artwork_id"},
         ]
 
         with self.driver.session() as session:
@@ -246,10 +229,7 @@ class Neo4jIndexSetup:
                     # 檢查約束是否已存在
                     check_query = "SHOW CONSTRAINTS"
                     existing = session.run(check_query)
-                    exists = any(
-                        record.get('name') == constraint['name']
-                        for record in existing
-                    )
+                    exists = any(record.get("name") == constraint["name"] for record in existing)
 
                     if exists:
                         logger.info(f"  ⚠️  約束已存在: {constraint['name']}")
@@ -257,9 +237,9 @@ class Neo4jIndexSetup:
 
                     # 創建唯一性約束
                     create_query = f"""
-                    CREATE CONSTRAINT {constraint['name']} IF NOT EXISTS
-                    FOR (n:{constraint['label']})
-                    REQUIRE n.{constraint['property']} IS UNIQUE
+                    CREATE CONSTRAINT {constraint["name"]} IF NOT EXISTS
+                    FOR (n:{constraint["label"]})
+                    REQUIRE n.{constraint["property"]} IS UNIQUE
                     """
 
                     session.run(create_query)
@@ -280,7 +260,7 @@ class Neo4jIndexSetup:
                     YIELD node, score
                     RETURN count(node) as count
                 """)
-                count = result.single()['count']
+                count = result.single()["count"]
                 logger.info(f"  ✅ 全文索引測試: 找到 {count} 個結果")
             except Exception as e:
                 logger.warning(f"  ⚠️  全文索引測試失敗: {e}")
@@ -293,12 +273,12 @@ class Neo4jIndexSetup:
                     WHERE a.name_embedding IS NOT NULL
                     RETURN count(a) as count
                 """)
-                embedding_count = check_result.single()['count']
+                embedding_count = check_result.single()["count"]
 
                 if embedding_count > 0:
                     logger.info(f"  ℹ️  發現 {embedding_count} 個節點有嵌入向量")
                 else:
-                    logger.info(f"  ℹ️  目前沒有節點有嵌入向量，需要先生成嵌入")
+                    logger.info("  ℹ️  目前沒有節點有嵌入向量，需要先生成嵌入")
 
             except Exception as e:
                 logger.warning(f"  ⚠️  向量數據檢查失敗: {e}")
@@ -309,6 +289,7 @@ class Neo4jIndexSetup:
 
         try:
             from langchain_openai import OpenAIEmbeddings
+
             embeddings_model = OpenAIEmbeddings(model="text-embedding-3-small")
 
             with self.driver.session() as session:
@@ -321,21 +302,21 @@ class Neo4jIndexSetup:
 
                 count = 0
                 for record in result:
-                    name = record['name']
-                    node_id = record['node_id']
+                    name = record["name"]
+                    node_id = record["node_id"]
 
                     # 生成嵌入
                     embedding = embeddings_model.embed_query(name)
 
                     # 更新節點
-                    session.run("""
+                    session.run(
+                        """
                         MATCH (a:Artist)
                         WHERE id(a) = $node_id
                         SET a.name_embedding = $embedding
-                    """, {
-                        'node_id': node_id,
-                        'embedding': embedding
-                    })
+                    """,
+                        {"node_id": node_id, "embedding": embedding},
+                    )
 
                     count += 1
                     logger.info(f"  ✅ 生成嵌入: {name}")
@@ -349,9 +330,9 @@ class Neo4jIndexSetup:
 
     def setup_all(self, generate_embeddings: bool = False):
         """執行所有設置"""
-        logger.info("\n" + "="*60)
+        logger.info("\n" + "=" * 60)
         logger.info("🚀 Neo4j 索引設置開始")
-        logger.info("="*60)
+        logger.info("=" * 60)
 
         # 1. 檢查版本
         self.check_neo4j_version()
@@ -378,49 +359,28 @@ class Neo4jIndexSetup:
         logger.info("\n📋 設置完成後的索引列表:")
         self.list_existing_indexes()
 
-        logger.info("\n" + "="*60)
+        logger.info("\n" + "=" * 60)
         logger.info("✅ Neo4j 索引設置完成")
-        logger.info("="*60)
+        logger.info("=" * 60)
+
 
 def main():
     """主函數"""
     import argparse
 
     parser = argparse.ArgumentParser(description="設置 Neo4j 索引")
+    parser.add_argument("--uri", default="bolt://localhost:7687", help="Neo4j URI")
+    parser.add_argument("--user", default="neo4j", help="Neo4j 用戶名")
+    parser.add_argument("--password", default="CHANGE_ME_NEO4J_PASSWORD", help="Neo4j 密碼")
     parser.add_argument(
-        '--uri',
-        default='bolt://localhost:7687',
-        help='Neo4j URI'
+        "--generate-embeddings", action="store_true", help="生成示例嵌入數據（需要 OpenAI API）"
     )
-    parser.add_argument(
-        '--user',
-        default='neo4j',
-        help='Neo4j 用戶名'
-    )
-    parser.add_argument(
-        '--password',
-        default='CHANGE_ME_NEO4J_PASSWORD',
-        help='Neo4j 密碼'
-    )
-    parser.add_argument(
-        '--generate-embeddings',
-        action='store_true',
-        help='生成示例嵌入數據（需要 OpenAI API）'
-    )
-    parser.add_argument(
-        '--list-only',
-        action='store_true',
-        help='僅列出現有索引'
-    )
+    parser.add_argument("--list-only", action="store_true", help="僅列出現有索引")
 
     args = parser.parse_args()
 
     # 創建設置工具
-    setup = Neo4jIndexSetup(
-        uri=args.uri,
-        username=args.user,
-        password=args.password
-    )
+    setup = Neo4jIndexSetup(uri=args.uri, username=args.user, password=args.password)
 
     try:
         if args.list_only:
@@ -436,6 +396,7 @@ def main():
         sys.exit(1)
     finally:
         setup.close()
+
 
 if __name__ == "__main__":
     main()

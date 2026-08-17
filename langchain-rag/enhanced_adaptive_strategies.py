@@ -4,56 +4,61 @@
 實現更智能的多模態檢索策略選擇和優化
 """
 
-import asyncio
 import logging
-import json
-import numpy as np
-import time
-from typing import Dict, List, Any, Optional, Tuple, Union
-from dataclasses import dataclass, field
-from enum import Enum
-from datetime import datetime, timedelta
-from collections import defaultdict, deque
-import hashlib
 import statistics
+from collections import defaultdict, deque
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from enum import Enum
+from typing import Any
+
+import numpy as np
 
 logger = logging.getLogger(__name__)
 
+
 class ContextualRAGStrategy(Enum):
     """情境化RAG策略"""
-    TEXT_SEMANTIC = "text_semantic"        # 純文本語義搜索
-    VISUAL_MULTIMODAL = "visual_multimodal" # 視覺多模態融合
-    KNOWLEDGE_GRAPH = "knowledge_graph"     # 知識圖譜推理
-    TEMPORAL_AWARE = "temporal_aware"       # 時序感知檢索
-    HYBRID_FUSION = "hybrid_fusion"         # 多策略融合
-    CONTEXTUAL_ADAPTIVE = "contextual_adaptive" # 情境自適應
+
+    TEXT_SEMANTIC = "text_semantic"  # 純文本語義搜索
+    VISUAL_MULTIMODAL = "visual_multimodal"  # 視覺多模態融合
+    KNOWLEDGE_GRAPH = "knowledge_graph"  # 知識圖譜推理
+    TEMPORAL_AWARE = "temporal_aware"  # 時序感知檢索
+    HYBRID_FUSION = "hybrid_fusion"  # 多策略融合
+    CONTEXTUAL_ADAPTIVE = "contextual_adaptive"  # 情境自適應
+
 
 class QueryIntent(Enum):
     """查詢意圖分析"""
-    FACTUAL_LOOKUP = "factual_lookup"           # 事實查詢
-    ANALYTICAL_REASONING = "analytical_reasoning" # 分析推理
-    COMPARATIVE_ANALYSIS = "comparative_analysis" # 對比分析
-    CREATIVE_INTERPRETATION = "creative_interpretation" # 創意詮釋
-    HISTORICAL_CONTEXT = "historical_context"    # 歷史脈絡
-    VISUAL_DESCRIPTION = "visual_description"    # 視覺描述
+
+    FACTUAL_LOOKUP = "factual_lookup"  # 事實查詢
+    ANALYTICAL_REASONING = "analytical_reasoning"  # 分析推理
+    COMPARATIVE_ANALYSIS = "comparative_analysis"  # 對比分析
+    CREATIVE_INTERPRETATION = "creative_interpretation"  # 創意詮釋
+    HISTORICAL_CONTEXT = "historical_context"  # 歷史脈絡
+    VISUAL_DESCRIPTION = "visual_description"  # 視覺描述
+
 
 @dataclass
 class QueryContext:
     """查詢情境信息"""
+
     query_text: str
-    user_id: Optional[str] = None
-    session_id: Optional[str] = None
-    query_intent: Optional[QueryIntent] = None
+    user_id: str | None = None
+    session_id: str | None = None
+    query_intent: QueryIntent | None = None
     domain_category: str = "general"
     complexity_score: float = 0.0
-    multimodal_components: List[str] = field(default_factory=list)
-    temporal_references: List[str] = field(default_factory=list)
-    entity_mentions: List[str] = field(default_factory=list)
-    previous_queries: List[str] = field(default_factory=list)
+    multimodal_components: list[str] = field(default_factory=list)
+    temporal_references: list[str] = field(default_factory=list)
+    entity_mentions: list[str] = field(default_factory=list)
+    previous_queries: list[str] = field(default_factory=list)
+
 
 @dataclass
 class StrategyPerformance:
     """策略性能統計"""
+
     strategy: ContextualRAGStrategy
     total_queries: int = 0
     success_count: int = 0
@@ -62,6 +67,7 @@ class StrategyPerformance:
     avg_user_satisfaction: float = 0.0
     recent_performances: deque = field(default_factory=lambda: deque(maxlen=100))
     last_updated: datetime = field(default_factory=datetime.now)
+
 
 class EnhancedAdaptiveManager:
     """增強型自適應策略管理器"""
@@ -72,8 +78,7 @@ class EnhancedAdaptiveManager:
 
         # 性能追蹤
         self.strategy_performances = {
-            strategy: StrategyPerformance(strategy)
-            for strategy in ContextualRAGStrategy
+            strategy: StrategyPerformance(strategy) for strategy in ContextualRAGStrategy
         }
 
         # 情境模式學習
@@ -108,9 +113,7 @@ class EnhancedAdaptiveManager:
             exploration_bonus = self._calculate_exploration_bonus(strategy)
 
             strategy_scores[strategy] = (
-                base_score * 0.4 +
-                historical_score * 0.5 +
-                exploration_bonus * 0.1
+                base_score * 0.4 + historical_score * 0.5 + exploration_bonus * 0.1
             )
 
         # 4. 應用ε-greedy策略
@@ -121,44 +124,64 @@ class EnhancedAdaptiveManager:
         else:
             # 利用：選擇最佳策略
             selected_strategy = max(strategy_scores, key=strategy_scores.get)
-            logger.info(f"🎯 最優策略選擇: {selected_strategy.value} (分數: {strategy_scores[selected_strategy]:.3f})")
+            logger.info(
+                f"🎯 最優策略選擇: {selected_strategy.value} (分數: {strategy_scores[selected_strategy]:.3f})"
+            )
 
         # 5. 記錄選擇
         self.strategy_selections[selected_strategy] += 1
 
         return selected_strategy
 
-    def _analyze_query_intent(self, context: QueryContext) -> Dict[QueryIntent, float]:
+    def _analyze_query_intent(self, context: QueryContext) -> dict[QueryIntent, float]:
         """分析查詢意圖"""
         query_lower = context.query_text.lower()
         intent_scores = {}
 
         # 事實查詢模式
-        factual_patterns = ['什麼', '誰', '何時', '在哪', 'what', 'who', 'when', 'where']
+        factual_patterns = ["什麼", "誰", "何時", "在哪", "what", "who", "when", "where"]
         intent_scores[QueryIntent.FACTUAL_LOOKUP] = sum(
             1 for pattern in factual_patterns if pattern in query_lower
         ) / len(factual_patterns)
 
         # 分析推理模式
-        analytical_patterns = ['為什麼', '如何', '原因', '影響', 'why', 'how', 'analyze', 'explain']
+        analytical_patterns = ["為什麼", "如何", "原因", "影響", "why", "how", "analyze", "explain"]
         intent_scores[QueryIntent.ANALYTICAL_REASONING] = sum(
             1 for pattern in analytical_patterns if pattern in query_lower
         ) / len(analytical_patterns)
 
         # 對比分析模式
-        comparative_patterns = ['比較', '對比', '差異', '相似', 'compare', 'contrast', 'difference', 'similar']
+        comparative_patterns = [
+            "比較",
+            "對比",
+            "差異",
+            "相似",
+            "compare",
+            "contrast",
+            "difference",
+            "similar",
+        ]
         intent_scores[QueryIntent.COMPARATIVE_ANALYSIS] = sum(
             1 for pattern in comparative_patterns if pattern in query_lower
         ) / len(comparative_patterns)
 
         # 視覺描述模式
-        visual_patterns = ['顏色', '構圖', '風格', '外觀', 'color', 'style', 'visual', 'appearance']
+        visual_patterns = ["顏色", "構圖", "風格", "外觀", "color", "style", "visual", "appearance"]
         intent_scores[QueryIntent.VISUAL_DESCRIPTION] = sum(
             1 for pattern in visual_patterns if pattern in query_lower
         ) / len(visual_patterns)
 
         # 歷史脈絡模式
-        historical_patterns = ['歷史', '時期', '背景', '發展', 'history', 'period', 'context', 'development']
+        historical_patterns = [
+            "歷史",
+            "時期",
+            "背景",
+            "發展",
+            "history",
+            "period",
+            "context",
+            "development",
+        ]
         intent_scores[QueryIntent.HISTORICAL_CONTEXT] = sum(
             1 for pattern in historical_patterns if pattern in query_lower
         ) / len(historical_patterns)
@@ -187,7 +210,7 @@ class EnhancedAdaptiveManager:
 
         return statistics.mean(complexity_factors) if complexity_factors else 0.0
 
-    def _get_candidate_strategies(self, context: QueryContext) -> List[ContextualRAGStrategy]:
+    def _get_candidate_strategies(self, context: QueryContext) -> list[ContextualRAGStrategy]:
         """獲取候選策略"""
         candidates = []
 
@@ -216,7 +239,9 @@ class EnhancedAdaptiveManager:
 
         return candidates
 
-    def _calculate_base_score(self, strategy: ContextualRAGStrategy, context: QueryContext) -> float:
+    def _calculate_base_score(
+        self, strategy: ContextualRAGStrategy, context: QueryContext
+    ) -> float:
         """計算策略基礎分數"""
         intent_scores = self._analyze_query_intent(context)
 
@@ -228,7 +253,7 @@ class EnhancedAdaptiveManager:
                 QueryIntent.COMPARATIVE_ANALYSIS: 0.5,
                 QueryIntent.CREATIVE_INTERPRETATION: 0.4,
                 QueryIntent.HISTORICAL_CONTEXT: 0.6,
-                QueryIntent.VISUAL_DESCRIPTION: 0.3
+                QueryIntent.VISUAL_DESCRIPTION: 0.3,
             },
             ContextualRAGStrategy.VISUAL_MULTIMODAL: {
                 QueryIntent.FACTUAL_LOOKUP: 0.4,
@@ -236,7 +261,7 @@ class EnhancedAdaptiveManager:
                 QueryIntent.COMPARATIVE_ANALYSIS: 0.8,
                 QueryIntent.CREATIVE_INTERPRETATION: 0.9,
                 QueryIntent.HISTORICAL_CONTEXT: 0.5,
-                QueryIntent.VISUAL_DESCRIPTION: 0.95
+                QueryIntent.VISUAL_DESCRIPTION: 0.95,
             },
             ContextualRAGStrategy.KNOWLEDGE_GRAPH: {
                 QueryIntent.FACTUAL_LOOKUP: 0.9,
@@ -244,7 +269,7 @@ class EnhancedAdaptiveManager:
                 QueryIntent.COMPARATIVE_ANALYSIS: 0.8,
                 QueryIntent.CREATIVE_INTERPRETATION: 0.6,
                 QueryIntent.HISTORICAL_CONTEXT: 0.9,
-                QueryIntent.VISUAL_DESCRIPTION: 0.4
+                QueryIntent.VISUAL_DESCRIPTION: 0.4,
             },
             ContextualRAGStrategy.TEMPORAL_AWARE: {
                 QueryIntent.FACTUAL_LOOKUP: 0.7,
@@ -252,7 +277,7 @@ class EnhancedAdaptiveManager:
                 QueryIntent.COMPARATIVE_ANALYSIS: 0.9,
                 QueryIntent.CREATIVE_INTERPRETATION: 0.7,
                 QueryIntent.HISTORICAL_CONTEXT: 0.95,
-                QueryIntent.VISUAL_DESCRIPTION: 0.5
+                QueryIntent.VISUAL_DESCRIPTION: 0.5,
             },
             ContextualRAGStrategy.HYBRID_FUSION: {
                 QueryIntent.FACTUAL_LOOKUP: 0.8,
@@ -260,7 +285,7 @@ class EnhancedAdaptiveManager:
                 QueryIntent.COMPARATIVE_ANALYSIS: 0.95,
                 QueryIntent.CREATIVE_INTERPRETATION: 0.8,
                 QueryIntent.HISTORICAL_CONTEXT: 0.8,
-                QueryIntent.VISUAL_DESCRIPTION: 0.8
+                QueryIntent.VISUAL_DESCRIPTION: 0.8,
             },
             ContextualRAGStrategy.CONTEXTUAL_ADAPTIVE: {
                 QueryIntent.FACTUAL_LOOKUP: 0.85,
@@ -268,17 +293,20 @@ class EnhancedAdaptiveManager:
                 QueryIntent.COMPARATIVE_ANALYSIS: 0.9,
                 QueryIntent.CREATIVE_INTERPRETATION: 0.85,
                 QueryIntent.HISTORICAL_CONTEXT: 0.85,
-                QueryIntent.VISUAL_DESCRIPTION: 0.8
-            }
+                QueryIntent.VISUAL_DESCRIPTION: 0.8,
+            },
         }
 
         weights = strategy_intent_weights.get(strategy, {})
-        score = sum(intent_scores.get(intent, 0) * weights.get(intent, 0.5)
-                   for intent in QueryIntent)
+        score = sum(
+            intent_scores.get(intent, 0) * weights.get(intent, 0.5) for intent in QueryIntent
+        )
 
         return min(score / len(QueryIntent), 1.0)
 
-    def _get_historical_performance_score(self, strategy: ContextualRAGStrategy, context: QueryContext) -> float:
+    def _get_historical_performance_score(
+        self, strategy: ContextualRAGStrategy, context: QueryContext
+    ) -> float:
         """獲取歷史性能分數"""
         perf = self.strategy_performances[strategy]
 
@@ -295,9 +323,7 @@ class EnhancedAdaptiveManager:
         time_decay = max(0.5, 1.0 - days_since_update * 0.01)
 
         historical_score = (
-            success_rate * 0.4 +
-            confidence_score * 0.3 +
-            satisfaction_score * 0.3
+            success_rate * 0.4 + confidence_score * 0.3 + satisfaction_score * 0.3
         ) * time_decay
 
         return min(historical_score, 1.0)
@@ -315,52 +341,51 @@ class EnhancedAdaptiveManager:
         exploration_bonus = max(0, 1.0 - selection_ratio * 2)
         return exploration_bonus
 
-    async def update_strategy_performance(self, strategy: ContextualRAGStrategy,
-                                        context: QueryContext,
-                                        performance_metrics: Dict[str, float]):
+    async def update_strategy_performance(
+        self,
+        strategy: ContextualRAGStrategy,
+        context: QueryContext,
+        performance_metrics: dict[str, float],
+    ):
         """更新策略性能"""
         perf = self.strategy_performances[strategy]
 
         # 更新統計
         perf.total_queries += 1
-        if performance_metrics.get('success', False):
+        if performance_metrics.get("success", False):
             perf.success_count += 1
 
         # 更新平均值（使用指數移動平均）
         alpha = self.learning_rate
 
-        if 'response_time' in performance_metrics:
+        if "response_time" in performance_metrics:
             if perf.avg_response_time == 0:
-                perf.avg_response_time = performance_metrics['response_time']
+                perf.avg_response_time = performance_metrics["response_time"]
             else:
                 perf.avg_response_time = (
-                    (1 - alpha) * perf.avg_response_time +
-                    alpha * performance_metrics['response_time']
-                )
+                    1 - alpha
+                ) * perf.avg_response_time + alpha * performance_metrics["response_time"]
 
-        if 'confidence' in performance_metrics:
+        if "confidence" in performance_metrics:
             if perf.avg_confidence == 0:
-                perf.avg_confidence = performance_metrics['confidence']
+                perf.avg_confidence = performance_metrics["confidence"]
             else:
                 perf.avg_confidence = (
-                    (1 - alpha) * perf.avg_confidence +
-                    alpha * performance_metrics['confidence']
-                )
+                    1 - alpha
+                ) * perf.avg_confidence + alpha * performance_metrics["confidence"]
 
-        if 'user_satisfaction' in performance_metrics:
+        if "user_satisfaction" in performance_metrics:
             if perf.avg_user_satisfaction == 0:
-                perf.avg_user_satisfaction = performance_metrics['user_satisfaction']
+                perf.avg_user_satisfaction = performance_metrics["user_satisfaction"]
             else:
                 perf.avg_user_satisfaction = (
-                    (1 - alpha) * perf.avg_user_satisfaction +
-                    alpha * performance_metrics['user_satisfaction']
-                )
+                    1 - alpha
+                ) * perf.avg_user_satisfaction + alpha * performance_metrics["user_satisfaction"]
 
         # 記錄最近表現
-        perf.recent_performances.append({
-            'timestamp': datetime.now(),
-            'metrics': performance_metrics.copy()
-        })
+        perf.recent_performances.append(
+            {"timestamp": datetime.now(), "metrics": performance_metrics.copy()}
+        )
 
         perf.last_updated = datetime.now()
 
@@ -368,36 +393,38 @@ class EnhancedAdaptiveManager:
         reward = self._calculate_reward(performance_metrics)
         self.strategy_rewards[strategy].append(reward)
 
-        logger.info(f"📊 策略 {strategy.value} 性能更新: "
-                   f"成功率={perf.success_count/perf.total_queries:.2f}, "
-                   f"平均響應時間={perf.avg_response_time:.2f}s, "
-                   f"平均信心度={perf.avg_confidence:.2f}")
+        logger.info(
+            f"📊 策略 {strategy.value} 性能更新: "
+            f"成功率={perf.success_count / perf.total_queries:.2f}, "
+            f"平均響應時間={perf.avg_response_time:.2f}s, "
+            f"平均信心度={perf.avg_confidence:.2f}"
+        )
 
-    def _calculate_reward(self, metrics: Dict[str, float]) -> float:
+    def _calculate_reward(self, metrics: dict[str, float]) -> float:
         """計算獎勵值"""
         # 多目標獎勵函數
-        success_reward = 1.0 if metrics.get('success', False) else -0.5
+        success_reward = 1.0 if metrics.get("success", False) else -0.5
 
         # 響應時間獎勵（時間越短獎勵越高）
-        response_time = metrics.get('response_time', 10.0)
+        response_time = metrics.get("response_time", 10.0)
         time_reward = max(0, 1.0 - response_time / 30.0)  # 30秒為基準
 
         # 信心度獎勵
-        confidence_reward = metrics.get('confidence', 0.5)
+        confidence_reward = metrics.get("confidence", 0.5)
 
         # 用戶滿意度獎勵
-        satisfaction_reward = metrics.get('user_satisfaction', 2.5) / 5.0
+        satisfaction_reward = metrics.get("user_satisfaction", 2.5) / 5.0
 
         total_reward = (
-            success_reward * 0.4 +
-            time_reward * 0.2 +
-            confidence_reward * 0.2 +
-            satisfaction_reward * 0.2
+            success_reward * 0.4
+            + time_reward * 0.2
+            + confidence_reward * 0.2
+            + satisfaction_reward * 0.2
         )
 
         return total_reward
 
-    def get_strategy_recommendation(self, context: QueryContext) -> Dict[str, Any]:
+    def get_strategy_recommendation(self, context: QueryContext) -> dict[str, Any]:
         """獲取策略推薦和解釋"""
         intent_analysis = self._analyze_query_intent(context)
         complexity_score = self._calculate_complexity(context)
@@ -411,9 +438,9 @@ class EnhancedAdaptiveManager:
             historical_score = self._get_historical_performance_score(strategy, context)
 
             strategy_scores[strategy.value] = {
-                'total_score': (base_score + historical_score) / 2,
-                'base_score': base_score,
-                'historical_score': historical_score
+                "total_score": (base_score + historical_score) / 2,
+                "base_score": base_score,
+                "historical_score": historical_score,
             }
 
             explanations[strategy.value] = self._generate_strategy_explanation(
@@ -421,21 +448,26 @@ class EnhancedAdaptiveManager:
             )
 
         return {
-            'query_analysis': {
-                'intent_scores': {intent.value: score for intent, score in intent_analysis.items()},
-                'complexity_score': complexity_score,
-                'entity_count': len(context.entity_mentions),
-                'multimodal_components': context.multimodal_components
+            "query_analysis": {
+                "intent_scores": {intent.value: score for intent, score in intent_analysis.items()},
+                "complexity_score": complexity_score,
+                "entity_count": len(context.entity_mentions),
+                "multimodal_components": context.multimodal_components,
             },
-            'strategy_scores': strategy_scores,
-            'explanations': explanations,
-            'recommended_strategy': max(strategy_scores, key=lambda x: strategy_scores[x]['total_score']),
-            'timestamp': datetime.now().isoformat()
+            "strategy_scores": strategy_scores,
+            "explanations": explanations,
+            "recommended_strategy": max(
+                strategy_scores, key=lambda x: strategy_scores[x]["total_score"]
+            ),
+            "timestamp": datetime.now().isoformat(),
         }
 
-    def _generate_strategy_explanation(self, strategy: ContextualRAGStrategy,
-                                     intent_analysis: Dict[QueryIntent, float],
-                                     complexity_score: float) -> str:
+    def _generate_strategy_explanation(
+        self,
+        strategy: ContextualRAGStrategy,
+        intent_analysis: dict[QueryIntent, float],
+        complexity_score: float,
+    ) -> str:
         """生成策略選擇解釋"""
         explanations = {
             ContextualRAGStrategy.TEXT_SEMANTIC: f"基於純文本語義搜索，適合事實查詢(分數:{intent_analysis.get(QueryIntent.FACTUAL_LOOKUP, 0):.2f})",
@@ -443,7 +475,7 @@ class EnhancedAdaptiveManager:
             ContextualRAGStrategy.KNOWLEDGE_GRAPH: f"利用知識圖譜推理，適合分析性查詢(分數:{intent_analysis.get(QueryIntent.ANALYTICAL_REASONING, 0):.2f})",
             ContextualRAGStrategy.TEMPORAL_AWARE: f"時序感知檢索，適合歷史脈絡查詢(分數:{intent_analysis.get(QueryIntent.HISTORICAL_CONTEXT, 0):.2f})",
             ContextualRAGStrategy.HYBRID_FUSION: f"多策略融合，適合對比分析(分數:{intent_analysis.get(QueryIntent.COMPARATIVE_ANALYSIS, 0):.2f})",
-            ContextualRAGStrategy.CONTEXTUAL_ADAPTIVE: f"情境自適應策略，適合復雜查詢(複雜度:{complexity_score:.2f})"
+            ContextualRAGStrategy.CONTEXTUAL_ADAPTIVE: f"情境自適應策略，適合復雜查詢(複雜度:{complexity_score:.2f})",
         }
 
         return explanations.get(strategy, "未知策略")
@@ -466,10 +498,12 @@ class EnhancedAdaptiveManager:
 
         # 記錄優化結果
         optimization_record = {
-            'timestamp': datetime.now(),
-            'performance_analysis': performance_analysis,
-            'exploration_rate': self.exploration_rate,
-            'total_queries': sum(perf.total_queries for perf in self.strategy_performances.values())
+            "timestamp": datetime.now(),
+            "performance_analysis": performance_analysis,
+            "exploration_rate": self.exploration_rate,
+            "total_queries": sum(
+                perf.total_queries for perf in self.strategy_performances.values()
+            ),
         }
 
         self.optimization_history.append(optimization_record)
@@ -478,32 +512,39 @@ class EnhancedAdaptiveManager:
         logger.info("✅ 系統性能優化完成")
         return optimization_record
 
-    def _analyze_performance_trends(self) -> Dict[str, Any]:
+    def _analyze_performance_trends(self) -> dict[str, Any]:
         """分析性能趨勢"""
         trends = {}
 
         for strategy, perf in self.strategy_performances.items():
             if len(perf.recent_performances) >= 5:
                 recent_rewards = [
-                    self._calculate_reward(p['metrics'])
+                    self._calculate_reward(p["metrics"])
                     for p in list(perf.recent_performances)[-10:]
                 ]
 
                 trends[strategy.value] = {
-                    'reward_trend': 'increasing' if len(recent_rewards) > 1 and recent_rewards[-1] > recent_rewards[0] else 'decreasing',
-                    'avg_recent_reward': statistics.mean(recent_rewards),
-                    'stability': 1.0 - statistics.stdev(recent_rewards) if len(recent_rewards) > 1 else 1.0
+                    "reward_trend": "increasing"
+                    if len(recent_rewards) > 1 and recent_rewards[-1] > recent_rewards[0]
+                    else "decreasing",
+                    "avg_recent_reward": statistics.mean(recent_rewards),
+                    "stability": 1.0 - statistics.stdev(recent_rewards)
+                    if len(recent_rewards) > 1
+                    else 1.0,
                 }
 
         return trends
 
-    def _adjust_exploration_rate(self, performance_analysis: Dict[str, Any]):
+    def _adjust_exploration_rate(self, performance_analysis: dict[str, Any]):
         """調整探索率"""
         # 如果所有策略表現都很穩定，降低探索率
-        avg_stability = statistics.mean([
-            trend.get('stability', 0.5)
-            for trend in performance_analysis.values()
-        ]) if performance_analysis else 0.5
+        avg_stability = (
+            statistics.mean(
+                [trend.get("stability", 0.5) for trend in performance_analysis.values()]
+            )
+            if performance_analysis
+            else 0.5
+        )
 
         if avg_stability > 0.8:
             self.exploration_rate = max(0.05, self.exploration_rate * 0.9)
@@ -525,10 +566,9 @@ class EnhancedAdaptiveManager:
         for strategy in self.strategy_performances:
             perf = self.strategy_performances[strategy]
             # 清理30天前的性能記錄
-            perf.recent_performances = deque([
-                p for p in perf.recent_performances
-                if p['timestamp'] > cutoff_date
-            ], maxlen=100)
+            perf.recent_performances = deque(
+                [p for p in perf.recent_performances if p["timestamp"] > cutoff_date], maxlen=100
+            )
 
         # 限制策略獎勵記錄數量
         for strategy in self.strategy_rewards:
@@ -537,26 +577,28 @@ class EnhancedAdaptiveManager:
 
         logger.info("🧹 過期數據清理完成")
 
-    def get_system_status(self) -> Dict[str, Any]:
+    def get_system_status(self) -> dict[str, Any]:
         """獲取系統狀態"""
         total_queries = sum(perf.total_queries for perf in self.strategy_performances.values())
 
         strategy_stats = {}
         for strategy, perf in self.strategy_performances.items():
             strategy_stats[strategy.value] = {
-                'total_queries': perf.total_queries,
-                'success_rate': perf.success_count / max(perf.total_queries, 1),
-                'avg_response_time': perf.avg_response_time,
-                'avg_confidence': perf.avg_confidence,
-                'selection_frequency': self.strategy_selections.get(strategy, 0) / max(total_queries, 1)
+                "total_queries": perf.total_queries,
+                "success_rate": perf.success_count / max(perf.total_queries, 1),
+                "avg_response_time": perf.avg_response_time,
+                "avg_confidence": perf.avg_confidence,
+                "selection_frequency": self.strategy_selections.get(strategy, 0)
+                / max(total_queries, 1),
             }
 
         return {
-            'total_queries_processed': total_queries,
-            'exploration_rate': self.exploration_rate,
-            'learning_rate': self.learning_rate,
-            'strategy_performances': strategy_stats,
-            'last_optimization': self.last_optimization.isoformat(),
-            'system_uptime': (datetime.now() - self.last_optimization).total_seconds() / 3600,  # 小時
-            'optimization_count': len(self.optimization_history)
+            "total_queries_processed": total_queries,
+            "exploration_rate": self.exploration_rate,
+            "learning_rate": self.learning_rate,
+            "strategy_performances": strategy_stats,
+            "last_optimization": self.last_optimization.isoformat(),
+            "system_uptime": (datetime.now() - self.last_optimization).total_seconds()
+            / 3600,  # 小時
+            "optimization_count": len(self.optimization_history),
         }

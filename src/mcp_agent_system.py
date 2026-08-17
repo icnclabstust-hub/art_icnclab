@@ -5,27 +5,20 @@
 """
 
 import asyncio
-import logging
 import signal
-import sys
 from datetime import datetime
-from typing import Dict, List, Any, Optional
-import json
+from typing import Any
 
 # 導入原有系統組件
 from agent_system import AgentSystem
 
 # 導入MCP集成組件
 from mcp.mcp_agent_integration import (
-    MCPIntegrationManager,
     get_mcp_integration_manager,
-    MCPMasterAgent,
-    MCPVectorRAGAgent,
-    MCPMultimodalAgent,
-    MCPAgentFactory
 )
-from mcp.mcp_tool_registry import get_mcp_registry, MCPToolType
 from mcp.mcp_tool_proxy import get_proxy_manager
+from mcp.mcp_tool_registry import get_mcp_registry
+
 
 class MCPAgentSystem(AgentSystem):
     """
@@ -43,7 +36,7 @@ class MCPAgentSystem(AgentSystem):
         self.mcp_proxy_manager = get_proxy_manager()
 
         # MCP Agent實例
-        self.mcp_agents: Dict[str, Any] = {}
+        self.mcp_agents: dict[str, Any] = {}
         self.mcp_enabled = True
 
         self.logger.info("MCP Agent系統管理器初始化完成")
@@ -84,10 +77,10 @@ class MCPAgentSystem(AgentSystem):
             # 啟動所有Agent（包括MCP Agent）
             startup_tasks = []
             for agent_id, agent in self.agents.items():
-                if hasattr(agent, 'initialize'):
+                if hasattr(agent, "initialize"):
                     task = agent.initialize()
                     startup_tasks.append((agent_id, task))
-                elif hasattr(agent, 'start'):
+                elif hasattr(agent, "start"):
                     task = agent.start()
                     startup_tasks.append((agent_id, task))
 
@@ -128,7 +121,7 @@ class MCPAgentSystem(AgentSystem):
             # 檢查Agent狀態
             agent_statuses = {}
             for agent_id, agent in self.agents.items():
-                if hasattr(agent, 'status'):
+                if hasattr(agent, "status"):
                     agent_statuses[agent_id] = agent.status.value
                 else:
                     agent_statuses[agent_id] = "unknown"
@@ -138,7 +131,7 @@ class MCPAgentSystem(AgentSystem):
         except Exception as e:
             self.logger.error(f"系統健康檢查失敗: {str(e)}")
 
-    async def run_mcp_rag_experiment(self, query: str, **kwargs) -> Dict[str, Any]:
+    async def run_mcp_rag_experiment(self, query: str, **kwargs) -> dict[str, Any]:
         """運行MCP增強的RAG實驗"""
         if not self.mcp_enabled or "mcp_vector_rag" not in self.agents:
             return {"success": False, "error": "MCP RAG Agent不可用"}
@@ -154,8 +147,9 @@ class MCPAgentSystem(AgentSystem):
             self.logger.error(f"MCP RAG實驗失敗: {str(e)}")
             return {"success": False, "error": str(e)}
 
-    async def process_multimodal_data(self, image_data: bytes = None,
-                                    audio_data: bytes = None) -> Dict[str, Any]:
+    async def process_multimodal_data(
+        self, image_data: bytes = None, audio_data: bytes = None
+    ) -> dict[str, Any]:
         """處理多模態數據"""
         if not self.mcp_enabled or "mcp_multimodal" not in self.agents:
             return {"success": False, "error": "MCP多模態Agent不可用"}
@@ -178,9 +172,9 @@ class MCPAgentSystem(AgentSystem):
             self.logger.error(f"多模態數據處理失敗: {str(e)}")
             return {"success": False, "error": str(e)}
 
-    async def run_comparative_rag_experiment(self, queries: List[str],
-                                           rag_frameworks: List[str] = None,
-                                           llm_models: List[str] = None) -> Dict[str, Any]:
+    async def run_comparative_rag_experiment(
+        self, queries: list[str], rag_frameworks: list[str] = None, llm_models: list[str] = None
+    ) -> dict[str, Any]:
         """運行對比RAG實驗"""
         if not rag_frameworks:
             rag_frameworks = ["vector_rag", "advanced_rag", "graph_rag"]
@@ -201,30 +195,27 @@ class MCPAgentSystem(AgentSystem):
                         try:
                             # 使用不同的RAG框架和模型組合
                             result = await self.run_mcp_rag_experiment(
-                                query,
-                                framework=framework,
-                                llm_model=model
+                                query, framework=framework, llm_model=model
                             )
                             framework_results[model] = result
 
                         except Exception as e:
-                            framework_results[model] = {
-                                "success": False,
-                                "error": str(e)
-                            }
+                            framework_results[model] = {"success": False, "error": str(e)}
 
                     query_results[framework] = framework_results
 
                 results[query] = query_results
 
-            self.logger.info(f"對比實驗完成：{len(queries)} 個查詢 × {len(rag_frameworks)} 個框架 × {len(llm_models)} 個模型")
+            self.logger.info(
+                f"對比實驗完成：{len(queries)} 個查詢 × {len(rag_frameworks)} 個框架 × {len(llm_models)} 個模型"
+            )
             return {"success": True, "experiment_results": results}
 
         except Exception as e:
             self.logger.error(f"對比實驗失敗: {str(e)}")
             return {"success": False, "error": str(e)}
 
-    async def get_mcp_system_status(self) -> Dict[str, Any]:
+    async def get_mcp_system_status(self) -> dict[str, Any]:
         """獲取MCP系統狀態"""
         try:
             status = {
@@ -234,7 +225,7 @@ class MCPAgentSystem(AgentSystem):
                 "active_agents": len(self.active_agents),
                 "mcp_agents": list(self.mcp_agents.keys()) if self.mcp_enabled else [],
                 "tool_registry": {},
-                "proxy_stats": {}
+                "proxy_stats": {},
             }
 
             if self.mcp_enabled:
@@ -264,14 +255,14 @@ class MCPAgentSystem(AgentSystem):
             # 停止所有Agent
             for agent_id, agent in self.agents.items():
                 try:
-                    if hasattr(agent, 'stop'):
+                    if hasattr(agent, "stop"):
                         await agent.stop()
                         self.logger.info(f"Agent {agent_id} 已停止")
                 except Exception as e:
                     self.logger.error(f"停止Agent {agent_id} 時發生錯誤: {str(e)}")
 
             # 關閉通信中樞
-            if hasattr(self.communication_hub, 'shutdown'):
+            if hasattr(self.communication_hub, "shutdown"):
                 await self.communication_hub.shutdown()
 
             # 關閉MCP系統
@@ -283,6 +274,7 @@ class MCPAgentSystem(AgentSystem):
 
         except Exception as e:
             self.logger.error(f"關閉系統時發生錯誤: {str(e)}")
+
 
 async def main():
     """主程序"""
@@ -318,6 +310,7 @@ async def main():
         if system:
             await system.shutdown_system()
 
+
 async def run_demo_experiments(system: MCPAgentSystem):
     """運行示例實驗"""
     try:
@@ -326,10 +319,7 @@ async def run_demo_experiments(system: MCPAgentSystem):
         # 1. 簡單RAG查詢測試
         print("\n1️⃣  測試MCP RAG查詢...")
         rag_result = await system.run_mcp_rag_experiment(
-            "什麼是印象派畫風？",
-            vector_db="chromadb",
-            collection="art_history",
-            top_k=5
+            "什麼是印象派畫風？", vector_db="chromadb", collection="art_history", top_k=5
         )
         print(f"RAG查詢結果: {rag_result.get('success', False)}")
 
@@ -341,9 +331,7 @@ async def run_demo_experiments(system: MCPAgentSystem):
         # 3. 對比實驗（簡化版）
         print("\n3️⃣  運行簡化對比實驗...")
         comparative_result = await system.run_comparative_rag_experiment(
-            queries=["什麼是文藝復興？"],
-            rag_frameworks=["vector_rag"],
-            llm_models=["openai"]
+            queries=["什麼是文藝復興？"], rag_frameworks=["vector_rag"], llm_models=["openai"]
         )
         print(f"對比實驗結果: {comparative_result.get('success', False)}")
 
@@ -351,6 +339,7 @@ async def run_demo_experiments(system: MCPAgentSystem):
 
     except Exception as e:
         print(f"❌ 示例實驗失敗: {str(e)}")
+
 
 if __name__ == "__main__":
     # 運行系統

@@ -5,36 +5,37 @@
 """
 
 import asyncio
-import time
 import json
 import logging
-from datetime import datetime
-from typing import Dict, List, Any, Optional
-from pathlib import Path
-import sys
 import os
+import sys
+import time
+from pathlib import Path
 
 # 添加當前目錄到Python路徑
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, BackgroundTasks
-    from fastapi.responses import HTMLResponse, FileResponse
-    from fastapi.staticfiles import StaticFiles
     import uvicorn
+    from fastapi import BackgroundTasks, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+    from fastapi.responses import FileResponse, HTMLResponse
+    from fastapi.staticfiles import StaticFiles
+
     FASTAPI_AVAILABLE = True
 except ImportError:
     FASTAPI_AVAILABLE = False
     logging.warning("FastAPI not available, monitoring service will be limited")
 
-from enhanced_adaptive_strategies import EnhancedAdaptiveManager, QueryContext
 from adaptive_strategy_monitor import AdaptiveStrategyMonitor
+from enhanced_adaptive_strategies import EnhancedAdaptiveManager, QueryContext
+
 
 class RealTimeMonitoringService:
     """實時監控服務"""
 
-    def __init__(self, adaptive_manager: EnhancedAdaptiveManager,
-                 host: str = "0.0.0.0", port: int = 8004):
+    def __init__(
+        self, adaptive_manager: EnhancedAdaptiveManager, host: str = "0.0.0.0", port: int = 8004
+    ):
         """
         初始化實時監控服務
 
@@ -52,7 +53,7 @@ class RealTimeMonitoringService:
         self.logger = self._setup_logger()
 
         # WebSocket連接管理
-        self.active_connections: List[WebSocket] = []
+        self.active_connections: list[WebSocket] = []
 
         # 創建FastAPI應用
         self.app = None
@@ -67,14 +68,12 @@ class RealTimeMonitoringService:
 
     def _setup_logger(self) -> logging.Logger:
         """設置日誌"""
-        logger = logging.getLogger('RealTimeMonitoringService')
+        logger = logging.getLogger("RealTimeMonitoringService")
         logger.setLevel(logging.INFO)
 
         if not logger.handlers:
             handler = logging.StreamHandler()
-            formatter = logging.Formatter(
-                '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-            )
+            formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
             handler.setFormatter(formatter)
             logger.addHandler(handler)
 
@@ -85,7 +84,7 @@ class RealTimeMonitoringService:
         app = FastAPI(
             title="增強型自適應策略實時監控",
             description="提供實時性能監控、指標追蹤和系統健康狀態",
-            version="1.0.0"
+            version="1.0.0",
         )
 
         # 靜態文件服務（如果有前端資源）
@@ -115,10 +114,8 @@ class RealTimeMonitoringService:
         async def get_metrics():
             """獲取Prometheus格式指標"""
             from fastapi.responses import Response
-            return Response(
-                content=self.monitor.get_prometheus_metrics(),
-                media_type="text/plain"
-            )
+
+            return Response(content=self.monitor.get_prometheus_metrics(), media_type="text/plain")
 
         @app.get("/api/stats")
         async def get_statistics():
@@ -127,9 +124,15 @@ class RealTimeMonitoringService:
                 "system_health": self.monitor.get_system_health_report(),
                 "strategy_stats": {
                     strategy: self.monitor.get_strategy_statistics(strategy, hours=1)
-                    for strategy in ["text_semantic", "visual_multimodal", "knowledge_graph",
-                                   "temporal_aware", "hybrid_fusion", "contextual_adaptive"]
-                }
+                    for strategy in [
+                        "text_semantic",
+                        "visual_multimodal",
+                        "knowledge_graph",
+                        "temporal_aware",
+                        "hybrid_fusion",
+                        "contextual_adaptive",
+                    ]
+                },
             }
 
         @app.get("/api/stats/{strategy_name}")
@@ -148,9 +151,7 @@ class RealTimeMonitoringService:
             query_text = request.get("query", "測試查詢")
 
             context = QueryContext(
-                query_text=query_text,
-                user_id="test_user",
-                session_id="test_session"
+                query_text=query_text, user_id="test_user", session_id="test_session"
             )
 
             start_time = time.time()
@@ -159,10 +160,10 @@ class RealTimeMonitoringService:
 
             # 模擬性能數據
             performance_data = {
-                'response_time': response_time,
-                'confidence': 0.85,
-                'success': True,
-                'user_satisfaction': 4.2
+                "response_time": response_time,
+                "confidence": 0.85,
+                "success": True,
+                "user_satisfaction": 4.2,
             }
 
             # 記錄性能
@@ -172,7 +173,7 @@ class RealTimeMonitoringService:
                 "query": query_text,
                 "selected_strategy": strategy.value,
                 "response_time": response_time,
-                "performance_data": performance_data
+                "performance_data": performance_data,
             }
 
         @app.websocket("/ws/realtime")
@@ -640,11 +641,9 @@ class RealTimeMonitoringService:
                 health_report = self.monitor.get_system_health_report()
 
                 # 廣播實時數據
-                await self.broadcast_data({
-                    'type': 'health_update',
-                    'data': health_report,
-                    'timestamp': time.time()
-                })
+                await self.broadcast_data(
+                    {"type": "health_update", "data": health_report, "timestamp": time.time()}
+                )
 
                 # 每5秒更新一次
                 await asyncio.sleep(5)
@@ -662,11 +661,7 @@ class RealTimeMonitoringService:
             return
 
         config = uvicorn.Config(
-            app=self.app,
-            host=self.host,
-            port=self.port,
-            log_level="info",
-            access_log=True
+            app=self.app, host=self.host, port=self.port, log_level="info", access_log=True
         )
 
         server = uvicorn.Server(config)
@@ -679,22 +674,21 @@ class RealTimeMonitoringService:
         finally:
             await self.stop_monitoring()
 
+
 # 獨立運行
 async def main():
     """主函數"""
     from enhanced_adaptive_strategies import EnhancedAdaptiveManager
 
     # 創建自適應管理器
-    adaptive_manager = EnhancedAdaptiveManager(
-        learning_rate=0.15,
-        exploration_rate=0.3
-    )
+    adaptive_manager = EnhancedAdaptiveManager(learning_rate=0.15, exploration_rate=0.3)
 
     # 創建監控服務
     monitoring_service = RealTimeMonitoringService(adaptive_manager)
 
     # 運行服務器
     await monitoring_service.run_server()
+
 
 if __name__ == "__main__":
     if FASTAPI_AVAILABLE:

@@ -7,66 +7,76 @@
 import json
 import logging
 import os
-from typing import Dict, List, Any, Optional, Tuple
 from dataclasses import dataclass
-from enum import Enum
-import asyncio
 from datetime import datetime
+from enum import Enum
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
+
 class SummaryLevel(Enum):
     """摘要層級"""
-    BRIEF = "brief"           # 簡要：100字以內
-    DETAILED = "detailed"     # 詳細：300-500字
-    ACADEMIC = "academic"     # 學術：800-1200字
+
+    BRIEF = "brief"  # 簡要：100字以內
+    DETAILED = "detailed"  # 詳細：300-500字
+    ACADEMIC = "academic"  # 學術：800-1200字
+
 
 class TranslationLanguage(Enum):
     """支援的翻譯語言"""
+
     ZH_TW = "zh-TW"  # 繁體中文
     ZH_CN = "zh-CN"  # 簡體中文
-    EN = "en"        # 英語
-    JA = "ja"        # 日語
-    KO = "ko"        # 韓語
-    FR = "fr"        # 法語
-    DE = "de"        # 德語
-    IT = "it"        # 義大利語
-    ES = "es"        # 西班牙語
+    EN = "en"  # 英語
+    JA = "ja"  # 日語
+    KO = "ko"  # 韓語
+    FR = "fr"  # 法語
+    DE = "de"  # 德語
+    IT = "it"  # 義大利語
+    ES = "es"  # 西班牙語
+
 
 @dataclass
 class ArtTerminology:
     """藝術專業術語"""
+
     term: str
-    translations: Dict[str, str]
+    translations: dict[str, str]
     definition: str
     category: str
+
 
 @dataclass
 class SummaryResult:
     """摘要結果"""
+
     original_text: str
     summary: str
     level: SummaryLevel
     word_count: int
-    key_points: List[str]
-    metadata: Dict[str, Any]
+    key_points: list[str]
+    metadata: dict[str, Any]
+
 
 @dataclass
 class TranslationResult:
     """翻譯結果"""
+
     original_text: str
     translated_text: str
     source_language: str
     target_language: str
     confidence_score: float
-    terminology_used: List[str]
-    cultural_adaptations: List[str]
+    terminology_used: list[str]
+    cultural_adaptations: list[str]
+
 
 class ArtHistoryTerminologyDatabase:
     """藝術史專業術語庫"""
 
     def __init__(self):
-        self.terminology: Dict[str, ArtTerminology] = {}
+        self.terminology: dict[str, ArtTerminology] = {}
         self._load_default_terminology()
 
     def _load_default_terminology(self):
@@ -82,10 +92,10 @@ class ArtHistoryTerminologyDatabase:
                     "fr": "Renaissance",
                     "de": "Renaissance",
                     "it": "Rinascimento",
-                    "es": "Renacimiento"
+                    "es": "Renacimiento",
                 },
                 definition="14-17世紀歐洲文化藝術運動，強調人文主義和古典復興",
-                category="period"
+                category="period",
             ),
             ArtTerminology(
                 term="Baroque",
@@ -97,10 +107,10 @@ class ArtHistoryTerminologyDatabase:
                     "fr": "Baroque",
                     "de": "Barock",
                     "it": "Barocco",
-                    "es": "Barroco"
+                    "es": "Barroco",
                 },
                 definition="17-18世紀歐洲藝術風格，特點是華麗、戲劇性和動態感",
-                category="style"
+                category="style",
             ),
             ArtTerminology(
                 term="Impressionism",
@@ -112,10 +122,10 @@ class ArtHistoryTerminologyDatabase:
                     "fr": "Impressionnisme",
                     "de": "Impressionismus",
                     "it": "Impressionismo",
-                    "es": "Impresionismo"
+                    "es": "Impresionismo",
                 },
                 definition="19世紀後期藝術運動，強調捕捉光影和瞬間印象",
-                category="movement"
+                category="movement",
             ),
             ArtTerminology(
                 term="Chiaroscuro",
@@ -127,10 +137,10 @@ class ArtHistoryTerminologyDatabase:
                     "fr": "Clair-obscur",
                     "de": "Chiaroscuro",
                     "it": "Chiaroscuro",
-                    "es": "Claroscuro"
+                    "es": "Claroscuro",
                 },
                 definition="繪畫技法，通過強烈的明暗對比創造立體感",
-                category="technique"
+                category="technique",
             ),
             ArtTerminology(
                 term="Provenance",
@@ -142,17 +152,17 @@ class ArtHistoryTerminologyDatabase:
                     "fr": "Provenance",
                     "de": "Provenienz",
                     "it": "Provenienza",
-                    "es": "Procedencia"
+                    "es": "Procedencia",
                 },
                 definition="藝術品的所有權歷史和傳承記錄",
-                category="documentation"
-            )
+                category="documentation",
+            ),
         ]
 
         for term in default_terms:
             self.terminology[term.term.lower()] = term
 
-    def get_translation(self, term: str, target_language: str) -> Optional[str]:
+    def get_translation(self, term: str, target_language: str) -> str | None:
         """獲取術語翻譯"""
         term_lower = term.lower()
         if term_lower in self.terminology:
@@ -163,6 +173,7 @@ class ArtHistoryTerminologyDatabase:
         """添加新術語"""
         self.terminology[term.term.lower()] = term
 
+
 class SummarizationTranslationAgent:
     """摘要翻譯Agent"""
 
@@ -171,8 +182,9 @@ class SummarizationTranslationAgent:
         self.terminology_db = ArtHistoryTerminologyDatabase()
         os.makedirs(output_dir, exist_ok=True)
 
-    def generate_summary(self, text: str, level: SummaryLevel,
-                        metadata: Dict[str, Any] = None) -> SummaryResult:
+    def generate_summary(
+        self, text: str, level: SummaryLevel, metadata: dict[str, Any] = None
+    ) -> SummaryResult:
         """生成摘要"""
         logger.info(f"🔄 生成{level.value}摘要...")
 
@@ -199,8 +211,8 @@ class SummarizationTranslationAgent:
             metadata={
                 **metadata,
                 "generated_at": datetime.now().isoformat(),
-                "compression_ratio": len(summary) / len(text) if text else 0
-            }
+                "compression_ratio": len(summary) / len(text) if text else 0,
+            },
         )
 
         logger.info(f"✅ 摘要生成完成，字數: {result.word_count}")
@@ -263,19 +275,28 @@ class SummarizationTranslationAgent:
 
         return summary.strip()
 
-    def _split_sentences(self, text: str) -> List[str]:
+    def _split_sentences(self, text: str) -> list[str]:
         """分割句子"""
         import re
+
         # 簡單的句子分割
-        sentences = re.split(r'[.!?。！？]\s+', text)
+        sentences = re.split(r"[.!?。！？]\s+", text)
         return [s.strip() for s in sentences if s.strip()]
 
-    def _extract_key_points(self, text: str) -> List[str]:
+    def _extract_key_points(self, text: str) -> list[str]:
         """提取關鍵點"""
         # 簡單策略：尋找包含關鍵詞的句子
         key_words = [
-            'important', 'significant', 'notable', 'famous', 'masterpiece',
-            '重要', '著名', '傑作', '代表', '影響'
+            "important",
+            "significant",
+            "notable",
+            "famous",
+            "masterpiece",
+            "重要",
+            "著名",
+            "傑作",
+            "代表",
+            "影響",
         ]
 
         sentences = self._split_sentences(text)
@@ -287,8 +308,13 @@ class SummarizationTranslationAgent:
 
         return key_points[:5]
 
-    def translate(self, text: str, target_language: TranslationLanguage,
-                 source_language: str = "en", preserve_terminology: bool = True) -> TranslationResult:
+    def translate(
+        self,
+        text: str,
+        target_language: TranslationLanguage,
+        source_language: str = "en",
+        preserve_terminology: bool = True,
+    ) -> TranslationResult:
         """翻譯文本"""
         logger.info(f"🌐 翻譯文本到{target_language.value}...")
 
@@ -304,17 +330,15 @@ class SummarizationTranslationAgent:
                     if translation:
                         # 保留原術語但添加翻譯註釋
                         import re
+
                         pattern = re.compile(re.escape(term_data.term), re.IGNORECASE)
                         translated_text = pattern.sub(
-                            f"{term_data.term}({translation})",
-                            translated_text
+                            f"{term_data.term}({translation})", translated_text
                         )
                         terminology_used.append(term_data.term)
 
         # 文化適應性調整
-        cultural_adaptations = self._apply_cultural_adaptations(
-            translated_text, target_language
-        )
+        cultural_adaptations = self._apply_cultural_adaptations(translated_text, target_language)
 
         # 計算置信度（這裡使用簡單啟發式）
         confidence_score = 0.85 if preserve_terminology else 0.75
@@ -326,14 +350,15 @@ class SummarizationTranslationAgent:
             target_language=target_language.value,
             confidence_score=confidence_score,
             terminology_used=terminology_used,
-            cultural_adaptations=cultural_adaptations
+            cultural_adaptations=cultural_adaptations,
         )
 
         logger.info(f"✅ 翻譯完成，使用{len(terminology_used)}個專業術語")
         return result
 
-    def _apply_cultural_adaptations(self, text: str,
-                                   target_language: TranslationLanguage) -> List[str]:
+    def _apply_cultural_adaptations(
+        self, text: str, target_language: TranslationLanguage
+    ) -> list[str]:
         """應用文化適應性調整"""
         adaptations = []
 
@@ -349,8 +374,9 @@ class SummarizationTranslationAgent:
 
         return adaptations
 
-    def batch_process_summaries(self, data_items: List[Dict[str, Any]],
-                               levels: List[SummaryLevel] = None) -> Dict[str, Any]:
+    def batch_process_summaries(
+        self, data_items: list[dict[str, Any]], levels: list[SummaryLevel] = None
+    ) -> dict[str, Any]:
         """批次處理摘要"""
         if levels is None:
             levels = [SummaryLevel.BRIEF, SummaryLevel.DETAILED]
@@ -363,8 +389,8 @@ class SummarizationTranslationAgent:
             "statistics": {
                 "total_original_words": 0,
                 "total_summary_words": 0,
-                "average_compression_ratio": 0
-            }
+                "average_compression_ratio": 0,
+            },
         }
 
         total_original = 0
@@ -382,17 +408,19 @@ class SummarizationTranslationAgent:
                 item_summaries[level.value] = {
                     "summary": summary_result.summary,
                     "word_count": summary_result.word_count,
-                    "key_points": summary_result.key_points
+                    "key_points": summary_result.key_points,
                 }
 
                 total_original += len(text)
                 total_summary += summary_result.word_count
 
-            results["summaries"].append({
-                "item_id": item.get("id", f"item_{len(results['summaries'])}"),
-                "original_title": item.get("title", "Untitled"),
-                "summaries": item_summaries
-            })
+            results["summaries"].append(
+                {
+                    "item_id": item.get("id", f"item_{len(results['summaries'])}"),
+                    "original_title": item.get("title", "Untitled"),
+                    "summaries": item_summaries,
+                }
+            )
 
             results["processed_count"] += 1
 
@@ -406,8 +434,9 @@ class SummarizationTranslationAgent:
         logger.info(f"✅ 批次處理完成，處理{results['processed_count']}個項目")
         return results
 
-    def batch_translate(self, data_items: List[Dict[str, Any]],
-                       target_languages: List[TranslationLanguage]) -> Dict[str, Any]:
+    def batch_translate(
+        self, data_items: list[dict[str, Any]], target_languages: list[TranslationLanguage]
+    ) -> dict[str, Any]:
         """批次翻譯"""
         logger.info(f"🌐 批次翻譯{len(data_items)}個項目到{len(target_languages)}種語言...")
 
@@ -417,8 +446,8 @@ class SummarizationTranslationAgent:
             "statistics": {
                 "total_translations": 0,
                 "average_confidence": 0,
-                "terminology_usage": {}
-            }
+                "terminology_usage": {},
+            },
         }
 
         total_confidence = 0
@@ -435,7 +464,7 @@ class SummarizationTranslationAgent:
                 item_translations[target_lang.value] = {
                     "translated_text": translation_result.translated_text,
                     "confidence_score": translation_result.confidence_score,
-                    "terminology_used": translation_result.terminology_used
+                    "terminology_used": translation_result.terminology_used,
                 }
 
                 total_confidence += translation_result.confidence_score
@@ -443,14 +472,17 @@ class SummarizationTranslationAgent:
 
                 # 統計術語使用
                 for term in translation_result.terminology_used:
-                    results["statistics"]["terminology_usage"][term] = \
+                    results["statistics"]["terminology_usage"][term] = (
                         results["statistics"]["terminology_usage"].get(term, 0) + 1
+                    )
 
-            results["translations"].append({
-                "item_id": item.get("id", f"item_{len(results['translations'])}"),
-                "original_title": item.get("title", "Untitled"),
-                "translations": item_translations
-            })
+            results["translations"].append(
+                {
+                    "item_id": item.get("id", f"item_{len(results['translations'])}"),
+                    "original_title": item.get("title", "Untitled"),
+                    "translations": item_translations,
+                }
+            )
 
             results["processed_count"] += 1
 
@@ -463,10 +495,10 @@ class SummarizationTranslationAgent:
         logger.info(f"✅ 批次翻譯完成，生成{total_translations}個翻譯")
         return results
 
-    def _extract_text_from_item(self, item: Dict[str, Any]) -> str:
+    def _extract_text_from_item(self, item: dict[str, Any]) -> str:
         """從項目中提取文本"""
         # 嘗試多個可能的文本欄位
-        text_fields = ['content', 'description', 'text', 'summary', 'abstract']
+        text_fields = ["content", "description", "text", "summary", "abstract"]
 
         for field in text_fields:
             if field in item and item[field]:
@@ -474,28 +506,27 @@ class SummarizationTranslationAgent:
 
         # 如果沒有找到，組合標題和描述
         text_parts = []
-        if 'title' in item and item['title']:
-            text_parts.append(item['title'])
-        if 'description' in item and item['description']:
-            text_parts.append(item['description'])
+        if "title" in item and item["title"]:
+            text_parts.append(item["title"])
+        if "description" in item and item["description"]:
+            text_parts.append(item["description"])
 
         return ". ".join(text_parts) if text_parts else ""
 
-    def save_results(self, results: Dict[str, Any], filename: str):
+    def save_results(self, results: dict[str, Any], filename: str):
         """保存結果"""
         output_path = os.path.join(self.output_dir, filename)
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=2)
         logger.info(f"💾 結果已保存到 {output_path}")
 
-    def generate_multilingual_package(self, data_items: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def generate_multilingual_package(self, data_items: list[dict[str, Any]]) -> dict[str, Any]:
         """生成多語言資料包"""
         logger.info("🌏 生成完整多語言資料包...")
 
         # 生成所有層級的摘要
         summary_results = self.batch_process_summaries(
-            data_items,
-            levels=[SummaryLevel.BRIEF, SummaryLevel.DETAILED, SummaryLevel.ACADEMIC]
+            data_items, levels=[SummaryLevel.BRIEF, SummaryLevel.DETAILED, SummaryLevel.ACADEMIC]
         )
 
         # 翻譯到所有支援的語言
@@ -507,8 +538,8 @@ class SummarizationTranslationAgent:
                 TranslationLanguage.JA,
                 TranslationLanguage.KO,
                 TranslationLanguage.FR,
-                TranslationLanguage.DE
-            ]
+                TranslationLanguage.DE,
+            ],
         )
 
         package = {
@@ -516,22 +547,23 @@ class SummarizationTranslationAgent:
                 "generated_at": datetime.now().isoformat(),
                 "total_items": len(data_items),
                 "supported_languages": [lang.value for lang in TranslationLanguage],
-                "summary_levels": [level.value for level in SummaryLevel]
+                "summary_levels": [level.value for level in SummaryLevel],
             },
             "summaries": summary_results,
             "translations": translation_results,
             "statistics": {
                 "summary_stats": summary_results["statistics"],
-                "translation_stats": translation_results["statistics"]
-            }
+                "translation_stats": translation_results["statistics"],
+            },
         }
 
         logger.info("✅ 多語言資料包生成完成")
         return package
 
+
 def main():
     """主函數"""
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
     print("🎨 藝術史摘要翻譯Agent - 完整實現")
     print("=" * 60)
@@ -546,7 +578,7 @@ def main():
             "description": "The Starry Night is an oil-on-canvas painting by Dutch Post-Impressionist painter Vincent van Gogh. Painted in June 1889, it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence, just before sunrise, with the addition of an imaginary village. It has been in the permanent collection of the Museum of Modern Art in New York City since 1941.",
             "artist": "Vincent van Gogh",
             "date": "1889",
-            "medium": "Oil on canvas"
+            "medium": "Oil on canvas",
         },
         {
             "id": "artwork_002",
@@ -554,8 +586,8 @@ def main():
             "description": "The Mona Lisa is a half-length portrait painting by Italian artist Leonardo da Vinci. Considered an archetypal masterpiece of the Italian Renaissance, it has been described as the best known, the most visited, the most written about, the most sung about, the most parodied work of art in the world.",
             "artist": "Leonardo da Vinci",
             "date": "c. 1503-1519",
-            "medium": "Oil on poplar panel"
-        }
+            "medium": "Oil on poplar panel",
+        },
     ]
 
     print("\n📝 測試1: 生成多層次摘要")
@@ -571,8 +603,8 @@ def main():
         target_languages=[
             TranslationLanguage.ZH_TW,
             TranslationLanguage.JA,
-            TranslationLanguage.KO
-        ]
+            TranslationLanguage.KO,
+        ],
     )
     print(f"✅ 生成了 {translation_results['statistics']['total_translations']} 個翻譯")
     print(f"📊 平均置信度: {translation_results['statistics']['average_confidence']:.2%}")
@@ -589,6 +621,7 @@ def main():
 
     print("\n🎉 所有測試完成！")
     print(f"📁 結果已保存到 {agent.output_dir}/ 目錄")
+
 
 if __name__ == "__main__":
     main()

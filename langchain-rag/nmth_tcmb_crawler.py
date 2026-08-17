@@ -14,12 +14,12 @@ NMTH 的紀錄。首次執行建議先用 --dump-sample 存一份原始回應，
 
 import json
 import logging
-import time
 import os
-import requests
-from typing import Dict, List, Any, Optional
+import time
 from dataclasses import dataclass, field
-from datetime import datetime
+from typing import Any
+
+import requests
 
 logger = logging.getLogger(__name__)
 
@@ -28,23 +28,31 @@ INSTITUTION_ALIASES = ["國立臺灣歷史博物館", "臺灣歷史博物館", "
 
 # 回應項目中可能記錄來源機構的欄位名稱（依實際樣本再調整）
 INSTITUTION_FIELD_CANDIDATES = [
-    "contributor", "publisher", "source", "unit", "organization",
-    "provider", "dataSource", "museum", "creator",
+    "contributor",
+    "publisher",
+    "source",
+    "unit",
+    "organization",
+    "provider",
+    "dataSource",
+    "museum",
+    "creator",
 ]
 
 
 @dataclass
 class NMTHCrawlerConfig:
     """NMTH / TCMB 爬蟲配置"""
+
     api_key: str
     base_url: str = "https://tcmbdata.culture.tw/opendata/openapi"
     search_keyword: str = "臺灣歷史博物館"
     page_size: int = 50
-    max_pages: Optional[int] = 20
+    max_pages: int | None = 20
     delay_seconds: float = 0.5
     output_dir: str = "data/raw"
     filter_by_institution: bool = True
-    institution_aliases: List[str] = field(default_factory=lambda: list(INSTITUTION_ALIASES))
+    institution_aliases: list[str] = field(default_factory=lambda: list(INSTITUTION_ALIASES))
 
 
 class NMTHTCMBCrawler:
@@ -53,15 +61,17 @@ class NMTHTCMBCrawler:
     def __init__(self, config: NMTHCrawlerConfig):
         self.config = config
         self.session = requests.Session()
-        self.session.headers.update({
-            "Authorization": config.api_key,
-            "Accept": "application/json",
-            "User-Agent": "Art History Database Research Tool v1.0",
-        })
+        self.session.headers.update(
+            {
+                "Authorization": config.api_key,
+                "Accept": "application/json",
+                "User-Agent": "Art History Database Research Tool v1.0",
+            }
+        )
         self.api_calls_count = 0
         os.makedirs(config.output_dir, exist_ok=True)
 
-    def _make_request(self, endpoint: str, params: Dict) -> Optional[Dict]:
+    def _make_request(self, endpoint: str, params: dict) -> dict | None:
         url = f"{self.config.base_url}/{endpoint}"
         try:
             time.sleep(self.config.delay_seconds)
@@ -81,7 +91,7 @@ class NMTHTCMBCrawler:
             logger.error(f"❌ 請求異常: {e}")
             return None
 
-    def _extract_page(self, response: Dict) -> (List[Dict], bool):
+    def _extract_page(self, response: dict) -> (list[dict], bool):
         """相容 Spring Data Page 格式 ({content: [...]})，並保留其他常見鍵作為備援"""
         for key in ("content", "data", "records", "items"):
             if key in response and isinstance(response[key], list):
@@ -97,7 +107,7 @@ class NMTHTCMBCrawler:
                 return items, bool(is_last)
         return [], True
 
-    def _matches_institution(self, item: Dict) -> bool:
+    def _matches_institution(self, item: dict) -> bool:
         if not self.config.filter_by_institution:
             return True
 
@@ -118,14 +128,17 @@ class NMTHTCMBCrawler:
         combined = " ".join(haystacks)
         return any(alias in combined for alias in self.config.institution_aliases)
 
-    def dump_sample(self, size: int = 5) -> Optional[Dict]:
+    def dump_sample(self, size: int = 5) -> dict | None:
         """存一份原始回應，供確認實際欄位名稱使用"""
         logger.info("🧪 取得樣本資料...")
-        response = self._make_request("cultureObject", {
-            "search": self.config.search_keyword,
-            "page": 0,
-            "size": size,
-        })
+        response = self._make_request(
+            "cultureObject",
+            {
+                "search": self.config.search_keyword,
+                "page": 0,
+                "size": size,
+            },
+        )
         if response:
             self.save_data(response, "nmth_sample_raw.json")
             logger.info("💾 已儲存原始樣本到 nmth_sample_raw.json，請檢查欄位名稱")
@@ -133,10 +146,10 @@ class NMTHTCMBCrawler:
             logger.error("❌ 樣本取得失敗，請確認 TCMB_API_KEY 與網路連線")
         return response
 
-    def crawl_culture_objects(self) -> List[Dict]:
+    def crawl_culture_objects(self) -> list[dict]:
         """爬取 cultureObject（文物/作品）資料，並依機構關鍵字過濾"""
         logger.info(f"🚀 開始爬取 NMTH 文物資料 (關鍵字: {self.config.search_keyword})...")
-        matched: List[Dict] = []
+        matched: list[dict] = []
         total_seen = 0
         page = 0
 
@@ -146,11 +159,14 @@ class NMTHTCMBCrawler:
                 break
 
             logger.info(f"📄 正在取得第 {page + 1} 頁...")
-            response = self._make_request("cultureObject", {
-                "search": self.config.search_keyword,
-                "page": page,
-                "size": self.config.page_size,
-            })
+            response = self._make_request(
+                "cultureObject",
+                {
+                    "search": self.config.search_keyword,
+                    "page": page,
+                    "size": self.config.page_size,
+                },
+            )
 
             if response is None:
                 logger.warning(f"⚠️ 第 {page + 1} 頁取得失敗，停止爬取")
@@ -166,7 +182,9 @@ class NMTHTCMBCrawler:
                 if self._matches_institution(item):
                     matched.append(item)
 
-            logger.info(f"✅ 本頁 {len(items)} 筆，累計檢視 {total_seen} 筆，符合機構過濾 {len(matched)} 筆")
+            logger.info(
+                f"✅ 本頁 {len(items)} 筆，累計檢視 {total_seen} 筆，符合機構過濾 {len(matched)} 筆"
+            )
 
             if is_last:
                 break
@@ -180,7 +198,7 @@ class NMTHTCMBCrawler:
             )
         return matched
 
-    def normalize_for_pipeline(self, items: List[Dict]) -> List[Dict]:
+    def normalize_for_pipeline(self, items: list[dict]) -> list[dict]:
         """轉為與既有 integrate-to-vector-db-fixed.py 相容的扁平欄位，同時保留原始資料"""
         normalized = []
         for item in items:
@@ -196,19 +214,25 @@ class NMTHTCMBCrawler:
             if isinstance(creator, list):
                 creator = ", ".join(str(c) for c in creator)
 
-            normalized.append({
-                "id": str(item.get("id") or item.get("identifier") or f"nmth_{hash(json.dumps(item, sort_keys=True, ensure_ascii=False))}"),
-                "title": title,
-                "creator": creator,
-                "date": str(item.get("date") or ""),
-                "description": description,
-                "subject": item.get("subject") or item.get("keywords") or "",
-                "imageLic": item.get("imageLic") or "",
-                "contentLic": item.get("contentLic") or "",
-                "repImage": item.get("repImage") or "",
-                "institution": "國立臺灣歷史博物館",
-                "raw": item,
-            })
+            normalized.append(
+                {
+                    "id": str(
+                        item.get("id")
+                        or item.get("identifier")
+                        or f"nmth_{hash(json.dumps(item, sort_keys=True, ensure_ascii=False))}"
+                    ),
+                    "title": title,
+                    "creator": creator,
+                    "date": str(item.get("date") or ""),
+                    "description": description,
+                    "subject": item.get("subject") or item.get("keywords") or "",
+                    "imageLic": item.get("imageLic") or "",
+                    "contentLic": item.get("contentLic") or "",
+                    "repImage": item.get("repImage") or "",
+                    "institution": "國立臺灣歷史博物館",
+                    "raw": item,
+                }
+            )
         return normalized
 
     def save_data(self, data: Any, filename: str):
@@ -228,9 +252,14 @@ def main():
     parser.add_argument("--max-pages", type=int, default=20, help="最大頁數 (預設 20)")
     parser.add_argument("--page-size", type=int, default=50, help="每頁筆數 (預設 50)")
     parser.add_argument("--no-filter", action="store_true", help="停用機構過濾，保留所有搜尋結果")
-    parser.add_argument("--dump-sample", action="store_true", help="只取得少量樣本資料並存檔，用於確認欄位名稱")
-    parser.add_argument("--output-dir", default=os.path.join(os.path.dirname(__file__), "..", "data", "raw"),
-                         help="輸出目錄 (預設: 專案根目錄 data/raw，與既有匯入腳本一致)")
+    parser.add_argument(
+        "--dump-sample", action="store_true", help="只取得少量樣本資料並存檔，用於確認欄位名稱"
+    )
+    parser.add_argument(
+        "--output-dir",
+        default=os.path.join(os.path.dirname(__file__), "..", "data", "raw"),
+        help="輸出目錄 (預設: 專案根目錄 data/raw，與既有匯入腳本一致)",
+    )
     args = parser.parse_args()
 
     api_key = os.getenv("TCMB_API_KEY")

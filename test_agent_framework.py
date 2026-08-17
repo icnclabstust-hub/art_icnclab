@@ -7,14 +7,14 @@ Agent框架完整測試腳本
 import asyncio
 import logging
 import sys
-import json
-from datetime import datetime
 import traceback
+from datetime import datetime
 
 # 添加src目錄到Python路径
-sys.path.append('src')
+sys.path.append("src")
 
 from agent_system import AgentSystem
+
 
 class AgentFrameworkTester:
     """Agent框架測試器"""
@@ -37,7 +37,7 @@ class AgentFrameworkTester:
             ("錯誤處理測試", self.test_error_handling),
             ("系統監控測試", self.test_system_monitoring),
             ("資源管理測試", self.test_resource_management),
-            ("系統關閉測試", self.test_system_shutdown)
+            ("系統關閉測試", self.test_system_shutdown),
         ]
 
         for test_name, test_func in tests:
@@ -57,31 +57,32 @@ class AgentFrameworkTester:
 
             if result:
                 print(f"✅ 測試通過 ({duration:.2f}s)")
-                self.test_results.append({
-                    "name": test_name,
-                    "status": "PASSED",
-                    "duration": duration,
-                    "message": "測試成功"
-                })
+                self.test_results.append(
+                    {
+                        "name": test_name,
+                        "status": "PASSED",
+                        "duration": duration,
+                        "message": "測試成功",
+                    }
+                )
             else:
                 print(f"❌ 測試失敗 ({duration:.2f}s)")
-                self.test_results.append({
-                    "name": test_name,
-                    "status": "FAILED",
-                    "duration": duration,
-                    "message": "測試返回False"
-                })
+                self.test_results.append(
+                    {
+                        "name": test_name,
+                        "status": "FAILED",
+                        "duration": duration,
+                        "message": "測試返回False",
+                    }
+                )
 
         except Exception as e:
             duration = (datetime.now() - start_time).total_seconds()
             print(f"💥 測試異常 ({duration:.2f}s): {str(e)}")
             print(f"   錯誤詳情: {traceback.format_exc()}")
-            self.test_results.append({
-                "name": test_name,
-                "status": "ERROR",
-                "duration": duration,
-                "message": str(e)
-            })
+            self.test_results.append(
+                {"name": test_name, "status": "ERROR", "duration": duration, "message": str(e)}
+            )
 
     async def test_system_initialization(self) -> bool:
         """測試系統初始化"""
@@ -130,7 +131,7 @@ class AgentFrameworkTester:
             master_status = self.system.master_agent.get_status()
             print(f"✓ Master Agent狀態: {master_status['status']}")
 
-            return comm_stats['online_agents'] > 0
+            return comm_stats["online_agents"] > 0
 
         except Exception as e:
             print(f"❌ 通信測試失敗: {e}")
@@ -149,10 +150,7 @@ class AgentFrameworkTester:
                 "llm_model": "ollama",
                 "priority": 1,
                 "estimated_duration": 30,
-                "test_queries": [
-                    "什麼是藝術史？",
-                    "文藝復興的特點是什麼？"
-                ]
+                "test_queries": ["什麼是藝術史？", "文藝復興的特點是什麼？"],
             }
 
             print("📝 創建RAG實驗配置...")
@@ -160,7 +158,7 @@ class AgentFrameworkTester:
             # 直接測試RAG Agent
             vector_rag_agent = None
             for agent_id, agent in self.system.agents.items():
-                if hasattr(agent, 'rag_framework') and agent.rag_framework == "vector_rag":
+                if hasattr(agent, "rag_framework") and agent.rag_framework == "vector_rag":
                     vector_rag_agent = agent
                     break
 
@@ -175,7 +173,7 @@ class AgentFrameworkTester:
             result = await vector_rag_agent.process_single_query(test_query)
 
             if result and result.get("success"):
-                print(f"✓ 查詢處理成功")
+                print("✓ 查詢處理成功")
                 print(f"✓ 檢索文檔數: {len(result.get('retrieved_documents', []))}")
                 print(f"✓ 生成答案: {result.get('generated_answer', '')[:100]}...")
                 print(f"✓ 響應時間: {result.get('metrics', {}).get('total_time', 0):.2f}秒")
@@ -205,17 +203,17 @@ class AgentFrameworkTester:
                     "estimated_duration": 20,
                     "experiment_params": {
                         "test_queries": [f"測試查詢 {i}"],
-                        "max_retrieved_docs": 3
-                    }
+                        "max_retrieved_docs": 3,
+                    },
                 }
                 experiments.append(experiment_config)
 
             print(f"📋 創建了 {len(experiments)} 個實驗配置")
 
             # 規劃實驗活動
-            campaign_result = await self.system.master_agent.plan_experiment_campaign({
-                "experiment_params": {"test_mode": True}
-            })
+            campaign_result = await self.system.master_agent.plan_experiment_campaign(
+                {"experiment_params": {"test_mode": True}}
+            )
 
             print(f"✓ 實驗活動規劃完成: {campaign_result['campaign_id']}")
             print(f"✓ 總實驗數量: {campaign_result['campaign']['total_experiments']}")
@@ -272,17 +270,19 @@ class AgentFrameworkTester:
             print(f"✓ 系統運行狀態: {system_status['is_running']}")
             print(f"✓ 活躍Agent數量: {len(system_status['active_agents'])}")
 
-            if system_status['uptime_seconds'] > 0:
+            if system_status["uptime_seconds"] > 0:
                 print(f"✓ 系統運行時間: {system_status['uptime_seconds']:.1f}秒")
 
             # 檢查Master Agent狀態
-            master_status = system_status['master_agent_status']
+            master_status = system_status["master_agent_status"]
             print(f"✓ Master Agent狀態: {master_status['master_agent']['status']}")
 
             # 檢查通信統計
-            comm_stats = system_status['communication_stats']
-            print(f"✓ 消息統計: 發送{comm_stats['message_stats']['sent']}, "
-                  f"接收{comm_stats['message_stats']['received']}")
+            comm_stats = system_status["communication_stats"]
+            print(
+                f"✓ 消息統計: 發送{comm_stats['message_stats']['sent']}, "
+                f"接收{comm_stats['message_stats']['received']}"
+            )
 
             return True
 
@@ -297,7 +297,7 @@ class AgentFrameworkTester:
                 return False
 
             # 檢查調度器的資源池
-            if hasattr(self.system.master_agent, 'experiment_scheduler'):
+            if hasattr(self.system.master_agent, "experiment_scheduler"):
                 scheduler = self.system.master_agent.experiment_scheduler
                 resource_pool = scheduler.resource_pool
 
@@ -307,8 +307,10 @@ class AgentFrameworkTester:
 
                 # 檢查向量資料庫狀態
                 for db_name, db_info in resource_pool.vector_databases.items():
-                    print(f"✓ {db_name}: {db_info['status']}, "
-                          f"使用率: {db_info['current_usage']}/{db_info['concurrent_limit']}")
+                    print(
+                        f"✓ {db_name}: {db_info['status']}, "
+                        f"使用率: {db_info['current_usage']}/{db_info['concurrent_limit']}"
+                    )
 
                 return True
             else:
@@ -359,7 +361,7 @@ class AgentFrameworkTester:
         print(f"✅ 通過: {passed_tests}")
         print(f"❌ 失敗: {failed_tests}")
         print(f"💥 異常: {error_tests}")
-        print(f"🎯 成功率: {passed_tests/total_tests*100:.1f}%")
+        print(f"🎯 成功率: {passed_tests / total_tests * 100:.1f}%")
 
         total_duration = sum(r["duration"] for r in self.test_results)
         print(f"⏱️ 總測試時間: {total_duration:.2f}秒")
@@ -379,16 +381,17 @@ class AgentFrameworkTester:
         else:
             print("🚨 多項測試失敗，需要檢查系統配置")
 
+
 async def main():
     """主函數"""
     # 配置日誌
     logging.basicConfig(
-        level=logging.INFO,
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
 
     # 確保必要目錄存在
     import os
+
     os.makedirs("logs", exist_ok=True)
 
     # 創建測試器
@@ -408,6 +411,7 @@ async def main():
         if tester.system and tester.system.is_running:
             print("\n🔄 正在關閉系統...")
             await tester.system.shutdown()
+
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -4,49 +4,45 @@
 整合文本、圖像和知識圖譜的完整RAG架構
 """
 
-import os
 import asyncio
-from typing import List, Dict, Any, Optional, Union
-from dataclasses import dataclass
-import json
 import logging
-from pathlib import Path
+import os
+from dataclasses import dataclass
+from typing import Any
 
-# LangChain 核心組件
-from langchain_core.documents import Document
-from langchain_core.vectorstores import VectorStore
-from langchain_core.embeddings import Embeddings
-from langchain_core.language_models import LLM
-from langchain_core.retrievers import BaseRetriever
-from langchain_core.callbacks import BaseCallbackHandler
+import chromadb
 
-# LangChain 社群套件
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.llms import Ollama
-from langchain_community.document_loaders import WebBaseLoader, PDFPlumberLoader
+# 多模態組件
+import requests
 
 # LangChain 鏈
 from langchain.chains import ConversationalRetrievalChain
-from langchain.chains.question_answering import load_qa_chain
 from langchain.memory import ConversationSummaryBufferMemory
 
 # 文本分割
 from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.document_loaders import WebBaseLoader
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.llms import Ollama
 
-# 多模態組件
-import requests
-import chromadb
-from PIL import Image
-import numpy as np
+# LangChain 社群套件
+from langchain_community.vectorstores import Chroma
+
+# LangChain 核心組件
+from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
+from langchain_core.retrievers import BaseRetriever
+from langchain_core.vectorstores import VectorStore
 
 # 配置日誌
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 @dataclass
 class RAGConfig:
     """RAG 系統配置"""
+
     # 向量資料庫配置
     chroma_host: str = "localhost"
     chroma_port: int = 8000
@@ -74,6 +70,7 @@ class RAGConfig:
     text_weight: float = 0.6
     image_weight: float = 0.4
 
+
 class ArtHistoryEmbeddings(Embeddings):
     """藝術史專用嵌入類"""
 
@@ -82,10 +79,10 @@ class ArtHistoryEmbeddings(Embeddings):
         self.ml_service_url = ml_service_url
         self.hf_embeddings = HuggingFaceEmbeddings(
             model_name=model_name,
-            model_kwargs={'device': 'cuda' if os.path.exists('/usr/local/cuda') else 'cpu'}
+            model_kwargs={"device": "cuda" if os.path.exists("/usr/local/cuda") else "cpu"},
         )
 
-    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
         """嵌入多個文檔"""
         try:
             # 優先使用專用 ML 服務
@@ -93,7 +90,7 @@ class ArtHistoryEmbeddings(Embeddings):
                 f"{self.ml_service_url}/embeddings",
                 json={"texts": texts, "model": "bge-m3"},
                 headers={"Content-Type": "application/json"},
-                timeout=30
+                timeout=30,
             )
 
             if response.status_code == 200:
@@ -106,9 +103,10 @@ class ArtHistoryEmbeddings(Embeddings):
         # 備用方案：使用 HuggingFace
         return self.hf_embeddings.embed_documents(texts)
 
-    def embed_query(self, text: str) -> List[float]:
+    def embed_query(self, text: str) -> list[float]:
         """嵌入查詢文本"""
         return self.embed_documents([text])[0]
+
 
 class MultimodalRetriever(BaseRetriever):
     """多模態檢索器"""
@@ -119,7 +117,7 @@ class MultimodalRetriever(BaseRetriever):
         ml_service_url: str,
         text_weight: float = 0.6,
         image_weight: float = 0.4,
-        top_k: int = 5
+        top_k: int = 5,
     ):
         self.vector_store = vector_store
         self.ml_service_url = ml_service_url
@@ -127,7 +125,7 @@ class MultimodalRetriever(BaseRetriever):
         self.image_weight = image_weight
         self.top_k = top_k
 
-    def _get_relevant_documents(self, query: str, **kwargs) -> List[Document]:
+    def _get_relevant_documents(self, query: str, **kwargs) -> list[Document]:
         """獲取相關文檔"""
         try:
             # 如果查詢包含圖像引用，執行多模態檢索
@@ -143,13 +141,27 @@ class MultimodalRetriever(BaseRetriever):
     def _has_visual_keywords(self, query: str) -> bool:
         """檢測查詢是否包含視覺關鍵詞"""
         visual_keywords = [
-            "顏色", "色彩", "構圖", "筆觸", "線條", "形狀",
-            "明暗", "光影", "透視", "風格", "畫面", "視覺",
-            "color", "composition", "brush", "line", "shadow"
+            "顏色",
+            "色彩",
+            "構圖",
+            "筆觸",
+            "線條",
+            "形狀",
+            "明暗",
+            "光影",
+            "透視",
+            "風格",
+            "畫面",
+            "視覺",
+            "color",
+            "composition",
+            "brush",
+            "line",
+            "shadow",
         ]
         return any(keyword in query.lower() for keyword in visual_keywords)
 
-    def _multimodal_search(self, query: str) -> List[Document]:
+    def _multimodal_search(self, query: str) -> list[Document]:
         """多模態檢索"""
         try:
             # 1. 文本向量檢索
@@ -161,21 +173,21 @@ class MultimodalRetriever(BaseRetriever):
             # 3. 融合檢索結果
             fused_docs = self._fuse_multimodal_results(text_docs, image_features)
 
-            return fused_docs[:self.top_k]
+            return fused_docs[: self.top_k]
 
         except Exception as e:
             logger.error(f"多模態檢索失敗: {e}")
             # 降級為純文本檢索
             return self.vector_store.similarity_search(query, k=self.top_k)
 
-    def _generate_query_image_features(self, query: str) -> Optional[List[float]]:
+    def _generate_query_image_features(self, query: str) -> list[float] | None:
         """根據查詢生成圖像特徵（模擬）"""
         try:
             response = requests.post(
                 f"{self.ml_service_url}/image/features",
                 json={"text_query": query, "generate_from_text": True},
                 headers={"Content-Type": "application/json"},
-                timeout=10
+                timeout=10,
             )
 
             if response.status_code == 200:
@@ -187,10 +199,8 @@ class MultimodalRetriever(BaseRetriever):
         return None
 
     def _fuse_multimodal_results(
-        self,
-        text_docs: List[Document],
-        image_features: Optional[List[float]]
-    ) -> List[Document]:
+        self, text_docs: list[Document], image_features: list[float] | None
+    ) -> list[Document]:
         """融合多模態檢索結果"""
         # 簡化版本：基於文本權重調整分數
         for doc in text_docs:
@@ -201,11 +211,8 @@ class MultimodalRetriever(BaseRetriever):
                 doc.metadata["multimodal_score"] = 1.0
 
         # 按分數排序
-        return sorted(
-            text_docs,
-            key=lambda d: d.metadata.get("multimodal_score", 0),
-            reverse=True
-        )
+        return sorted(text_docs, key=lambda d: d.metadata.get("multimodal_score", 0), reverse=True)
+
 
 class ArtHistoryRAGSystem:
     """藝術史 RAG 系統主類"""
@@ -226,8 +233,7 @@ class ArtHistoryRAGSystem:
         # 1. 初始化嵌入模型
         logger.info("📊 初始化嵌入模型...")
         self.embeddings = ArtHistoryEmbeddings(
-            model_name=self.config.text_embedding_model,
-            ml_service_url=self.config.ml_service_url
+            model_name=self.config.text_embedding_model, ml_service_url=self.config.ml_service_url
         )
 
         # 2. 初始化向量資料庫
@@ -240,7 +246,7 @@ class ArtHistoryRAGSystem:
             base_url=self.config.ollama_base_url,
             model=self.config.model_name,
             temperature=0.1,
-            system=self._get_art_expert_system_prompt()
+            system=self._get_art_expert_system_prompt(),
         )
 
         # 4. 初始化檢索器
@@ -250,16 +256,13 @@ class ArtHistoryRAGSystem:
             ml_service_url=self.config.ml_service_url,
             text_weight=self.config.text_weight,
             image_weight=self.config.image_weight,
-            top_k=self.config.top_k
+            top_k=self.config.top_k,
         )
 
         # 5. 初始化記憶體
         logger.info("💾 初始化對話記憶體...")
         self.memory = ConversationSummaryBufferMemory(
-            llm=self.llm,
-            memory_key="chat_history",
-            return_messages=True,
-            max_token_limit=2000
+            llm=self.llm, memory_key="chat_history", return_messages=True, max_token_limit=2000
         )
 
         # 6. 初始化 QA 鏈
@@ -269,7 +272,7 @@ class ArtHistoryRAGSystem:
             retriever=self.retriever,
             memory=self.memory,
             return_source_documents=True,
-            verbose=True
+            verbose=True,
         )
 
         logger.info("✅ RAG 系統初始化完成！")
@@ -278,10 +281,7 @@ class ArtHistoryRAGSystem:
         """初始化向量資料庫"""
         try:
             # 嘗試連接現有的 ChromaDB
-            client = chromadb.HttpClient(
-                host=self.config.chroma_host,
-                port=self.config.chroma_port
-            )
+            client = chromadb.HttpClient(host=self.config.chroma_host, port=self.config.chroma_port)
 
             # 檢查或創建集合
             collection_name = self.config.collection_name
@@ -294,9 +294,7 @@ class ArtHistoryRAGSystem:
 
             # 返回 LangChain Chroma 向量存儲
             vector_store = Chroma(
-                client=client,
-                collection_name=collection_name,
-                embedding_function=self.embeddings
+                client=client, collection_name=collection_name, embedding_function=self.embeddings
             )
 
             return vector_store
@@ -310,7 +308,7 @@ class ArtHistoryRAGSystem:
             return Chroma(
                 persist_directory=persist_directory,
                 embedding_function=self.embeddings,
-                collection_name=self.config.collection_name
+                collection_name=self.config.collection_name,
             )
 
     def _get_art_expert_system_prompt(self) -> str:
@@ -339,29 +337,23 @@ class ArtHistoryRAGSystem:
 
 請基於檢索到的相關資料，結合你的專業知識，為用戶提供高品質的藝術史回答。"""
 
-    async def query(self, question: str) -> Dict[str, Any]:
+    async def query(self, question: str) -> dict[str, Any]:
         """執行 RAG 查詢"""
         try:
             logger.info(f"🔍 處理查詢: {question}")
 
             # 執行檢索和生成
-            result = await asyncio.to_thread(
-                self.qa_chain,
-                {"question": question}
-            )
+            result = await asyncio.to_thread(self.qa_chain, {"question": question})
 
             # 整理回應
             response = {
                 "question": question,
                 "answer": result["answer"],
                 "source_documents": [
-                    {
-                        "content": doc.page_content,
-                        "metadata": doc.metadata
-                    }
+                    {"content": doc.page_content, "metadata": doc.metadata}
                     for doc in result.get("source_documents", [])
                 ],
-                "chat_history": result.get("chat_history", [])
+                "chat_history": result.get("chat_history", []),
             }
 
             logger.info("✅ 查詢完成")
@@ -373,10 +365,10 @@ class ArtHistoryRAGSystem:
                 "question": question,
                 "answer": f"抱歉，查詢時發生錯誤: {str(e)}",
                 "source_documents": [],
-                "chat_history": []
+                "chat_history": [],
             }
 
-    async def add_documents(self, documents: List[Document]) -> bool:
+    async def add_documents(self, documents: list[Document]) -> bool:
         """添加文檔到向量資料庫"""
         try:
             logger.info(f"📄 添加 {len(documents)} 個文檔...")
@@ -385,7 +377,7 @@ class ArtHistoryRAGSystem:
             text_splitter = RecursiveCharacterTextSplitter(
                 chunk_size=self.config.chunk_size,
                 chunk_overlap=self.config.chunk_overlap,
-                separators=["\n\n", "\n", "。", ".", " "]
+                separators=["\n\n", "\n", "。", ".", " "],
             )
 
             # 分割文檔
@@ -395,10 +387,7 @@ class ArtHistoryRAGSystem:
                 split_docs.extend(splits)
 
             # 添加到向量存儲
-            await asyncio.to_thread(
-                self.vector_store.add_documents,
-                split_docs
-            )
+            await asyncio.to_thread(self.vector_store.add_documents, split_docs)
 
             logger.info(f"✅ 成功添加 {len(split_docs)} 個文檔片段")
             return True
@@ -407,7 +396,7 @@ class ArtHistoryRAGSystem:
             logger.error(f"❌ 文檔添加失敗: {e}")
             return False
 
-    async def load_documents_from_urls(self, urls: List[str]) -> bool:
+    async def load_documents_from_urls(self, urls: list[str]) -> bool:
         """從 URL 載入文檔"""
         try:
             logger.info(f"🌐 從 {len(urls)} 個URL載入文檔...")
@@ -432,7 +421,7 @@ class ArtHistoryRAGSystem:
             logger.error(f"❌ URL文檔載入失敗: {e}")
             return False
 
-    def get_statistics(self) -> Dict[str, Any]:
+    def get_statistics(self) -> dict[str, Any]:
         """獲取系統統計資訊"""
         try:
             # 獲取向量資料庫統計
@@ -444,11 +433,12 @@ class ArtHistoryRAGSystem:
                 "model_name": self.config.model_name,
                 "embedding_model": self.config.text_embedding_model,
                 "collection_name": self.config.collection_name,
-                "memory_messages": len(self.memory.chat_memory.messages) if self.memory else 0
+                "memory_messages": len(self.memory.chat_memory.messages) if self.memory else 0,
             }
         except Exception as e:
             logger.error(f"獲取統計資訊失敗: {e}")
             return {"error": str(e)}
+
 
 # 測試和示例用法
 async def main():
@@ -464,10 +454,10 @@ async def main():
     test_questions = [
         "印象派繪畫有什麼特色？",
         "達文西的《蒙娜麗莎》使用了什麼技法？",
-        "巴洛克藝術與文藝復興藝術有什麼區別？"
+        "巴洛克藝術與文藝復興藝術有什麼區別？",
     ]
 
-    print("🎨 藝術史多模態 RAG 系統測試\n" + "="*50)
+    print("🎨 藝術史多模態 RAG 系統測試\n" + "=" * 50)
 
     for i, question in enumerate(test_questions, 1):
         print(f"\n【測試 {i}】{question}")
@@ -476,15 +466,16 @@ async def main():
         result = await rag_system.query(question)
         print(f"回答: {result['answer']}")
 
-        if result['source_documents']:
+        if result["source_documents"]:
             print(f"\n參考文獻數量: {len(result['source_documents'])}")
 
     # 顯示統計資訊
-    print("\n" + "="*50)
+    print("\n" + "=" * 50)
     stats = rag_system.get_statistics()
     print("📊 系統統計:")
     for key, value in stats.items():
         print(f"  {key}: {value}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

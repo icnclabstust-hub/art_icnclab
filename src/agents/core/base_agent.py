@@ -8,14 +8,16 @@ import asyncio
 import logging
 import uuid
 from abc import ABC, abstractmethod
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Callable
-import json
+from typing import Any
+
 
 class AgentStatus(Enum):
     """Agent狀態枚舉"""
+
     INITIALIZING = "initializing"
     READY = "ready"
     BUSY = "busy"
@@ -23,8 +25,10 @@ class AgentStatus(Enum):
     STOPPING = "stopping"
     STOPPED = "stopped"
 
+
 class MessageType(Enum):
     """消息類型枚舉"""
+
     TASK_REQUEST = "task_request"
     TASK_RESPONSE = "task_response"
     STATUS_UPDATE = "status_update"
@@ -33,20 +37,22 @@ class MessageType(Enum):
     RESULT_SHARING = "result_sharing"
     HEARTBEAT = "heartbeat"
 
+
 @dataclass
 class AgentMessage:
     """Agent間消息格式"""
+
     message_id: str
     sender_id: str
     receiver_id: str
     message_type: MessageType
-    payload: Dict[str, Any]
+    payload: dict[str, Any]
     timestamp: datetime
     priority: int = 5
-    correlation_id: Optional[str] = None
-    expires_at: Optional[datetime] = None
+    correlation_id: str | None = None
+    expires_at: datetime | None = None
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """轉換為字典格式"""
         return {
             "message_id": self.message_id,
@@ -57,11 +63,11 @@ class AgentMessage:
             "timestamp": self.timestamp.isoformat(),
             "priority": self.priority,
             "correlation_id": self.correlation_id,
-            "expires_at": self.expires_at.isoformat() if self.expires_at else None
+            "expires_at": self.expires_at.isoformat() if self.expires_at else None,
         }
 
     @classmethod
-    def from_dict(cls, data: Dict[str, Any]) -> 'AgentMessage':
+    def from_dict(cls, data: dict[str, Any]) -> "AgentMessage":
         """從字典創建消息實例"""
         return cls(
             message_id=data["message_id"],
@@ -72,29 +78,36 @@ class AgentMessage:
             timestamp=datetime.fromisoformat(data["timestamp"]),
             priority=data.get("priority", 5),
             correlation_id=data.get("correlation_id"),
-            expires_at=datetime.fromisoformat(data["expires_at"]) if data.get("expires_at") else None
+            expires_at=datetime.fromisoformat(data["expires_at"])
+            if data.get("expires_at")
+            else None,
         )
+
 
 @dataclass
 class AgentCapability:
     """Agent能力描述"""
+
     name: str
     description: str
-    input_types: List[str]
-    output_types: List[str]
-    resource_requirements: Dict[str, Any]
+    input_types: list[str]
+    output_types: list[str]
+    resource_requirements: dict[str, Any]
     estimated_time: float  # 秒
+
 
 @dataclass
 class AgentMetrics:
     """Agent性能指標"""
+
     tasks_completed: int = 0
     tasks_failed: int = 0
     average_response_time: float = 0.0
     cpu_usage: float = 0.0
     memory_usage: float = 0.0
-    last_heartbeat: Optional[datetime] = None
+    last_heartbeat: datetime | None = None
     uptime: float = 0.0
+
 
 class BaseAgent(ABC):
     """
@@ -107,24 +120,24 @@ class BaseAgent(ABC):
         self.name = name
         self.description = description
         self.status = AgentStatus.INITIALIZING
-        self.capabilities: List[AgentCapability] = []
+        self.capabilities: list[AgentCapability] = []
         self.metrics = AgentMetrics()
 
         # 通信相關
-        self.message_handlers: Dict[MessageType, Callable] = {}
+        self.message_handlers: dict[MessageType, Callable] = {}
         self.message_queue: asyncio.Queue = asyncio.Queue()
         self.communication_hub = None
 
         # 配置和工具
-        self.config: Dict[str, Any] = {}
-        self.tools: Dict[str, Any] = {}
+        self.config: dict[str, Any] = {}
+        self.tools: dict[str, Any] = {}
 
         # 日誌
         self.logger = logging.getLogger(f"agent.{self.agent_id}")
 
         # 任務追蹤
-        self.current_tasks: Dict[str, Any] = {}
-        self.task_history: List[Dict[str, Any]] = []
+        self.current_tasks: dict[str, Any] = {}
+        self.task_history: list[dict[str, Any]] = []
 
         # 初始化消息處理器
         self._setup_default_handlers()
@@ -137,7 +150,7 @@ class BaseAgent(ABC):
         self.message_handlers[MessageType.STATUS_UPDATE] = self._handle_status_update
         self.message_handlers[MessageType.ERROR_REPORT] = self._handle_error_report
 
-    async def initialize(self, config: Dict[str, Any] = None):
+    async def initialize(self, config: dict[str, Any] = None):
         """初始化Agent"""
         try:
             if config:
@@ -163,7 +176,7 @@ class BaseAgent(ABC):
         pass
 
     @abstractmethod
-    async def _register_capabilities(self) -> List[AgentCapability]:
+    async def _register_capabilities(self) -> list[AgentCapability]:
         """註冊Agent的能力"""
         pass
 
@@ -229,13 +242,11 @@ class BaseAgent(ABC):
         while self.status != AgentStatus.STOPPED:
             try:
                 # 等待消息，超時1秒
-                message = await asyncio.wait_for(
-                    self.message_queue.get(), timeout=1.0
-                )
+                message = await asyncio.wait_for(self.message_queue.get(), timeout=1.0)
 
                 await self._process_message(message)
 
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 # 超時是正常的，繼續循環
                 continue
             except Exception as e:
@@ -259,12 +270,9 @@ class BaseAgent(ABC):
                 sender_id=self.agent_id,
                 receiver_id=message.sender_id,
                 message_type=MessageType.ERROR_REPORT,
-                payload={
-                    "error": str(e),
-                    "original_message_id": message.message_id
-                },
+                payload={"error": str(e), "original_message_id": message.message_id},
                 timestamp=datetime.now(),
-                correlation_id=message.correlation_id
+                correlation_id=message.correlation_id,
             )
             await self.send_message(error_response)
 
@@ -280,11 +288,11 @@ class BaseAgent(ABC):
                 "metrics": {
                     "tasks_completed": self.metrics.tasks_completed,
                     "tasks_failed": self.metrics.tasks_failed,
-                    "average_response_time": self.metrics.average_response_time
-                }
+                    "average_response_time": self.metrics.average_response_time,
+                },
             },
             timestamp=datetime.now(),
-            correlation_id=message.correlation_id
+            correlation_id=message.correlation_id,
         )
         await self.send_message(response)
 
@@ -309,7 +317,7 @@ class BaseAgent(ABC):
             except Exception as e:
                 self.logger.error(f"心跳錯誤: {e}")
 
-    def get_status(self) -> Dict[str, Any]:
+    def get_status(self) -> dict[str, Any]:
         """獲取Agent狀態信息"""
         return {
             "agent_id": self.agent_id,
@@ -321,8 +329,10 @@ class BaseAgent(ABC):
                 "tasks_completed": self.metrics.tasks_completed,
                 "tasks_failed": self.metrics.tasks_failed,
                 "average_response_time": self.metrics.average_response_time,
-                "last_heartbeat": self.metrics.last_heartbeat.isoformat() if self.metrics.last_heartbeat else None
-            }
+                "last_heartbeat": self.metrics.last_heartbeat.isoformat()
+                if self.metrics.last_heartbeat
+                else None,
+            },
         }
 
     def register_message_handler(self, message_type: MessageType, handler: Callable):
@@ -339,39 +349,43 @@ class BaseAgent(ABC):
         """獲取工具"""
         return self.tools.get(name)
 
-    async def execute_task(self, task_id: str, task_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def execute_task(self, task_id: str, task_data: dict[str, Any]) -> dict[str, Any]:
         """執行任務 - 由子類實現具體邏輯"""
         self.current_tasks[task_id] = {
             "task_id": task_id,
             "start_time": datetime.now(),
-            "data": task_data
+            "data": task_data,
         }
 
         try:
             result = await self._execute_task(task_id, task_data)
             self.metrics.tasks_completed += 1
-            self.task_history.append({
-                "task_id": task_id,
-                "status": "completed",
-                "start_time": self.current_tasks[task_id]["start_time"],
-                "end_time": datetime.now(),
-                "result": result
-            })
+            self.task_history.append(
+                {
+                    "task_id": task_id,
+                    "status": "completed",
+                    "start_time": self.current_tasks[task_id]["start_time"],
+                    "end_time": datetime.now(),
+                    "result": result,
+                }
+            )
             return result
         except Exception as e:
             self.metrics.tasks_failed += 1
-            self.task_history.append({
-                "task_id": task_id,
-                "status": "failed",
-                "start_time": self.current_tasks[task_id]["start_time"],
-                "end_time": datetime.now(),
-                "error": str(e)
-            })
+            self.task_history.append(
+                {
+                    "task_id": task_id,
+                    "status": "failed",
+                    "start_time": self.current_tasks[task_id]["start_time"],
+                    "end_time": datetime.now(),
+                    "error": str(e),
+                }
+            )
             raise
         finally:
             self.current_tasks.pop(task_id, None)
 
     @abstractmethod
-    async def _execute_task(self, task_id: str, task_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_task(self, task_id: str, task_data: dict[str, Any]) -> dict[str, Any]:
         """子類實現的具體任務執行邏輯"""
         pass

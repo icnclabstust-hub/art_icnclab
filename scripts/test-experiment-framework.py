@@ -4,11 +4,12 @@
 測試各個服務的連通性和基礎功能
 """
 
-import requests
-import json
 import time
-import yaml
 from datetime import datetime
+
+import requests
+import yaml
+
 
 def test_service_health(url, service_name):
     """測試服務健康狀態"""
@@ -27,6 +28,7 @@ def test_service_health(url, service_name):
         print(f"❌ {service_name}: 連接失敗 - {str(e)}")
         return False
 
+
 def test_chromadb():
     """測試ChromaDB"""
     print("\n🔍 測試ChromaDB...")
@@ -43,6 +45,7 @@ def test_chromadb():
             print(f"❌ ChromaDB API測試失敗: {e}")
     return False
 
+
 def test_qdrant():
     """測試Qdrant"""
     print("\n🔍 測試Qdrant...")
@@ -57,6 +60,7 @@ def test_qdrant():
         except Exception as e:
             print(f"❌ Qdrant API測試失敗: {e}")
     return False
+
 
 def test_weaviate():
     """測試Weaviate"""
@@ -73,11 +77,13 @@ def test_weaviate():
             print(f"❌ Weaviate Schema測試失敗: {e}")
     return False
 
+
 def test_neo4j():
     """測試Neo4j"""
     print("\n🔍 測試Neo4j...")
 
     return test_service_health("http://localhost:7474", "Neo4j瀏覽器")
+
 
 def test_mlflow():
     """測試MLflow"""
@@ -102,11 +108,13 @@ def test_mlflow():
 
     return False
 
+
 def test_monitoring():
     """測試監控服務"""
     print("\n🔍 測試監控服務...")
 
     return test_service_health("http://localhost:9100/metrics", "Prometheus Node Exporter")
+
 
 def test_openwebui():
     """測試OpenWebUI"""
@@ -114,16 +122,18 @@ def test_openwebui():
 
     return test_service_health("http://localhost:8080", "OpenWebUI")
 
+
 def load_experiment_config():
     """載入實驗配置"""
     try:
-        with open("context/experiments/experiment-config.yaml", "r", encoding="utf-8") as f:
+        with open("context/experiments/experiment-config.yaml", encoding="utf-8") as f:
             config = yaml.safe_load(f)
         print("✅ 實驗配置載入成功")
         return config
     except Exception as e:
         print(f"❌ 實驗配置載入失敗: {e}")
         return None
+
 
 def main():
     """主測試函數"""
@@ -145,7 +155,7 @@ def main():
         "neo4j": test_neo4j(),
         "mlflow": test_mlflow(),
         "monitoring": test_monitoring(),
-        "openwebui": test_openwebui()
+        "openwebui": test_openwebui(),
     }
 
     # 統計結果
@@ -159,7 +169,9 @@ def main():
         status_icon = "✅" if status else "❌"
         print(f"{status_icon} {service.upper()}: {'健康' if status else '異常'}")
 
-    print(f"\n🎯 系統健康度: {healthy_services}/{total_services} ({healthy_services/total_services*100:.1f}%)")
+    print(
+        f"\n🎯 系統健康度: {healthy_services}/{total_services} ({healthy_services / total_services * 100:.1f}%)"
+    )
 
     # 建議
     if healthy_services >= total_services * 0.8:
@@ -171,13 +183,14 @@ def main():
 
     # 輸出配置摘要
     if config:
-        print(f"\n📋 實驗配置摘要:")
+        print("\n📋 實驗配置摘要:")
         rag_count = len(config.get("experiment_matrix", {}).get("rag_frameworks", {}))
         llm_count = len(config.get("experiment_matrix", {}).get("llm_models", {}))
         total_combinations = rag_count * llm_count
         print(f"   - RAG框架: {rag_count}種")
         print(f"   - LLM模型: {llm_count}種")
         print(f"   - 實驗組合: {total_combinations}個")
+
 
 if __name__ == "__main__":
     main()

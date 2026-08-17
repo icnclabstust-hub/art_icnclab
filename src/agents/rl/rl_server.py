@@ -4,15 +4,16 @@ RL-Agentic RAG API Server
 提供 HTTP API 接口用於查詢和監控
 """
 
-from fastapi import FastAPI, HTTPException, BackgroundTasks
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel, Field
-from typing import Dict, Optional, Any
-import uvicorn
 import logging
 import os
 import sys
 from pathlib import Path
+from typing import Any
+
+import uvicorn
+from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel, Field
 
 # 添加項目路徑
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -20,15 +21,16 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 # 導入 RL Agent（使用簡化版本，避免 PyTorch 依賴問題）
 try:
     from rl_agentic_rag import RLAgenticRAG
+
     USE_FULL_VERSION = True
 except ImportError:
     # 如果完整版本不可用，使用簡化版本
     from rl_simple_test import SimpleRLAgent as RLAgenticRAG
+
     USE_FULL_VERSION = False
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
@@ -36,7 +38,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="RL-Agentic RAG API",
     description="強化學習驅動的 Agentic RAG 策略選擇服務",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # CORS 配置
@@ -49,30 +51,26 @@ app.add_middleware(
 )
 
 # 全局 Agent 實例
-agent: Optional[RLAgenticRAG] = None
+agent: RLAgenticRAG | None = None
 agent_config = {
-    'model_path': os.getenv('RL_MODEL_PATH', 'models/rl/rl_agent_final.pt'),
-    'config_path': os.getenv('RL_CONFIG_PATH', 'agents/rl/rl_config.yaml'),
-    'training_mode': os.getenv('RL_TRAINING_MODE', 'false').lower() == 'true',
+    "model_path": os.getenv("RL_MODEL_PATH", "models/rl/rl_agent_final.pt"),
+    "config_path": os.getenv("RL_CONFIG_PATH", "agents/rl/rl_config.yaml"),
+    "training_mode": os.getenv("RL_TRAINING_MODE", "false").lower() == "true",
 }
 
 
 # Pydantic 模型
 class QueryRequest(BaseModel):
     query: str = Field(..., description="查詢文本")
-    context: Dict[str, Any] = Field(default_factory=dict, description="上下文信息")
+    context: dict[str, Any] = Field(default_factory=dict, description="上下文信息")
     training: bool = Field(default=False, description="是否在訓練模式")
 
     class Config:
         json_schema_extra = {
             "example": {
                 "query": "介紹文藝復興時期的藝術特色",
-                "context": {
-                    "user_expertise": 0.5,
-                    "time_of_day": 14,
-                    "device_type": 0
-                },
-                "training": False
+                "context": {"user_expertise": 0.5, "time_of_day": 14, "device_type": 0},
+                "training": False,
             }
         }
 
@@ -84,7 +82,7 @@ class QueryResponse(BaseModel):
     confidence: float
     reward: float
     processing_time: float
-    epsilon: Optional[float] = None
+    epsilon: float | None = None
     model_version: str
 
 
@@ -93,7 +91,7 @@ class StatsResponse(BaseModel):
     training_steps: int
     epsilon: float
     average_reward: float
-    action_distribution: Dict[str, int]
+    action_distribution: dict[str, int]
     model_version: str
     training_mode: bool
 
@@ -109,7 +107,7 @@ class FeedbackRequest(BaseModel):
     query: str
     strategy: str
     user_satisfaction: float = Field(..., ge=0.0, le=1.0)
-    actual_processing_time: Optional[float] = None
+    actual_processing_time: float | None = None
 
 
 # 初始化 Agent
@@ -129,7 +127,7 @@ async def startup_event():
             agent = RLAgenticRAG()
 
             # 嘗試載入模型
-            model_path = agent_config['model_path']
+            model_path = agent_config["model_path"]
             if os.path.exists(model_path):
                 agent.load(model_path)
                 logger.info(f"✅ 成功載入模型: {model_path}")
@@ -138,7 +136,7 @@ async def startup_event():
                 logger.info("將使用未訓練的新模型")
 
             # 設置訓練模式
-            agent.is_training = agent_config['training_mode']
+            agent.is_training = agent_config["training_mode"]
             if not agent.is_training:
                 agent.epsilon = 0.0  # 推理模式不探索
         else:
@@ -168,8 +166,8 @@ async def root():
             "query": "/query",
             "stats": "/stats",
             "health": "/health",
-            "feedback": "/feedback"
-        }
+            "feedback": "/feedback",
+        },
     }
 
 
@@ -180,7 +178,7 @@ async def health_check():
         status="healthy" if agent is not None else "unhealthy",
         model_loaded=agent is not None,
         model_version="simplified" if not USE_FULL_VERSION else "full",
-        training_mode=agent_config['training_mode']
+        training_mode=agent_config["training_mode"],
     )
 
 
@@ -199,7 +197,6 @@ async def query_endpoint(request: QueryRequest):
     try:
         # 執行查詢
         if USE_FULL_VERSION:
-            import asyncio
             result = await agent.query(request.query, request.context)
         else:
             # 簡化版本是同步的
@@ -207,14 +204,14 @@ async def query_endpoint(request: QueryRequest):
 
         # 構建響應
         response = QueryResponse(
-            query=result['query'],
-            strategy=result['strategy'],
-            action=result['action'],
-            confidence=result.get('confidence', 0.0),
-            reward=result['reward'],
-            processing_time=result['processing_time'],
-            epsilon=result.get('epsilon'),
-            model_version="simplified" if not USE_FULL_VERSION else "full"
+            query=result["query"],
+            strategy=result["strategy"],
+            action=result["action"],
+            confidence=result.get("confidence", 0.0),
+            reward=result["reward"],
+            processing_time=result["processing_time"],
+            epsilon=result.get("epsilon"),
+            model_version="simplified" if not USE_FULL_VERSION else "full",
         )
 
         logger.info(f"查詢: {request.query[:50]}... -> 策略: {result['strategy']}")
@@ -236,13 +233,13 @@ async def get_stats():
         stats = agent.get_stats()
 
         return StatsResponse(
-            total_queries=stats['total_queries'],
-            training_steps=stats.get('training_steps', 0),
-            epsilon=stats['epsilon'],
-            average_reward=stats['average_reward'],
-            action_distribution=stats['action_distribution'],
+            total_queries=stats["total_queries"],
+            training_steps=stats.get("training_steps", 0),
+            epsilon=stats["epsilon"],
+            average_reward=stats["average_reward"],
+            action_distribution=stats["action_distribution"],
             model_version="simplified" if not USE_FULL_VERSION else "full",
-            training_mode=agent_config['training_mode']
+            training_mode=agent_config["training_mode"],
         )
 
     except Exception as e:
@@ -263,11 +260,8 @@ async def submit_feedback(request: FeedbackRequest, background_tasks: Background
     if agent is None:
         raise HTTPException(status_code=503, detail="Agent 未初始化")
 
-    if not agent_config['training_mode']:
-        return {
-            "status": "ignored",
-            "message": "訓練模式未啟用，反饋被忽略"
-        }
+    if not agent_config["training_mode"]:
+        return {"status": "ignored", "message": "訓練模式未啟用，反饋被忽略"}
 
     try:
         # TODO: 實現反饋處理邏輯
@@ -275,10 +269,7 @@ async def submit_feedback(request: FeedbackRequest, background_tasks: Background
 
         logger.info(f"收到反饋: {request.query[:50]}... 滿意度: {request.user_satisfaction}")
 
-        return {
-            "status": "accepted",
-            "message": "反饋已接收，將用於模型優化"
-        }
+        return {"status": "accepted", "message": "反饋已接收，將用於模型優化"}
 
     except Exception as e:
         logger.error(f"處理反饋失敗: {e}")
@@ -292,22 +283,15 @@ async def save_model():
         raise HTTPException(status_code=503, detail="Agent 未初始化")
 
     if not USE_FULL_VERSION:
-        return {
-            "status": "skipped",
-            "message": "簡化版本不支持模型保存"
-        }
+        return {"status": "skipped", "message": "簡化版本不支持模型保存"}
 
     try:
-        save_path = agent_config['model_path']
+        save_path = agent_config["model_path"]
         agent.save(save_path)
 
         logger.info(f"✅ 模型已保存: {save_path}")
 
-        return {
-            "status": "success",
-            "path": save_path,
-            "message": "模型保存成功"
-        }
+        return {"status": "success", "path": save_path, "message": "模型保存成功"}
 
     except Exception as e:
         logger.error(f"保存模型失敗: {e}")
@@ -322,10 +306,4 @@ if __name__ == "__main__":
 
     logger.info(f"啟動 RL-Agentic RAG Server on {host}:{port}")
 
-    uvicorn.run(
-        app,
-        host=host,
-        port=port,
-        workers=workers,
-        log_level="info"
-    )
+    uvicorn.run(app, host=host, port=port, workers=workers, log_level="info")

@@ -4,44 +4,48 @@ GraphRAG模型創建器
 創建完整的GraphRAG整合，結合Neo4j知識圖譜和OpenWebUI
 """
 
-import os
-import sys
-import json
 import logging
+import sys
 import time
-from typing import List, Dict, Any, Optional
-from pathlib import Path
+from typing import Any
 
 try:
-    from neo4j import GraphDatabase
-    from fastapi import FastAPI, HTTPException
-    from pydantic import BaseModel
     import uvicorn
+    from fastapi import FastAPI, HTTPException
+    from neo4j import GraphDatabase
+    from pydantic import BaseModel
 except ImportError as e:
     print(f"❌ 缺少依賴: {e}")
     print("請運行: pip install neo4j fastapi uvicorn")
     sys.exit(1)
 
+
 class GraphRAGQuery(BaseModel):
     """GraphRAG查詢請求模型"""
+
     question: str
     max_nodes: int = 50
     max_relationships: int = 100
     query_type: str = "hybrid"  # vector, graph, hybrid
 
+
 class GraphRAGResponse(BaseModel):
     """GraphRAG響應模型"""
+
     answer: str
-    graph_results: List[Dict]
-    vector_results: List[Dict]
+    graph_results: list[dict]
+    vector_results: list[dict]
     cypher_query: str
     processing_time: float
     query_type: str
 
+
 class Neo4jGraphRAG:
     """Neo4j GraphRAG系統"""
 
-    def __init__(self, uri="bolt://localhost:7687", username="neo4j", password="CHANGE_ME_NEO4J_PASSWORD"):
+    def __init__(
+        self, uri="bolt://localhost:7687", username="neo4j", password="CHANGE_ME_NEO4J_PASSWORD"
+    ):
         self.uri = uri
         self.username = username
         self.password = password
@@ -61,7 +65,7 @@ class Neo4jGraphRAG:
         if self.driver:
             self.driver.close()
 
-    def analyze_question(self, question: str) -> Dict[str, Any]:
+    def analyze_question(self, question: str) -> dict[str, Any]:
         """分析問題類型和關鍵實體 - 基於12大分類"""
         question_lower = question.lower()
 
@@ -69,23 +73,97 @@ class Neo4jGraphRAG:
             "entities": [],
             "relationships": [],
             "query_intent": "general",
-            "categories": []
+            "categories": [],
         }
 
         # 12大分類關鍵詞檢測
         category_keywords = {
-            "People": ["藝術家", "達文西", "米開朗基羅", "拉斐爾", "leonardo", "michelangelo", "raphael", "artist", "painter", "sculptor"],
-            "Artworks": ["作品", "繪畫", "雕塑", "蒙娜麗莎", "painting", "sculpture", "artwork", "mona lisa", "david"],
-            "Movements": ["文藝復興", "巴洛克", "曼納主義", "renaissance", "baroque", "mannerism", "movement", "style"],
-            "Techniques": ["技法", "油彩", "濕壁畫", "暈塗法", "technique", "oil painting", "fresco", "sfumato"],
-            "Themes": ["主題", "宗教", "神話", "肖像", "theme", "religious", "mythology", "portrait"],
-            "Chronology": ["時期", "世紀", "美第奇", "period", "century", "medici", "renaissance period"],
-            "Places": ["佛羅倫斯", "羅馬", "巴黎", "博物館", "florence", "rome", "paris", "museum", "gallery"],
+            "People": [
+                "藝術家",
+                "達文西",
+                "米開朗基羅",
+                "拉斐爾",
+                "leonardo",
+                "michelangelo",
+                "raphael",
+                "artist",
+                "painter",
+                "sculptor",
+            ],
+            "Artworks": [
+                "作品",
+                "繪畫",
+                "雕塑",
+                "蒙娜麗莎",
+                "painting",
+                "sculpture",
+                "artwork",
+                "mona lisa",
+                "david",
+            ],
+            "Movements": [
+                "文藝復興",
+                "巴洛克",
+                "曼納主義",
+                "renaissance",
+                "baroque",
+                "mannerism",
+                "movement",
+                "style",
+            ],
+            "Techniques": [
+                "技法",
+                "油彩",
+                "濕壁畫",
+                "暈塗法",
+                "technique",
+                "oil painting",
+                "fresco",
+                "sfumato",
+            ],
+            "Themes": [
+                "主題",
+                "宗教",
+                "神話",
+                "肖像",
+                "theme",
+                "religious",
+                "mythology",
+                "portrait",
+            ],
+            "Chronology": [
+                "時期",
+                "世紀",
+                "美第奇",
+                "period",
+                "century",
+                "medici",
+                "renaissance period",
+            ],
+            "Places": [
+                "佛羅倫斯",
+                "羅馬",
+                "巴黎",
+                "博物館",
+                "florence",
+                "rome",
+                "paris",
+                "museum",
+                "gallery",
+            ],
             "Institutions": ["學院", "工坊", "家族", "academy", "workshop", "family", "guild"],
             "Events": ["委託", "展覽", "修復", "commission", "exhibition", "restoration"],
             "Sources": ["文獻", "瓦薩里", "研究", "vasari", "source", "document", "research"],
             "Concepts": ["透視", "對位法", "明暗法", "perspective", "contrapposto", "chiaroscuro"],
-            "Translations": ["義大利語", "英文", "中文", "italian", "english", "chinese", "translation"]
+            "Translations": [
+                "義大利語",
+                "英文",
+                "中文",
+                "italian",
+                "english",
+                "chinese",
+                "translation",
+            ],
         }
 
         # 檢測分類
@@ -95,9 +173,23 @@ class Neo4jGraphRAG:
 
         # 檢測藝術家名稱（擴展）
         famous_artists = [
-            "leonardo", "da vinci", "michelangelo", "raphael", "donatello", "botticelli",
-            "brunelleschi", "ghiberti", "masaccio", "piero della francesca", "mantegna",
-            "bellini", "giorgione", "titian", "tintoretto", "veronese", "caravaggio"
+            "leonardo",
+            "da vinci",
+            "michelangelo",
+            "raphael",
+            "donatello",
+            "botticelli",
+            "brunelleschi",
+            "ghiberti",
+            "masaccio",
+            "piero della francesca",
+            "mantegna",
+            "bellini",
+            "giorgione",
+            "titian",
+            "tintoretto",
+            "veronese",
+            "caravaggio",
         ]
         for artist in famous_artists:
             if artist in question_lower:
@@ -112,7 +204,7 @@ class Neo4jGraphRAG:
             "creation of adam": "Creation of Adam",
             "school of athens": "School of Athens",
             "primavera": "Primavera",
-            "birth of venus": "Birth of Venus"
+            "birth of venus": "Birth of Venus",
         }
         for work_key, work_name in famous_works.items():
             if work_key in question_lower:
@@ -126,7 +218,7 @@ class Neo4jGraphRAG:
             "perspective": "Linear Perspective",
             "oil painting": "Oil Painting",
             "fresco": "Fresco",
-            "tempera": "Tempera"
+            "tempera": "Tempera",
         }
         for tech_key, tech_name in techniques.items():
             if tech_key in question_lower:
@@ -140,37 +232,62 @@ class Neo4jGraphRAG:
             "milan": "Milan",
             "vatican": "Vatican",
             "louvre": "Louvre Museum",
-            "uffizi": "Uffizi Gallery"
+            "uffizi": "Uffizi Gallery",
         }
         for place_key, place_name in places.items():
             if place_key in question_lower:
                 analysis["entities"].append({"type": "Place", "name": place_name})
 
         # 確定查詢意圖（12大分類導向）
-        if any(word in question_lower for word in ["創作", "製作", "誰畫", "created", "painted", "made"]):
+        if any(
+            word in question_lower
+            for word in ["創作", "製作", "誰畫", "created", "painted", "made"]
+        ):
             analysis["query_intent"] = "creation"
-        elif any(word in question_lower for word in ["影響", "師從", "influenced", "taught", "inspired"]):
+        elif any(
+            word in question_lower for word in ["影響", "師從", "influenced", "taught", "inspired"]
+        ):
             analysis["query_intent"] = "influence"
-        elif any(word in question_lower for word in ["收藏", "博物館", "在哪", "housed", "museum", "where"]):
+        elif any(
+            word in question_lower
+            for word in ["收藏", "博物館", "在哪", "housed", "museum", "where"]
+        ):
             analysis["query_intent"] = "collection"
-        elif any(word in question_lower for word in ["技法", "方法", "如何", "technique", "method", "how"]):
+        elif any(
+            word in question_lower
+            for word in ["技法", "方法", "如何", "technique", "method", "how"]
+        ):
             analysis["query_intent"] = "technique"
-        elif any(word in question_lower for word in ["時期", "年代", "什麼時候", "period", "when", "date"]):
+        elif any(
+            word in question_lower
+            for word in ["時期", "年代", "什麼時候", "period", "when", "date"]
+        ):
             analysis["query_intent"] = "temporal"
-        elif any(word in question_lower for word in ["地點", "位置", "城市", "location", "place", "city"]):
+        elif any(
+            word in question_lower for word in ["地點", "位置", "城市", "location", "place", "city"]
+        ):
             analysis["query_intent"] = "geographic"
-        elif any(word in question_lower for word in ["主題", "描繪", "象徵", "theme", "depicts", "symbolizes"]):
+        elif any(
+            word in question_lower
+            for word in ["主題", "描繪", "象徵", "theme", "depicts", "symbolizes"]
+        ):
             analysis["query_intent"] = "thematic"
-        elif any(word in question_lower for word in ["翻譯", "中文", "英文", "意思", "translation", "meaning"]):
+        elif any(
+            word in question_lower
+            for word in ["翻譯", "中文", "英文", "意思", "translation", "meaning"]
+        ):
             analysis["query_intent"] = "terminology"
-        elif any(word in question_lower for word in ["關係", "連結", "相關", "relationship", "connection", "related"]):
+        elif any(
+            word in question_lower
+            for word in ["關係", "連結", "相關", "relationship", "connection", "related"]
+        ):
             analysis["query_intent"] = "relationship"
         else:
             analysis["query_intent"] = "general"
 
         return analysis
 
-    def generate_cypher_query(self, analysis: Dict[str, Any], max_nodes: int = 50) -> str:
+    def generate_cypher_query(self, analysis: dict[str, Any], max_nodes: int = 50) -> str:
         """根據分析生成Cypher查詢"""
         intent = analysis["query_intent"]
         entities = analysis["entities"]
@@ -179,7 +296,9 @@ class Neo4jGraphRAG:
             # 查詢實體之間的關係
             entity_patterns = []
             for entity in entities:
-                entity_patterns.append(f"(n:{entity['type']} {{name: CONTAINS '{entity['name']}'}}))")
+                entity_patterns.append(
+                    f"(n:{entity['type']} {{name: CONTAINS '{entity['name']}'}}))"
+                )
 
             if len(entity_patterns) >= 2:
                 return f"""
@@ -227,7 +346,7 @@ class Neo4jGraphRAG:
         LIMIT {max_nodes}
         """
 
-    def execute_graph_query(self, cypher_query: str) -> List[Dict]:
+    def execute_graph_query(self, cypher_query: str) -> list[dict]:
         """執行圖譜查詢"""
         if not self.driver:
             return []
@@ -240,7 +359,7 @@ class Neo4jGraphRAG:
             logging.error(f"❌ 執行Cypher查詢失敗: {e}")
             return []
 
-    def format_graph_results(self, results: List[Dict], analysis: Dict[str, Any]) -> str:
+    def format_graph_results(self, results: list[dict], analysis: dict[str, Any]) -> str:
         """格式化圖譜查詢結果"""
         if not results:
             return "沒有找到相關的圖譜數據。"
@@ -250,10 +369,10 @@ class Neo4jGraphRAG:
         if intent == "creation":
             formatted = "🎨 **藝術家創作關係:**\n\n"
             for result in results[:10]:
-                artist = result.get('artist', 'Unknown')
-                artwork = result.get('artwork', 'Unknown')
-                date = result.get('date', '')
-                medium = result.get('medium', '')
+                artist = result.get("artist", "Unknown")
+                artwork = result.get("artwork", "Unknown")
+                date = result.get("date", "")
+                medium = result.get("medium", "")
                 formatted += f"- **{artist}** 創作了 **{artwork}**"
                 if date:
                     formatted += f" ({date})"
@@ -264,17 +383,17 @@ class Neo4jGraphRAG:
         elif intent == "collection":
             formatted = "🏛️ **博物館收藏:**\n\n"
             for result in results[:10]:
-                museum = result.get('museum', 'Unknown')
-                artwork = result.get('artwork', 'Unknown')
-                artist = result.get('artist', 'Unknown')
+                museum = result.get("museum", "Unknown")
+                artwork = result.get("artwork", "Unknown")
+                artist = result.get("artist", "Unknown")
                 formatted += f"- **{museum}** 收藏 **{artwork}** (by {artist})\n"
 
         elif intent == "relationship":
             formatted = "🔗 **關係網絡:**\n\n"
             for result in results[:10]:
-                entity1 = result.get('entity1', result.get('from_name', 'Unknown'))
-                relationship = result.get('relationship', 'RELATED')
-                entity2 = result.get('entity2', result.get('to_name', 'Unknown'))
+                entity1 = result.get("entity1", result.get("from_name", "Unknown"))
+                relationship = result.get("relationship", "RELATED")
+                entity2 = result.get("entity2", result.get("to_name", "Unknown"))
                 formatted += f"- **{entity1}** → {relationship} → **{entity2}**\n"
 
         else:
@@ -306,14 +425,16 @@ class Neo4jGraphRAG:
             vector_results=[],  # 可以後續整合向量搜索
             cypher_query=cypher_query,
             processing_time=processing_time,
-            query_type="graph"
+            query_type="graph",
         )
+
 
 # 創建FastAPI應用
 app = FastAPI(title="GraphRAG API", description="Neo4j藝術史知識圖譜API")
 
 # 初始化GraphRAG系統
 graph_rag = Neo4jGraphRAG()
+
 
 @app.post("/graphrag/query", response_model=GraphRAGResponse)
 async def query_graphrag(query: GraphRAGQuery):
@@ -324,10 +445,12 @@ async def query_graphrag(query: GraphRAGQuery):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"GraphRAG查詢失敗: {str(e)}")
 
+
 @app.get("/graphrag/health")
 async def health_check():
     """健康檢查"""
     return {"status": "healthy", "service": "GraphRAG API"}
+
 
 @app.get("/graphrag/stats")
 async def get_graph_stats():
@@ -347,12 +470,10 @@ async def get_graph_stats():
         """
         relationships = graph_rag.execute_graph_query(relationships_query)
 
-        return {
-            "nodes": stats,
-            "relationships": relationships
-        }
+        return {"nodes": stats, "relationships": relationships}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"獲取統計信息失敗: {str(e)}")
+
 
 def main():
     """主函數"""
@@ -369,7 +490,7 @@ def main():
     test_queries = [
         "Leonardo da Vinci創作了哪些著名作品？",
         "Harvard Art Museums有哪些收藏？",
-        "文藝復興時期有哪些藝術家？"
+        "文藝復興時期有哪些藝術家？",
     ]
 
     for query in test_queries:
@@ -381,11 +502,12 @@ def main():
         if result.graph_results:
             print(f"📋 示例結果: {result.graph_results[0]}")
 
-    print(f"\n✅ GraphRAG測試完成！")
-    print(f"🚀 啟動API服務在端口8010...")
+    print("\n✅ GraphRAG測試完成！")
+    print("🚀 啟動API服務在端口8010...")
 
     # 啟動API服務
     uvicorn.run(app, host="0.0.0.0", port=8010, log_level="info")
+
 
 if __name__ == "__main__":
     main()

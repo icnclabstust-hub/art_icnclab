@@ -4,10 +4,12 @@
 使用Qdrant和Weaviate進行基礎RAG測試
 """
 
-import requests
 import json
 import time
 from datetime import datetime
+
+import requests
+
 
 class MultimodalRAGDemo:
     def __init__(self):
@@ -16,7 +18,7 @@ class MultimodalRAGDemo:
             "qdrant": "http://localhost:6333",
             "weaviate": "http://localhost:8081",
             "neo4j": "http://localhost:7474",
-            "chromadb": "http://localhost:8000"
+            "chromadb": "http://localhost:8000",
         }
 
         self.test_documents = [
@@ -28,7 +30,7 @@ class MultimodalRAGDemo:
                 "description": "世界著名的肖像畫，以神秘微笑聞名",
                 "medium": "油畫",
                 "year": 1503,
-                "location": "羅浮宮"
+                "location": "羅浮宮",
             },
             {
                 "id": "art_002",
@@ -38,7 +40,7 @@ class MultimodalRAGDemo:
                 "description": "以漩渦狀筆觸描繪夜空的傑作",
                 "medium": "油畫",
                 "year": 1889,
-                "location": "現代藝術博物館"
+                "location": "現代藝術博物館",
             },
             {
                 "id": "art_003",
@@ -48,8 +50,8 @@ class MultimodalRAGDemo:
                 "description": "表達現代人焦慮情感的經典作品",
                 "medium": "油彩、蛋彩、粉彩",
                 "year": 1893,
-                "location": "挪威國家美術館"
-            }
+                "location": "挪威國家美術館",
+            },
         ]
 
     def test_qdrant_operations(self):
@@ -63,18 +65,19 @@ class MultimodalRAGDemo:
                 "name": collection_name,
                 "vectors": {
                     "size": 384,  # 假設使用all-MiniLM-L6-v2的向量維度
-                    "distance": "Cosine"
-                }
+                    "distance": "Cosine",
+                },
             }
 
             # 檢查集合是否存在
             collections_response = requests.get(f"{self.services['qdrant']}/collections")
-            existing_collections = [c["name"] for c in collections_response.json()["result"]["collections"]]
+            existing_collections = [
+                c["name"] for c in collections_response.json()["result"]["collections"]
+            ]
 
             if collection_name not in existing_collections:
                 response = requests.put(
-                    f"{self.services['qdrant']}/collections/{collection_name}",
-                    json=create_payload
+                    f"{self.services['qdrant']}/collections/{collection_name}", json=create_payload
                 )
                 if response.status_code == 200:
                     print(f"✅ Qdrant集合 '{collection_name}' 創建成功")
@@ -102,28 +105,12 @@ class MultimodalRAGDemo:
                 "class": "ArtWork",
                 "description": "藝術作品數據類別",
                 "properties": [
-                    {
-                        "name": "title",
-                        "dataType": ["string"],
-                        "description": "藝術作品標題"
-                    },
-                    {
-                        "name": "artist",
-                        "dataType": ["string"],
-                        "description": "藝術家姓名"
-                    },
-                    {
-                        "name": "description",
-                        "dataType": ["text"],
-                        "description": "作品描述"
-                    },
-                    {
-                        "name": "period",
-                        "dataType": ["string"],
-                        "description": "藝術時期"
-                    }
+                    {"name": "title", "dataType": ["string"], "description": "藝術作品標題"},
+                    {"name": "artist", "dataType": ["string"], "description": "藝術家姓名"},
+                    {"name": "description", "dataType": ["text"], "description": "作品描述"},
+                    {"name": "period", "dataType": ["string"], "description": "藝術時期"},
                 ],
-                "vectorizer": "none"
+                "vectorizer": "none",
             }
 
             # 檢查類別是否存在
@@ -132,8 +119,7 @@ class MultimodalRAGDemo:
 
             if "ArtWork" not in existing_classes:
                 response = requests.post(
-                    f"{self.services['weaviate']}/v1/schema",
-                    json=schema_payload
+                    f"{self.services['weaviate']}/v1/schema", json=schema_payload
                 )
                 if response.status_code == 200:
                     print("✅ Weaviate ArtWork類別創建成功")
@@ -157,7 +143,7 @@ class MultimodalRAGDemo:
         queries = [
             "找出文藝復興時期的著名肖像畫",
             "有哪些表現情感的現代藝術作品",
-            "羅浮宮收藏的經典畫作"
+            "羅浮宮收藏的經典畫作",
         ]
 
         for i, query in enumerate(queries, 1):
@@ -190,8 +176,8 @@ class MultimodalRAGDemo:
                     "metrics": {
                         "setup_time": "0.5s",
                         "query_latency": "0.02s",
-                        "precision@3": 0.85
-                    }
+                        "precision@3": 0.85,
+                    },
                 },
                 {
                     "name": "Weaviate_RAG",
@@ -200,15 +186,15 @@ class MultimodalRAGDemo:
                     "metrics": {
                         "setup_time": "0.3s",
                         "query_latency": "0.03s",
-                        "precision@3": 0.82
-                    }
-                }
+                        "precision@3": 0.82,
+                    },
+                },
             ],
             "test_data": {
                 "documents": len(self.test_documents),
                 "queries": 3,
-                "modalities": ["text"]
-            }
+                "modalities": ["text"],
+            },
         }
 
         # 保存報告
@@ -227,7 +213,7 @@ class MultimodalRAGDemo:
         results = {
             "qdrant": self.test_qdrant_operations(),
             "weaviate": self.test_weaviate_operations(),
-            "query_simulation": self.simulate_rag_query()
+            "query_simulation": self.simulate_rag_query(),
         }
 
         print("\n" + "=" * 60)
@@ -240,7 +226,9 @@ class MultimodalRAGDemo:
             status_icon = "✅" if status else "❌"
             print(f"{status_icon} {test.upper()}: {'成功' if status else '失敗'}")
 
-        print(f"\n🎯 演示成功率: {success_count}/{total_tests} ({success_count/total_tests*100:.1f}%)")
+        print(
+            f"\n🎯 演示成功率: {success_count}/{total_tests} ({success_count / total_tests * 100:.1f}%)"
+        )
 
         if success_count >= total_tests * 0.8:
             print("🎉 演示實驗成功！多模態RAG系統基礎設施已準備就緒")
@@ -249,6 +237,7 @@ class MultimodalRAGDemo:
         else:
             print("⚠️ 演示實驗部分失敗，需要進一步調試")
             return False
+
 
 if __name__ == "__main__":
     demo = MultimodalRAGDemo()

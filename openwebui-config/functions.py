@@ -4,9 +4,7 @@ OpenWebUI 自定義函數 - RAG策略切換支援
 """
 
 import requests
-import json
-from typing import Dict, Any, List
-import asyncio
+
 
 class RagStrategyHandler:
     def __init__(self):
@@ -23,7 +21,7 @@ class RagStrategyHandler:
             return base_model, rag_strategy
         return model_id, "none"
 
-    def query_with_rag(self, query: str, rag_strategy: str, params: Dict) -> str:
+    def query_with_rag(self, query: str, rag_strategy: str, params: dict) -> str:
         """
         使用指定RAG策略查詢
         """
@@ -37,15 +35,11 @@ class RagStrategyHandler:
                 "strategy": rag_strategy,
                 "top_k": params.get("top_k", 5),
                 "include_sources": True,
-                "timeout": params.get("timeout", 30)
+                "timeout": params.get("timeout", 30),
             }
 
             # 發送RAG查詢
-            response = requests.post(
-                f"{self.rag_api_url}/query",
-                json=rag_request,
-                timeout=30
-            )
+            response = requests.post(f"{self.rag_api_url}/query", json=rag_request, timeout=30)
 
             if response.status_code == 200:
                 rag_result = response.json()
@@ -72,7 +66,7 @@ class RagStrategyHandler:
 
         return None
 
-    def query_ollama(self, model: str, prompt: str, params: Dict) -> str:
+    def query_ollama(self, model: str, prompt: str, params: dict) -> str:
         """
         查詢Ollama模型
         """
@@ -84,13 +78,11 @@ class RagStrategyHandler:
                 "options": {
                     "temperature": params.get("temperature", 0.1),
                     "num_predict": params.get("max_tokens", 2048),
-                }
+                },
             }
 
             response = requests.post(
-                f"{self.ollama_api_url}/api/generate",
-                json=ollama_request,
-                timeout=60
+                f"{self.ollama_api_url}/api/generate", json=ollama_request, timeout=60
             )
 
             if response.status_code == 200:
@@ -102,14 +94,12 @@ class RagStrategyHandler:
 
         return "抱歉，查詢處理失敗，請稍後再試。"
 
+
 # 全域處理器實例
 rag_handler = RagStrategyHandler()
 
-def rag_enhanced_query(
-    query: str,
-    model_id: str = "llama3.1:8b@hybrid_balanced",
-    **kwargs
-) -> str:
+
+def rag_enhanced_query(query: str, model_id: str = "llama3.1:8b@hybrid_balanced", **kwargs) -> str:
     """
     RAG增強查詢主函數
     這是OpenWebUI調用的主要函數
@@ -123,7 +113,7 @@ def rag_enhanced_query(
             "temperature": kwargs.get("temperature", 0.1),
             "max_tokens": kwargs.get("max_tokens", 2048),
             "top_k": kwargs.get("top_k", 5),
-            "timeout": kwargs.get("timeout", 30)
+            "timeout": kwargs.get("timeout", 30),
         }
 
         # 如果使用RAG，先進行RAG查詢
@@ -137,12 +127,15 @@ def rag_enhanced_query(
         response = rag_handler.query_ollama(base_model, enhanced_prompt, params)
 
         # 添加策略標識
-        strategy_info = f"\\n\\n---\\n🔧 使用策略: {base_model} + {rag_strategy.replace('_', ' ').title()}"
+        strategy_info = (
+            f"\\n\\n---\\n🔧 使用策略: {base_model} + {rag_strategy.replace('_', ' ').title()}"
+        )
 
         return response + strategy_info
 
     except Exception as e:
         return f"查詢處理失敗: {str(e)}"
+
 
 # OpenWebUI函數定義
 async def main(
@@ -172,11 +165,7 @@ async def main(
             return "沒有找到用戶查詢"
 
         # 處理查詢
-        result = rag_enhanced_query(
-            query=user_message,
-            model_id=model,
-            **body
-        )
+        result = rag_enhanced_query(query=user_message, model_id=model, **body)
 
         return result
 

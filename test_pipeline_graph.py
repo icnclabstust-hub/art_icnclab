@@ -3,8 +3,8 @@
 測試 OpenWebUI Pipeline 圖譜功能
 """
 
-import sys
 import os
+import sys
 
 # 添加當前目錄到路徑
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +25,7 @@ def test_entity_extraction():
         "米開朗基羅和拉斐爾有什麼關係?",
         "Leonardo da Vinci's works include Mona Lisa",
         "文藝復興時期的重要藝術家",
-        "《蒙娜麗莎》是誰創作的?"
+        "《蒙娜麗莎》是誰創作的?",
     ]
 
     for i, text in enumerate(test_cases, 1):
@@ -45,11 +45,9 @@ def test_neo4j_connection():
     pipeline = Pipeline()
 
     import requests
+
     try:
-        response = requests.get(
-            pipeline.valves.NEO4J_URI,
-            timeout=5
-        )
+        response = requests.get(pipeline.valves.NEO4J_URI, timeout=5)
         if response.status_code == 200:
             print(f"✅ Neo4j 連接成功: {pipeline.valves.NEO4J_URI}")
         else:
@@ -88,18 +86,18 @@ def test_graph_query():
         if graph_data.get("error"):
             print(f"   ❌ 查詢錯誤: {graph_data['error']}")
         elif not graph_data.get("nodes"):
-            print(f"   ⚠️ 未找到圖譜數據")
+            print("   ⚠️ 未找到圖譜數據")
         else:
-            print(f"   ✅ 找到圖譜:")
+            print("   ✅ 找到圖譜:")
             print(f"      - 節點數量: {len(graph_data['nodes'])}")
             print(f"      - 關係數量: {len(graph_data['edges'])}")
 
             # 顯示節點
-            if graph_data['nodes']:
-                print(f"      - 節點類型:")
-                for node in graph_data['nodes'][:5]:
-                    label = node.get('label', 'Unknown')
-                    name = node.get('name', 'Unknown')
+            if graph_data["nodes"]:
+                print("      - 節點類型:")
+                for node in graph_data["nodes"][:5]:
+                    label = node.get("label", "Unknown")
+                    name = node.get("name", "Unknown")
                     print(f"        • [{label}] {name}")
 
     print("\n✅ 圖譜查詢測試完成\n")
@@ -128,7 +126,7 @@ def test_mermaid_generation():
 
         # 保存到文件
         output_file = "test_mermaid_output.md"
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             f.write(mermaid)
         print(f"\n💾 圖表已保存到: {output_file}")
         print("   您可以在支持 Mermaid 的 Markdown 查看器中打開此文件")
@@ -197,13 +195,9 @@ def test_database_stats():
             response = requests.post(
                 f"{pipeline.valves.NEO4J_URI}/db/neo4j/tx/commit",
                 auth=(pipeline.valves.NEO4J_USER, pipeline.valves.NEO4J_PASSWORD),
-                json={
-                    "statements": [{
-                        "statement": query
-                    }]
-                },
+                json={"statements": [{"statement": query}]},
                 headers={"Content-Type": "application/json"},
-                timeout=5
+                timeout=5,
             )
 
             if response.status_code == 200:
@@ -274,4 +268,5 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\n\n❌ 測試出錯: {str(e)}")
         import traceback
+
         traceback.print_exc()

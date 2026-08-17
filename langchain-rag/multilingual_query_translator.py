@@ -8,7 +8,6 @@ import json
 import logging
 import re
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +15,7 @@ logger = logging.getLogger(__name__)
 class MultilingualQueryTranslator:
     """多語言查詢翻譯器"""
 
-    def __init__(self, dictionary_path: Optional[str] = None):
+    def __init__(self, dictionary_path: str | None = None):
         """初始化翻譯器
 
         Args:
@@ -40,7 +39,7 @@ class MultilingualQueryTranslator:
                 dictionary_path = possible_paths[0]  # 使用第一個作為默認
 
         try:
-            with open(dictionary_path, 'r', encoding='utf-8') as f:
+            with open(dictionary_path, encoding="utf-8") as f:
                 self.dictionary = json.load(f)
             logger.info(f"✅ 載入術語字典: {dictionary_path}")
         except Exception as e:
@@ -52,12 +51,12 @@ class MultilingualQueryTranslator:
 
         # 語言檢測模式
         self.language_patterns = {
-            'zh': re.compile(r'[\u4e00-\u9fff]'),  # 中文
-            'ja': re.compile(r'[\u3040-\u309f\u30a0-\u30ff]'),  # 日文平假名+片假名
-            'ko': re.compile(r'[\uac00-\ud7af]'),  # 韓文
+            "zh": re.compile(r"[\u4e00-\u9fff]"),  # 中文
+            "ja": re.compile(r"[\u3040-\u309f\u30a0-\u30ff]"),  # 日文平假名+片假名
+            "ko": re.compile(r"[\uac00-\ud7af]"),  # 韓文
         }
 
-    def _build_term_index(self) -> Dict[str, str]:
+    def _build_term_index(self) -> dict[str, str]:
         """建立術語索引：多語言詞彙 -> 英文關鍵詞"""
         index = {}
 
@@ -88,22 +87,22 @@ class MultilingualQueryTranslator:
             語言代碼: 'en', 'zh', 'ja', 'ko', 'unknown'
         """
         # 檢查是否包含非英文字符
-        has_chinese = bool(self.language_patterns['zh'].search(text))
-        has_japanese = bool(self.language_patterns['ja'].search(text))
-        has_korean = bool(self.language_patterns['ko'].search(text))
+        has_chinese = bool(self.language_patterns["zh"].search(text))
+        has_japanese = bool(self.language_patterns["ja"].search(text))
+        has_korean = bool(self.language_patterns["ko"].search(text))
 
         if has_chinese:
-            return 'zh'
+            return "zh"
         elif has_japanese:
-            return 'ja'
+            return "ja"
         elif has_korean:
-            return 'ko'
+            return "ko"
         elif text.isascii():
-            return 'en'
+            return "en"
         else:
-            return 'unknown'
+            return "unknown"
 
-    def translate_terms(self, query: str) -> Tuple[str, List[str]]:
+    def translate_terms(self, query: str) -> tuple[str, list[str]]:
         """翻譯查詢中的專業術語
 
         Args:
@@ -135,15 +134,17 @@ class MultilingualQueryTranslator:
                     if not any(pos <= p < pos + len(term) for p in replaced_positions):
                         # 獲取英文對應詞
                         english_term = self.term_index[term]
-                        original_term = query[pos:pos + len(term)]
+                        original_term = query[pos : pos + len(term)]
 
                         # 記錄替換
-                        replacements.append({
-                            'pos': pos,
-                            'length': len(term),
-                            'original': original_term,
-                            'replacement': english_term
-                        })
+                        replacements.append(
+                            {
+                                "pos": pos,
+                                "length": len(term),
+                                "original": original_term,
+                                "replacement": english_term,
+                            }
+                        )
 
                         # 記錄替換位置
                         for i in range(pos, pos + len(term)):
@@ -152,7 +153,7 @@ class MultilingualQueryTranslator:
                     start = pos + 1
 
         # 按位置從後往前排序，這樣替換時不會影響前面的位置
-        replacements.sort(key=lambda x: x['pos'], reverse=True)
+        replacements.sort(key=lambda x: x["pos"], reverse=True)
 
         # 執行替換
         translated_query = query
@@ -160,9 +161,9 @@ class MultilingualQueryTranslator:
 
         for repl in replacements:
             translated_query = (
-                translated_query[:repl['pos']] +
-                repl['replacement'] +
-                translated_query[repl['pos'] + repl['length']:]
+                translated_query[: repl["pos"]]
+                + repl["replacement"]
+                + translated_query[repl["pos"] + repl["length"] :]
             )
             found_terms.append(f"{repl['original']} -> {repl['replacement']}")
 
@@ -171,7 +172,7 @@ class MultilingualQueryTranslator:
 
         return translated_query, found_terms
 
-    def translate_query(self, query: str, use_llm: bool = False) -> Dict[str, any]:
+    def translate_query(self, query: str, use_llm: bool = False) -> dict[str, any]:
         """翻譯查詢
 
         Args:
@@ -190,13 +191,13 @@ class MultilingualQueryTranslator:
         detected_lang = self.detect_language(query)
 
         # 如果是英文，直接返回
-        if detected_lang == 'en':
+        if detected_lang == "en":
             return {
-                'original_query': query,
-                'translated_query': query,
-                'detected_language': 'en',
-                'found_terms': [],
-                'translation_method': 'none'
+                "original_query": query,
+                "translated_query": query,
+                "detected_language": "en",
+                "found_terms": [],
+                "translation_method": "none",
             }
 
         # 術語翻譯
@@ -207,21 +208,20 @@ class MultilingualQueryTranslator:
             logger.warning(f"⚠️ 未找到可翻譯的術語: {query}")
 
         result = {
-            'original_query': query,
-            'translated_query': translated_query,
-            'detected_language': detected_lang,
-            'found_terms': found_terms,
-            'translation_method': 'dictionary'
+            "original_query": query,
+            "translated_query": translated_query,
+            "detected_language": detected_lang,
+            "found_terms": found_terms,
+            "translation_method": "dictionary",
         }
 
         logger.info(
-            f"翻譯: '{query}' -> '{translated_query}' "
-            f"({detected_lang}, {len(found_terms)} 個術語)"
+            f"翻譯: '{query}' -> '{translated_query}' ({detected_lang}, {len(found_terms)} 個術語)"
         )
 
         return result
 
-    def get_suggestions(self, partial_query: str, limit: int = 5) -> List[str]:
+    def get_suggestions(self, partial_query: str, limit: int = 5) -> list[str]:
         """根據部分輸入提供建議
 
         Args:
@@ -271,6 +271,6 @@ if __name__ == "__main__":
         print(f"原查詢: {result['original_query']}")
         print(f"語言: {result['detected_language']}")
         print(f"翻譯: {result['translated_query']}")
-        if result['found_terms']:
+        if result["found_terms"]:
             print(f"術語: {', '.join(result['found_terms'])}")
         print("-" * 60)

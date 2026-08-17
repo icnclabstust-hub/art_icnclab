@@ -4,48 +4,39 @@
 檢查從數據預處理到RAG系統到OpenWebUI的完整流程
 """
 
-import subprocess
 import json
+import subprocess
 import sys
 from datetime import datetime
 
+
 class SystemDiagnostic:
     def __init__(self):
-        self.results = {
-            "timestamp": datetime.now().isoformat(),
-            "checks": []
-        }
+        self.results = {"timestamp": datetime.now().isoformat(), "checks": []}
 
     def add_check(self, name, status, message, details=None):
         """添加檢查結果"""
-        self.results["checks"].append({
-            "name": name,
-            "status": status,  # "pass", "fail", "warning"
-            "message": message,
-            "details": details
-        })
+        self.results["checks"].append(
+            {
+                "name": name,
+                "status": status,  # "pass", "fail", "warning"
+                "message": message,
+                "details": details,
+            }
+        )
 
     def run_command(self, cmd, description):
         """運行命令並返回結果"""
         try:
-            result = subprocess.run(
-                cmd,
-                shell=True,
-                capture_output=True,
-                text=True,
-                timeout=30
-            )
+            result = subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=30)
             return {
                 "success": result.returncode == 0,
                 "stdout": result.stdout,
                 "stderr": result.stderr,
-                "returncode": result.returncode
+                "returncode": result.returncode,
             }
         except Exception as e:
-            return {
-                "success": False,
-                "error": str(e)
-            }
+            return {"success": False, "error": str(e)}
 
     def check_docker_containers(self):
         """檢查所有Docker容器"""
@@ -55,13 +46,13 @@ class SystemDiagnostic:
         result = self.run_command(cmd, "Docker容器狀態")
 
         if result["success"]:
-            containers = result["stdout"].strip().split('\n')
+            containers = result["stdout"].strip().split("\n")
             healthy = 0
             total = len(containers)
 
             for container in containers:
                 if container:
-                    name, status = container.split('\t', 1)
+                    name, status = container.split("\t", 1)
                     is_healthy = "Up" in status and "healthy" in status
                     if is_healthy:
                         healthy += 1
@@ -70,15 +61,10 @@ class SystemDiagnostic:
                 "Docker容器健康檢查",
                 "pass" if healthy == total else "warning",
                 f"{healthy}/{total} 容器健康",
-                {"containers": containers}
+                {"containers": containers},
             )
         else:
-            self.add_check(
-                "Docker容器健康檢查",
-                "fail",
-                "無法獲取容器狀態",
-                result
-            )
+            self.add_check("Docker容器健康檢查", "fail", "無法獲取容器狀態", result)
 
     def check_neo4j_data(self):
         """檢查Neo4j數據"""
@@ -93,41 +79,35 @@ class SystemDiagnostic:
 
             if result["success"]:
                 try:
-                    lines = result["stdout"].strip().split('\n')
+                    lines = result["stdout"].strip().split("\n")
                     if len(lines) >= 2:
                         count = lines[1].strip()
                         self.add_check(
                             "Neo4j數據檢查",
                             "pass" if int(count) > 0 else "warning",
                             f"知識圖譜包含 {count} 個節點",
-                            {"password": pwd}
+                            {"password": pwd},
                         )
 
                         # 檢查關係數量
                         cmd2 = f'docker exec art-history-neo4j cypher-shell -u neo4j -p {pwd} "MATCH ()-[r]->() RETURN count(r) as total_relationships LIMIT 1"'
                         result2 = self.run_command(cmd2, "Neo4j關係統計")
                         if result2["success"]:
-                            rel_count = result2["stdout"].strip().split('\n')[1].strip()
+                            rel_count = result2["stdout"].strip().split("\n")[1].strip()
                             self.add_check(
-                                "Neo4j關係檢查",
-                                "pass",
-                                f"知識圖譜包含 {rel_count} 個關係"
+                                "Neo4j關係檢查", "pass", f"知識圖譜包含 {rel_count} 個關係"
                             )
                         return
                 except:
                     continue
 
-        self.add_check(
-            "Neo4j數據檢查",
-            "fail",
-            "無法連接到Neo4j或密碼錯誤"
-        )
+        self.add_check("Neo4j數據檢查", "fail", "無法連接到Neo4j或密碼錯誤")
 
     def check_chromadb(self):
         """檢查ChromaDB"""
         print("🔍 檢查ChromaDB向量資料庫...")
 
-        cmd = 'curl -s http://localhost:8001/api/v1/heartbeat'
+        cmd = "curl -s http://localhost:8001/api/v1/heartbeat"
         result = self.run_command(cmd, "ChromaDB健康檢查")
 
         if "Unimplemented" in result["stdout"]:
@@ -136,52 +116,38 @@ class SystemDiagnostic:
                 "ChromaDB狀態",
                 "warning",
                 "ChromaDB運行中但使用新版API (v2)",
-                {"note": "需要更新客戶端代碼使用v2 API"}
+                {"note": "需要更新客戶端代碼使用v2 API"},
             )
         elif result["success"]:
-            self.add_check(
-                "ChromaDB狀態",
-                "pass",
-                "ChromaDB運行正常"
-            )
+            self.add_check("ChromaDB狀態", "pass", "ChromaDB運行正常")
         else:
-            self.add_check(
-                "ChromaDB狀態",
-                "fail",
-                "ChromaDB無法訪問",
-                result
-            )
+            self.add_check("ChromaDB狀態", "fail", "ChromaDB無法訪問", result)
 
     def check_ollama_models(self):
         """檢查Ollama模型"""
         print("🤖 檢查Ollama模型...")
 
-        cmd = 'docker exec art-history-ollama ollama list'
+        cmd = "docker exec art-history-ollama ollama list"
         result = self.run_command(cmd, "Ollama模型列表")
 
         if result["success"]:
-            models = result["stdout"].strip().split('\n')[1:]  # Skip header
-            rag_models = [m for m in models if 'rag' in m.lower()]
+            models = result["stdout"].strip().split("\n")[1:]  # Skip header
+            rag_models = [m for m in models if "rag" in m.lower()]
 
             self.add_check(
                 "Ollama模型檢查",
                 "pass" if len(models) > 0 else "warning",
                 f"找到 {len(models)} 個模型，其中 {len(rag_models)} 個RAG組合模型",
-                {"total": len(models), "rag_models": len(rag_models)}
+                {"total": len(models), "rag_models": len(rag_models)},
             )
         else:
-            self.add_check(
-                "Ollama模型檢查",
-                "fail",
-                "無法獲取Ollama模型列表",
-                result
-            )
+            self.add_check("Ollama模型檢查", "fail", "無法獲取Ollama模型列表", result)
 
     def check_rag_manager(self):
         """檢查RAG Manager"""
         print("⚙️ 檢查RAG Manager...")
 
-        cmd = 'curl -s http://localhost:8007/health'
+        cmd = "curl -s http://localhost:8007/health"
         result = self.run_command(cmd, "RAG Manager健康檢查")
 
         if result["success"]:
@@ -191,75 +157,58 @@ class SystemDiagnostic:
                     "RAG Manager狀態",
                     "pass" if health.get("status") != "unhealthy" else "warning",
                     f"狀態: {health.get('status')}",
-                    health
+                    health,
                 )
             except:
                 self.add_check(
                     "RAG Manager狀態",
                     "warning",
                     "RAG Manager響應但格式異常",
-                    {"response": result["stdout"]}
+                    {"response": result["stdout"]},
                 )
         else:
-            self.add_check(
-                "RAG Manager狀態",
-                "fail",
-                "RAG Manager無法訪問"
-            )
+            self.add_check("RAG Manager狀態", "fail", "RAG Manager無法訪問")
 
     def check_openwebui(self):
         """檢查OpenWebUI"""
         print("🖥️ 檢查OpenWebUI...")
 
-        cmd = 'curl -s http://localhost:8080/health'
+        cmd = "curl -s http://localhost:8080/health"
         result = self.run_command(cmd, "OpenWebUI健康檢查")
 
         if result["success"] and "true" in result["stdout"]:
-            self.add_check(
-                "OpenWebUI狀態",
-                "pass",
-                "OpenWebUI運行正常"
-            )
+            self.add_check("OpenWebUI狀態", "pass", "OpenWebUI運行正常")
         else:
-            self.add_check(
-                "OpenWebUI狀態",
-                "fail",
-                "OpenWebUI無法訪問"
-            )
+            self.add_check("OpenWebUI狀態", "fail", "OpenWebUI無法訪問")
 
     def check_data_files(self):
         """檢查數據文件"""
         print("📁 檢查數據文件...")
 
         import os
+
         data_paths = [
             ("./data/raw", "原始數據"),
             ("./data/processed", "處理後數據"),
             ("./data/raw/images", "圖像數據"),
-            ("./data/processed/embeddings", "嵌入向量")
+            ("./data/processed/embeddings", "嵌入向量"),
         ]
 
         for path, desc in data_paths:
             if os.path.exists(path):
                 try:
-                    file_count = len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
+                    file_count = len(
+                        [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+                    )
                     self.add_check(
                         f"數據檢查: {desc}",
                         "pass" if file_count > 0 else "warning",
-                        f"找到 {file_count} 個文件"
+                        f"找到 {file_count} 個文件",
                     )
                 except Exception as e:
-                    self.add_check(
-                        f"數據檢查: {desc}",
-                        "warning",
-                        f"無法讀取: {e}"
-                    )
+                    self.add_check(f"數據檢查: {desc}", "warning", f"無法讀取: {e}")
             else:
-                self.add_check(
-                    f"數據檢查: {desc}",
-                    "warning",
-                    "目錄不存在"
-                )
+                self.add_check(f"數據檢查: {desc}", "warning", "目錄不存在")
 
     def generate_report(self):
         """生成報告"""
@@ -294,7 +243,7 @@ class SystemDiagnostic:
 
         # 保存報告
         report_file = f"system_diagnostic_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
-        with open(report_file, 'w', encoding='utf-8') as f:
+        with open(report_file, "w", encoding="utf-8") as f:
             json.dump(self.results, f, indent=2, ensure_ascii=False)
 
         print(f"📄 完整報告已保存到: {report_file}")
@@ -316,6 +265,7 @@ class SystemDiagnostic:
         self.check_data_files()
 
         return self.generate_report()
+
 
 if __name__ == "__main__":
     diagnostic = SystemDiagnostic()

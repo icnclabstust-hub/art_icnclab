@@ -5,27 +5,25 @@
 """
 
 import asyncio
-import re
-from typing import Dict, Any, List, Optional
-from enum import Enum
 import logging
-
-from langchain_core.documents import Document
-from langchain.schema.runnable import RunnableBranch, RunnableLambda
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.output_parsers import StrOutputParser
+import re
+from enum import Enum
+from typing import Any
 
 from multimodal_rag import ArtHistoryRAGSystem, RAGConfig
 
 logger = logging.getLogger(__name__)
 
+
 class QueryType(Enum):
     """查詢類型枚舉"""
+
     TEXT_ONLY = "text_only"
     VISUAL_FOCUSED = "visual_focused"
     RELATIONAL = "relational"
     TEMPORAL = "temporal"
     COMPARATIVE = "comparative"
+
 
 class QueryClassifier:
     """查詢分類器"""
@@ -37,26 +35,26 @@ class QueryClassifier:
                 r"顏色|色彩|構圖|筆觸|線條|形狀",
                 r"明暗|光影|透視|風格|畫面",
                 r"color|composition|brush|line|visual",
-                r"看起來|外觀|視覺|圖像"
+                r"看起來|外觀|視覺|圖像",
             ],
             QueryType.RELATIONAL: [
                 r"關係|影響|師承|學派",
                 r"誰.*誰|與.*關係|受.*影響",
                 r"relationship|influence|school|movement",
-                r"比較.*與|對比.*和"
+                r"比較.*與|對比.*和",
             ],
             QueryType.TEMPORAL: [
                 r"\d+年|\d+世紀|時期|年代|歷史",
                 r"之前|之後|同時期|當時",
                 r"century|period|era|history|before|after",
-                r"發展|演變|變遷|歷程"
+                r"發展|演變|變遷|歷程",
             ],
             QueryType.COMPARATIVE: [
                 r"比較|對比|差異|不同|相似",
                 r"與.*比|和.*比|.*與.*區別",
                 r"compare|contrast|difference|similar",
-                r"優缺點|特色對比"
-            ]
+                r"優缺點|特色對比",
+            ],
         }
 
         # 關鍵詞權重
@@ -65,7 +63,7 @@ class QueryClassifier:
             QueryType.RELATIONAL: 1.1,
             QueryType.TEMPORAL: 1.0,
             QueryType.COMPARATIVE: 1.3,
-            QueryType.TEXT_ONLY: 0.8
+            QueryType.TEXT_ONLY: 0.8,
         }
 
     def classify_query(self, query: str) -> QueryType:
@@ -89,7 +87,7 @@ class QueryClassifier:
 
         return max(scores.items(), key=lambda x: x[1])[0]
 
-    def get_classification_confidence(self, query: str) -> Dict[str, float]:
+    def get_classification_confidence(self, query: str) -> dict[str, float]:
         """獲取分類信心度"""
         scores = {query_type.value: 0.0 for query_type in QueryType}
         query_lower = query.lower()
@@ -102,6 +100,7 @@ class QueryClassifier:
         # 正規化分數
         total_score = sum(scores.values()) or 1.0
         return {k: v / total_score for k, v in scores.items()}
+
 
 class AdaptiveRAGSystem:
     """自適應 RAG 系統"""
@@ -127,12 +126,12 @@ class AdaptiveRAGSystem:
             QueryType.VISUAL_FOCUSED: self._visual_strategy,
             QueryType.RELATIONAL: self._relational_strategy,
             QueryType.TEMPORAL: self._temporal_strategy,
-            QueryType.COMPARATIVE: self._comparative_strategy
+            QueryType.COMPARATIVE: self._comparative_strategy,
         }
 
         logger.info("✅ 自適應 RAG 系統初始化完成")
 
-    async def query(self, question: str) -> Dict[str, Any]:
+    async def query(self, question: str) -> dict[str, Any]:
         """執行自適應查詢"""
         try:
             # 1. 分類查詢
@@ -149,18 +148,22 @@ class AdaptiveRAGSystem:
             result = await strategy_func(question)
 
             # 4. 添加元數據
-            result.update({
-                "query_type": query_type.value,
-                "classification_confidence": confidence,
-                "strategy_used": strategy_func.__name__
-            })
+            result.update(
+                {
+                    "query_type": query_type.value,
+                    "classification_confidence": confidence,
+                    "strategy_used": strategy_func.__name__,
+                }
+            )
 
             # 5. 記錄查詢歷史
-            self.query_history.append({
-                "question": question,
-                "query_type": query_type.value,
-                "timestamp": asyncio.get_event_loop().time()
-            })
+            self.query_history.append(
+                {
+                    "question": question,
+                    "query_type": query_type.value,
+                    "timestamp": asyncio.get_event_loop().time(),
+                }
+            )
 
             return result
 
@@ -171,15 +174,15 @@ class AdaptiveRAGSystem:
                 "answer": f"查詢處理失敗: {str(e)}",
                 "query_type": "error",
                 "classification_confidence": {},
-                "strategy_used": "fallback"
+                "strategy_used": "fallback",
             }
 
-    async def _text_strategy(self, question: str) -> Dict[str, Any]:
+    async def _text_strategy(self, question: str) -> dict[str, Any]:
         """純文本策略"""
         logger.info("📝 使用純文本策略")
         return await self.base_rag.query(question)
 
-    async def _visual_strategy(self, question: str) -> Dict[str, Any]:
+    async def _visual_strategy(self, question: str) -> dict[str, Any]:
         """視覺重點策略"""
         logger.info("🎨 使用視覺重點策略")
 
@@ -194,7 +197,7 @@ class AdaptiveRAGSystem:
 
         return result
 
-    async def _relational_strategy(self, question: str) -> Dict[str, Any]:
+    async def _relational_strategy(self, question: str) -> dict[str, Any]:
         """關係重點策略"""
         logger.info("🔗 使用關係重點策略")
 
@@ -208,7 +211,7 @@ class AdaptiveRAGSystem:
 
         return result
 
-    async def _temporal_strategy(self, question: str) -> Dict[str, Any]:
+    async def _temporal_strategy(self, question: str) -> dict[str, Any]:
         """時間重點策略"""
         logger.info("⏰ 使用時間重點策略")
 
@@ -222,7 +225,7 @@ class AdaptiveRAGSystem:
 
         return result
 
-    async def _comparative_strategy(self, question: str) -> Dict[str, Any]:
+    async def _comparative_strategy(self, question: str) -> dict[str, Any]:
         """比較分析策略"""
         logger.info("⚖️ 使用比較分析策略")
 
@@ -241,7 +244,7 @@ class AdaptiveRAGSystem:
         visual_contexts = [
             "請詳細描述視覺特色",
             "包括色彩、構圖、筆觸等技法分析",
-            "說明畫面的視覺效果"
+            "說明畫面的視覺效果",
         ]
 
         return f"{query} {' '.join(visual_contexts)}"
@@ -258,7 +261,7 @@ class AdaptiveRAGSystem:
         relation_contexts = [
             "請說明相關的藝術家關係",
             "包括師承、影響、派別歸屬",
-            "分析藝術運動之間的聯繫"
+            "分析藝術運動之間的聯繫",
         ]
 
         return f"{query} {' '.join(relation_contexts)}"
@@ -275,7 +278,7 @@ class AdaptiveRAGSystem:
         temporal_contexts = [
             "請說明歷史背景和時代特色",
             "包括前後時期的發展脈絡",
-            "分析時間演進關係"
+            "分析時間演進關係",
         ]
 
         return f"{query} {' '.join(temporal_contexts)}"
@@ -283,18 +286,14 @@ class AdaptiveRAGSystem:
     def _add_timeline_info(self, response: str) -> str:
         """添加時間軸資訊"""
         # 檢查是否包含年份資訊
-        years = re.findall(r'\d{4}年?|\d+世紀', response)
+        years = re.findall(r"\d{4}年?|\d+世紀", response)
         if years:
             return f"【時間軸】{', '.join(years)}\n\n{response}"
         return response
 
     def _structure_comparison_query(self, query: str) -> str:
         """結構化比較查詢"""
-        comparison_contexts = [
-            "請進行系統性比較分析",
-            "包括相似點和差異點",
-            "說明各自的特色和優勢"
-        ]
+        comparison_contexts = ["請進行系統性比較分析", "包括相似點和差異點", "說明各自的特色和優勢"]
 
         return f"{query} {' '.join(comparison_contexts)}"
 
@@ -305,7 +304,7 @@ class AdaptiveRAGSystem:
             return f"【比較分析】\n{response}"
         return response
 
-    def get_query_statistics(self) -> Dict[str, Any]:
+    def get_query_statistics(self) -> dict[str, Any]:
         """獲取查詢統計"""
         if not self.query_history:
             return {"message": "暫無查詢記錄"}
@@ -324,7 +323,9 @@ class AdaptiveRAGSystem:
             "total_queries": total_queries,
             "query_type_distribution": type_counts,
             "query_type_ratios": type_ratios,
-            "recent_queries": self.query_history[-5:] if len(self.query_history) > 5 else self.query_history
+            "recent_queries": self.query_history[-5:]
+            if len(self.query_history) > 5
+            else self.query_history,
         }
 
     async def optimize_strategies(self):
@@ -348,6 +349,7 @@ class AdaptiveRAGSystem:
 
         logger.info("✅ 策略優化完成")
 
+
 # 測試和示例用法
 async def main():
     """主測試函數"""
@@ -361,10 +363,10 @@ async def main():
         "莫內的畫作色彩有什麼特別的地方？",  # VISUAL_FOCUSED
         "畢卡索與布拉克的關係如何？",  # RELATIONAL
         "19世紀藝術發展歷程是什麼？",  # TEMPORAL
-        "印象派與後印象派有什麼區別？"  # COMPARATIVE
+        "印象派與後印象派有什麼區別？",  # COMPARATIVE
     ]
 
-    print("🤖 自適應多策略 RAG 系統測試\n" + "="*60)
+    print("🤖 自適應多策略 RAG 系統測試\n" + "=" * 60)
 
     for i, query in enumerate(test_queries, 1):
         print(f"\n【測試 {i}】{query}")
@@ -377,7 +379,7 @@ async def main():
         print(f"回答: {result['answer'][:200]}...")
 
         # 顯示分類信心度
-        confidence = result.get('classification_confidence', {})
+        confidence = result.get("classification_confidence", {})
         if confidence:
             print("分類信心度:")
             for query_type, conf in confidence.items():
@@ -385,14 +387,15 @@ async def main():
                     print(f"  {query_type}: {conf:.2f}")
 
     # 顯示查詢統計
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     stats = adaptive_rag.get_query_statistics()
     print("📊 查詢統計:")
     print(f"  總查詢數: {stats.get('total_queries', 0)}")
     print("  查詢類型分佈:")
-    for query_type, count in stats.get('query_type_distribution', {}).items():
-        ratio = stats.get('query_type_ratios', {}).get(query_type, 0)
+    for query_type, count in stats.get("query_type_distribution", {}).items():
+        ratio = stats.get("query_type_ratios", {}).get(query_type, 0)
         print(f"    {query_type}: {count} ({ratio:.1%})")
+
 
 if __name__ == "__main__":
     asyncio.run(main())

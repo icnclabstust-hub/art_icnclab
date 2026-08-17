@@ -5,14 +5,15 @@ RAG Agent基礎類別
 """
 
 import asyncio
-import logging
+import json
 import uuid
 from datetime import datetime
-from typing import Dict, List, Any, Optional
-import json
+from typing import Any
+
 import numpy as np
 
-from agents.core.base_agent import BaseAgent, AgentCapability, AgentMessage, MessageType
+from agents.core.base_agent import AgentCapability, AgentMessage, BaseAgent, MessageType
+
 
 class RAGExperimentResult:
     """RAG實驗結果數據結構"""
@@ -40,15 +41,20 @@ class RAGExperimentResult:
         self.query_results = []
         self.error_log = []
 
-    def add_query_result(self, query: str, retrieved_docs: List[Dict],
-                        generated_answer: str, metrics: Dict[str, float]):
+    def add_query_result(
+        self,
+        query: str,
+        retrieved_docs: list[dict],
+        generated_answer: str,
+        metrics: dict[str, float],
+    ):
         """添加查詢結果"""
         result = {
             "query": query,
             "retrieved_docs": len(retrieved_docs),
             "answer": generated_answer,
             "metrics": metrics,
-            "timestamp": datetime.now()
+            "timestamp": datetime.now(),
         }
         self.query_results.append(result)
         self.queries_processed += 1
@@ -61,13 +67,9 @@ class RAGExperimentResult:
         if generated_answer:
             self.generated_answers += 1
 
-    def add_error(self, error: str, context: Dict[str, Any] = None):
+    def add_error(self, error: str, context: dict[str, Any] = None):
         """添加錯誤記錄"""
-        error_entry = {
-            "error": error,
-            "context": context or {},
-            "timestamp": datetime.now()
-        }
+        error_entry = {"error": error, "context": context or {}, "timestamp": datetime.now()}
         self.error_log.append(error_entry)
 
     def finalize(self):
@@ -77,18 +79,26 @@ class RAGExperimentResult:
 
         # 計算平均指標
         if self.queries_processed > 0:
-            self.retrieval_metrics["success_rate"] = self.successful_retrievals / self.queries_processed
-            self.generation_metrics["success_rate"] = self.generated_answers / self.queries_processed
+            self.retrieval_metrics["success_rate"] = (
+                self.successful_retrievals / self.queries_processed
+            )
+            self.generation_metrics["success_rate"] = (
+                self.generated_answers / self.queries_processed
+            )
 
             if self.query_results:
-                avg_retrieval_time = np.mean([r["metrics"].get("retrieval_time", 0) for r in self.query_results])
-                avg_generation_time = np.mean([r["metrics"].get("generation_time", 0) for r in self.query_results])
+                avg_retrieval_time = np.mean(
+                    [r["metrics"].get("retrieval_time", 0) for r in self.query_results]
+                )
+                avg_generation_time = np.mean(
+                    [r["metrics"].get("generation_time", 0) for r in self.query_results]
+                )
 
                 self.latency_metrics["avg_retrieval_time"] = avg_retrieval_time
                 self.latency_metrics["avg_generation_time"] = avg_generation_time
                 self.latency_metrics["avg_total_time"] = avg_retrieval_time + avg_generation_time
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """轉換為字典格式"""
         return {
             "experiment_id": self.experiment_id,
@@ -105,8 +115,9 @@ class RAGExperimentResult:
             "failed_retrievals": self.failed_retrievals,
             "generated_answers": self.generated_answers,
             "query_results_count": len(self.query_results),
-            "errors_count": len(self.error_log)
+            "errors_count": len(self.error_log),
         }
+
 
 class BaseRAGAgent(BaseAgent):
     """
@@ -127,8 +138,8 @@ class BaseRAGAgent(BaseAgent):
         self.generators = {}
 
         # 實驗管理
-        self.active_experiments: Dict[str, RAGExperimentResult] = {}
-        self.experiment_configs: Dict[str, Dict[str, Any]] = {}
+        self.active_experiments: dict[str, RAGExperimentResult] = {}
+        self.experiment_configs: dict[str, dict[str, Any]] = {}
 
         # 性能監控
         self.performance_tracker = {
@@ -136,7 +147,7 @@ class BaseRAGAgent(BaseAgent):
             "successful_queries": 0,
             "failed_queries": 0,
             "avg_response_time": 0.0,
-            "last_update": datetime.now()
+            "last_update": datetime.now(),
         }
 
         # 配置參數
@@ -144,7 +155,7 @@ class BaseRAGAgent(BaseAgent):
             "max_retrieved_docs": 5,
             "max_tokens": 2048,
             "temperature": 0.1,
-            "timeout": 30.0
+            "timeout": 30.0,
         }
 
     async def _initialize(self):
@@ -167,7 +178,7 @@ class BaseRAGAgent(BaseAgent):
         # 可以從文件或環境變數載入
         pass
 
-    async def _register_capabilities(self) -> List[AgentCapability]:
+    async def _register_capabilities(self) -> list[AgentCapability]:
         """註冊RAG Agent基礎能力"""
         return [
             AgentCapability(
@@ -176,7 +187,7 @@ class BaseRAGAgent(BaseAgent):
                 input_types=["query", "context"],
                 output_types=["retrieved_documents"],
                 resource_requirements={"cpu": 1, "memory": "1GB"},
-                estimated_time=5.0
+                estimated_time=5.0,
             ),
             AgentCapability(
                 name="answer_generation",
@@ -184,7 +195,7 @@ class BaseRAGAgent(BaseAgent):
                 input_types=["query", "retrieved_documents"],
                 output_types=["generated_answer"],
                 resource_requirements={"cpu": 2, "memory": "2GB"},
-                estimated_time=10.0
+                estimated_time=10.0,
             ),
             AgentCapability(
                 name="rag_experiment_execution",
@@ -192,8 +203,8 @@ class BaseRAGAgent(BaseAgent):
                 input_types=["experiment_config"],
                 output_types=["experiment_results"],
                 resource_requirements={"cpu": 2, "memory": "4GB"},
-                estimated_time=300.0
-            )
+                estimated_time=300.0,
+            ),
         ]
 
     async def _start(self):
@@ -210,30 +221,27 @@ class BaseRAGAgent(BaseAgent):
         for experiment_id in list(self.active_experiments.keys()):
             await self.finalize_experiment(experiment_id)
 
-    async def _execute_task(self, task_id: str, task_data: Dict[str, Any]) -> Dict[str, Any]:
+    async def _execute_task(self, task_id: str, task_data: dict[str, Any]) -> dict[str, Any]:
         """執行RAG任務"""
         task_type = task_data.get("type", task_data.get("action"))
 
         if task_type == "execute_experiment":
             return await self.execute_rag_experiment(
-                task_data["experiment_id"],
-                task_data["experiment_config"]
+                task_data["experiment_id"], task_data["experiment_config"]
             )
         elif task_type == "single_query":
-            return await self.process_single_query(
-                task_data["query"],
-                task_data.get("config", {})
-            )
+            return await self.process_single_query(task_data["query"], task_data.get("config", {}))
         elif task_type == "batch_queries":
             return await self.process_batch_queries(
-                task_data["queries"],
-                task_data.get("config", {})
+                task_data["queries"], task_data.get("config", {})
             )
         else:
             raise ValueError(f"未知任務類型: {task_type}")
 
     # 核心RAG方法
-    async def process_single_query(self, query: str, config: Dict[str, Any] = None) -> Dict[str, Any]:
+    async def process_single_query(
+        self, query: str, config: dict[str, Any] = None
+    ) -> dict[str, Any]:
         """處理單個查詢"""
         start_time = datetime.now()
 
@@ -264,8 +272,8 @@ class BaseRAGAgent(BaseAgent):
             total_queries = self.performance_tracker["total_queries"]
             current_avg = self.performance_tracker["avg_response_time"]
             self.performance_tracker["avg_response_time"] = (
-                (current_avg * (total_queries - 1) + total_time) / total_queries
-            )
+                current_avg * (total_queries - 1) + total_time
+            ) / total_queries
 
             return {
                 "query": query,
@@ -275,9 +283,9 @@ class BaseRAGAgent(BaseAgent):
                     "retrieval_time": retrieval_time,
                     "generation_time": generation_time,
                     "total_time": total_time,
-                    "retrieved_count": len(retrieved_docs)
+                    "retrieved_count": len(retrieved_docs),
                 },
-                "success": bool(generated_answer)
+                "success": bool(generated_answer),
             }
 
         except Exception as e:
@@ -285,18 +293,20 @@ class BaseRAGAgent(BaseAgent):
             self.performance_tracker["failed_queries"] += 1
             raise
 
-    async def retrieve_documents(self, query: str, config: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def retrieve_documents(self, query: str, config: dict[str, Any]) -> list[dict[str, Any]]:
         """檢索相關文檔 - 由子類實現"""
         raise NotImplementedError("子類必須實現retrieve_documents方法")
 
-    async def generate_answer(self, query: str, retrieved_docs: List[Dict[str, Any]],
-                            config: Dict[str, Any]) -> str:
+    async def generate_answer(
+        self, query: str, retrieved_docs: list[dict[str, Any]], config: dict[str, Any]
+    ) -> str:
         """生成答案 - 由子類實現"""
         raise NotImplementedError("子類必須實現generate_answer方法")
 
     # 實驗管理方法
-    async def execute_rag_experiment(self, experiment_id: str,
-                                   experiment_config: Dict[str, Any]) -> Dict[str, Any]:
+    async def execute_rag_experiment(
+        self, experiment_id: str, experiment_config: dict[str, Any]
+    ) -> dict[str, Any]:
         """執行RAG實驗"""
         try:
             # 創建實驗結果對象
@@ -323,7 +333,7 @@ class BaseRAGAgent(BaseAgent):
                         query,
                         result["retrieved_documents"],
                         result["generated_answer"],
-                        result["metrics"]
+                        result["metrics"],
                     )
 
                     # 進度更新
@@ -346,7 +356,7 @@ class BaseRAGAgent(BaseAgent):
                 "experiment_id": experiment_id,
                 "status": "completed",
                 "results": experiment_result.to_dict(),
-                "report": report
+                "report": report,
             }
 
         except Exception as e:
@@ -375,8 +385,7 @@ class BaseRAGAgent(BaseAgent):
 
             if action == "execute_experiment":
                 result = await self.execute_rag_experiment(
-                    payload["experiment_id"],
-                    payload["experiment_config"]
+                    payload["experiment_id"], payload["experiment_config"]
                 )
 
                 # 發送結果給Master Agent
@@ -385,11 +394,9 @@ class BaseRAGAgent(BaseAgent):
                     sender_id=self.agent_id,
                     receiver_id=message.sender_id,
                     message_type=MessageType.TASK_RESPONSE,
-                    payload={
-                        "experiment_results": result
-                    },
+                    payload={"experiment_results": result},
                     timestamp=datetime.now(),
-                    correlation_id=message.correlation_id
+                    correlation_id=message.correlation_id,
                 )
                 await self.send_message(response)
 
@@ -402,7 +409,7 @@ class BaseRAGAgent(BaseAgent):
             self.logger.error(f"處理實驗請求失敗: {e}")
 
     # 輔助方法
-    async def _load_test_queries(self, config: Dict[str, Any]) -> List[str]:
+    async def _load_test_queries(self, config: dict[str, Any]) -> list[str]:
         """載入測試查詢"""
         # 默認藝術史測試查詢
         default_queries = [
@@ -410,14 +417,14 @@ class BaseRAGAgent(BaseAgent):
             "有哪些表現情感的現代藝術作品",
             "羅浮宮收藏的經典畫作有哪些",
             "印象派的主要特徵是什麼",
-            "達文西的藝術風格特點"
+            "達文西的藝術風格特點",
         ]
 
         # 從配置或文件載入更多查詢
         query_file = config.get("query_file")
         if query_file:
             try:
-                with open(query_file, 'r', encoding='utf-8') as f:
+                with open(query_file, encoding="utf-8") as f:
                     file_queries = json.load(f)
                     return file_queries.get("queries", default_queries)
             except Exception as e:
@@ -430,28 +437,32 @@ class BaseRAGAgent(BaseAgent):
         # 可以發送進度更新給Master Agent
         self.logger.debug(f"實驗 {experiment_id} 進度: {progress:.1f}%")
 
-    async def _generate_experiment_report(self, experiment_result: RAGExperimentResult) -> Dict[str, Any]:
+    async def _generate_experiment_report(
+        self, experiment_result: RAGExperimentResult
+    ) -> dict[str, Any]:
         """生成實驗報告"""
         return {
             "experiment_summary": {
                 "framework": experiment_result.rag_framework,
-                "duration": (experiment_result.end_time - experiment_result.start_time).total_seconds(),
+                "duration": (
+                    experiment_result.end_time - experiment_result.start_time
+                ).total_seconds(),
                 "queries_processed": experiment_result.queries_processed,
                 "success_rate": experiment_result.retrieval_metrics.get("success_rate", 0),
             },
             "performance_metrics": {
                 "retrieval": experiment_result.retrieval_metrics,
                 "generation": experiment_result.generation_metrics,
-                "latency": experiment_result.latency_metrics
+                "latency": experiment_result.latency_metrics,
             },
             "error_analysis": {
                 "total_errors": len(experiment_result.error_log),
-                "error_types": self._analyze_error_types(experiment_result.error_log)
+                "error_types": self._analyze_error_types(experiment_result.error_log),
             },
-            "recommendations": await self._generate_recommendations(experiment_result)
+            "recommendations": await self._generate_recommendations(experiment_result),
         }
 
-    def _analyze_error_types(self, error_log: List[Dict[str, Any]]) -> Dict[str, int]:
+    def _analyze_error_types(self, error_log: list[dict[str, Any]]) -> dict[str, int]:
         """分析錯誤類型"""
         error_types = {}
         for error in error_log:
@@ -467,7 +478,7 @@ class BaseRAGAgent(BaseAgent):
 
         return error_types
 
-    async def _generate_recommendations(self, experiment_result: RAGExperimentResult) -> List[str]:
+    async def _generate_recommendations(self, experiment_result: RAGExperimentResult) -> list[str]:
         """生成改進建議"""
         recommendations = []
 
@@ -504,20 +515,20 @@ class BaseRAGAgent(BaseAgent):
             except Exception as e:
                 self.logger.error(f"性能監控錯誤: {e}")
 
-    def get_performance_metrics(self) -> Dict[str, Any]:
+    def get_performance_metrics(self) -> dict[str, Any]:
         """獲取性能指標"""
         return {
             "agent_id": self.agent_id,
             "rag_framework": self.rag_framework,
             "performance": self.performance_tracker.copy(),
             "active_experiments": list(self.active_experiments.keys()),
-            "components_status": self._check_components_status()
+            "components_status": self._check_components_status(),
         }
 
-    def _check_components_status(self) -> Dict[str, str]:
+    def _check_components_status(self) -> dict[str, str]:
         """檢查組件狀態"""
         return {
             "vector_stores": "connected" if self.vector_stores else "not_configured",
             "llm_clients": "connected" if self.llm_clients else "not_configured",
-            "embedders": "connected" if self.embedders else "not_configured"
+            "embedders": "connected" if self.embedders else "not_configured",
         }

@@ -5,16 +5,17 @@
 """
 
 import asyncio
+import json
 import logging
 import signal
 import sys
 from datetime import datetime
-from typing import Dict, List, Any, Optional
-import json
+from typing import Any
 
 from agents.core.master_agent import MasterAgent
 from agents.rag.vector_rag_agent import VectorRAGAgent
 from communication.communication_hub import CommunicationHub
+
 
 class AgentSystem:
     """Agent系統管理器"""
@@ -29,8 +30,8 @@ class AgentSystem:
         self.master_agent = MasterAgent()
 
         # Agent實例
-        self.agents: Dict[str, Any] = {}
-        self.active_agents: List[str] = []
+        self.agents: dict[str, Any] = {}
+        self.active_agents: list[str] = []
 
         # 系統狀態
         self.is_running = False
@@ -42,11 +43,11 @@ class AgentSystem:
         """設置日誌"""
         logging.basicConfig(
             level=logging.INFO,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
             handlers=[
                 logging.StreamHandler(sys.stdout),
-                logging.FileHandler('logs/agent_system.log', encoding='utf-8')
-            ]
+                logging.FileHandler("logs/agent_system.log", encoding="utf-8"),
+            ],
         )
 
     async def initialize(self):
@@ -66,8 +67,8 @@ class AgentSystem:
                 self.master_agent.agent_id,
                 {
                     "name": self.master_agent.name,
-                    "capabilities": [cap.name for cap in self.master_agent.capabilities]
-                }
+                    "capabilities": [cap.name for cap in self.master_agent.capabilities],
+                },
             )
 
             # 4. 創建RAG Agent實例
@@ -96,8 +97,8 @@ class AgentSystem:
             vector_rag_agent.agent_id,
             {
                 "name": vector_rag_agent.name,
-                "capabilities": [cap.name for cap in vector_rag_agent.capabilities]
-            }
+                "capabilities": [cap.name for cap in vector_rag_agent.capabilities],
+            },
         )
 
         # 註冊到Master Agent
@@ -107,14 +108,15 @@ class AgentSystem:
                 "name": vector_rag_agent.name,
                 "type": "rag_agent",
                 "framework": vector_rag_agent.rag_framework,
-                "capabilities": [cap.name for cap in vector_rag_agent.capabilities]
-            }
+                "capabilities": [cap.name for cap in vector_rag_agent.capabilities],
+            },
         )
 
         self.logger.info(f"RAG Agent {vector_rag_agent.agent_id} 創建完成")
 
     def _setup_signal_handlers(self):
         """設置信號處理器"""
+
         def signal_handler(signum, frame):
             self.logger.info(f"接收到信號 {signum}，開始關閉系統...")
             asyncio.create_task(self.shutdown())
@@ -207,10 +209,12 @@ class AgentSystem:
             "uptime_seconds": uptime,
             "active_agents": len(self.active_agents),
             "master_status": self.master_agent.get_status(),
-            "communication_stats": self.communication_hub.get_statistics()
+            "communication_stats": self.communication_hub.get_statistics(),
         }
 
-        self.logger.debug(f"系統狀態: {json.dumps(status, default=str, indent=2, ensure_ascii=False)}")
+        self.logger.debug(
+            f"系統狀態: {json.dumps(status, default=str, indent=2, ensure_ascii=False)}"
+        )
 
     async def _check_agents_health(self):
         """檢查Agent健康狀況"""
@@ -223,8 +227,8 @@ class AgentSystem:
                 else:
                     agent = self.agents.get(agent_id)
 
-                if agent and hasattr(agent, 'status'):
-                    if agent.status.value not in ['ready', 'busy']:
+                if agent and hasattr(agent, "status"):
+                    if agent.status.value not in ["ready", "busy"]:
                         unhealthy_agents.append(agent_id)
 
             except Exception as e:
@@ -250,17 +254,17 @@ class AgentSystem:
                     "test_queries": [
                         "什麼是文藝復興時期的藝術特徵？",
                         "蒙娜麗莎這幅畫有什麼特別之處？",
-                        "印象派和後印象派有什麼區別？"
+                        "印象派和後印象派有什麼區別？",
                     ],
                     "max_retrieved_docs": 3,
-                    "temperature": 0.1
-                }
+                    "temperature": 0.1,
+                },
             }
 
             # 規劃實驗活動
-            campaign_result = await self.master_agent.plan_experiment_campaign({
-                "experiment_params": experiment_config["experiment_params"]
-            })
+            campaign_result = await self.master_agent.plan_experiment_campaign(
+                {"experiment_params": experiment_config["experiment_params"]}
+            )
 
             self.logger.info(f"實驗活動規劃完成: {campaign_result['campaign_id']}")
 
@@ -273,39 +277,40 @@ class AgentSystem:
             await asyncio.sleep(10)
 
             # 模擬實驗完成
-            completion_result = await self.master_agent.aggregate_results({
-                "experiment_id": experiment_config["experiment_id"],
-                "progress": 100,
-                "data": {
-                    "queries_processed": 3,
-                    "avg_response_time": 2.5,
-                    "success_rate": 1.0
+            completion_result = await self.master_agent.aggregate_results(
+                {
+                    "experiment_id": experiment_config["experiment_id"],
+                    "progress": 100,
+                    "data": {"queries_processed": 3, "avg_response_time": 2.5, "success_rate": 1.0},
                 }
-            })
+            )
 
             self.logger.info(f"演示實驗完成: {completion_result}")
 
             return {
                 "campaign": campaign_result,
                 "experiment": experiment_result,
-                "completion": completion_result
+                "completion": completion_result,
             }
 
         except Exception as e:
             self.logger.error(f"演示實驗運行失敗: {e}")
             raise
 
-    def get_system_status(self) -> Dict[str, Any]:
+    def get_system_status(self) -> dict[str, Any]:
         """獲取系統狀態"""
         return {
             "is_running": self.is_running,
             "startup_time": self.startup_time.isoformat() if self.startup_time else None,
-            "uptime_seconds": (datetime.now() - self.startup_time).total_seconds() if self.startup_time else 0,
+            "uptime_seconds": (datetime.now() - self.startup_time).total_seconds()
+            if self.startup_time
+            else 0,
             "active_agents": self.active_agents,
             "total_agents": len(self.agents) + 1,  # +1 for master agent
             "master_agent_status": self.master_agent.get_system_status(),
-            "communication_stats": self.communication_hub.get_statistics()
+            "communication_stats": self.communication_hub.get_statistics(),
         }
+
 
 async def main():
     """主函數"""
@@ -320,9 +325,9 @@ async def main():
 
         # 運行演示實驗
         demo_result = await system.run_demo_experiment()
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("演示實驗完成！")
-        print("="*60)
+        print("=" * 60)
         print(json.dumps(demo_result, default=str, indent=2, ensure_ascii=False))
 
         # 保持系統運行
@@ -337,9 +342,11 @@ async def main():
     finally:
         await system.shutdown()
 
+
 if __name__ == "__main__":
     # 確保日誌目錄存在
     import os
+
     os.makedirs("logs", exist_ok=True)
 
     # 運行系統

@@ -5,16 +5,19 @@
 """
 
 import logging
-from typing import List
+
 from neo4j import GraphDatabase
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class CypherExecutor:
     """Cypher腳本執行器"""
 
-    def __init__(self, uri="bolt://localhost:7687", username="neo4j", password="CHANGE_ME_NEO4J_PASSWORD"):
+    def __init__(
+        self, uri="bolt://localhost:7687", username="neo4j", password="CHANGE_ME_NEO4J_PASSWORD"
+    ):
         self.uri = uri
         self.username = username
         self.password = password
@@ -43,7 +46,7 @@ class CypherExecutor:
 
         try:
             # 讀取Cypher檔案
-            with open(file_path, 'r', encoding='utf-8') as f:
+            with open(file_path, encoding="utf-8") as f:
                 cypher_content = f.read()
 
             # 分割為多個語句
@@ -55,7 +58,9 @@ class CypherExecutor:
                 for i, statement in enumerate(statements):
                     if statement.strip():
                         try:
-                            logger.info(f"   執行語句 {i+1}/{len(statements)}: {statement[:50]}...")
+                            logger.info(
+                                f"   執行語句 {i + 1}/{len(statements)}: {statement[:50]}..."
+                            )
                             result = session.run(statement)
                             summary = result.consume()
 
@@ -63,11 +68,15 @@ class CypherExecutor:
                             if summary.counters.nodes_created > 0:
                                 logger.info(f"   ✅ 創建了 {summary.counters.nodes_created} 個節點")
                             if summary.counters.relationships_created > 0:
-                                logger.info(f"   ✅ 創建了 {summary.counters.relationships_created} 個關係")
+                                logger.info(
+                                    f"   ✅ 創建了 {summary.counters.relationships_created} 個關係"
+                                )
                             if summary.counters.nodes_deleted > 0:
                                 logger.info(f"   🗑️ 刪除了 {summary.counters.nodes_deleted} 個節點")
                             if summary.counters.relationships_deleted > 0:
-                                logger.info(f"   🗑️ 刪除了 {summary.counters.relationships_deleted} 個關係")
+                                logger.info(
+                                    f"   🗑️ 刪除了 {summary.counters.relationships_deleted} 個關係"
+                                )
 
                         except Exception as e:
                             logger.error(f"   ❌ 語句執行失敗: {e}")
@@ -80,33 +89,33 @@ class CypherExecutor:
             logger.error(f"❌ 執行Cypher檔案失敗: {e}")
             return False
 
-    def split_cypher_statements(self, cypher_content: str) -> List[str]:
+    def split_cypher_statements(self, cypher_content: str) -> list[str]:
         """將Cypher內容分割為多個語句"""
         statements = []
-        lines = cypher_content.split('\n')
+        lines = cypher_content.split("\n")
         current_statement = []
 
         for line in lines:
             line = line.strip()
 
             # 跳過註釋和空行
-            if line.startswith('//') or not line:
+            if line.startswith("//") or not line:
                 # 如果當前語句不為空，完成它
                 if current_statement:
-                    statements.append('\n'.join(current_statement))
+                    statements.append("\n".join(current_statement))
                     current_statement = []
                 continue
 
             current_statement.append(line)
 
             # 如果行以;結尾，結束當前語句
-            if line.endswith(';'):
-                statements.append('\n'.join(current_statement))
+            if line.endswith(";"):
+                statements.append("\n".join(current_statement))
                 current_statement = []
 
         # 添加最後一個語句（如果存在）
         if current_statement:
-            statements.append('\n'.join(current_statement))
+            statements.append("\n".join(current_statement))
 
         return statements
 
@@ -123,7 +132,9 @@ class CypherExecutor:
                 total_nodes = result.single()["total_nodes"]
 
                 # 檢查分類節點數
-                result = session.run("MATCH (n) WHERE exists(n.category) RETURN n.category as category, count(n) as count ORDER BY count DESC")
+                result = session.run(
+                    "MATCH (n) WHERE exists(n.category) RETURN n.category as category, count(n) as count ORDER BY count DESC"
+                )
                 categories = [(record["category"], record["count"]) for record in result]
 
                 # 檢查總關係數
@@ -140,6 +151,7 @@ class CypherExecutor:
         except Exception as e:
             logger.error(f"❌ 驗證數據庫狀態失敗: {e}")
 
+
 def main():
     """主函數"""
     print("🚀 執行12大分類Neo4j Cypher腳本")
@@ -147,9 +159,7 @@ def main():
 
     # 初始化執行器
     executor = CypherExecutor(
-        uri="bolt://localhost:7687",
-        username="neo4j",
-        password="CHANGE_ME_NEO4J_PASSWORD"
+        uri="bolt://localhost:7687", username="neo4j", password="CHANGE_ME_NEO4J_PASSWORD"
     )
 
     if not executor.connect():
@@ -176,6 +186,7 @@ def main():
 
     finally:
         executor.close()
+
 
 if __name__ == "__main__":
     main()

@@ -4,25 +4,24 @@ RL-Agentic RAG 簡化測試版本
 不依賴 PyTorch，使用純 Python 和 NumPy 演示核心概念
 """
 
-import numpy as np
 import json
-import time
 import logging
-from typing import Dict, List, Any, Optional
-from dataclasses import dataclass
-from collections import deque
 import random
+import time
+from collections import deque
+from dataclasses import dataclass
+from typing import Any
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+import numpy as np
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 logger = logging.getLogger(__name__)
 
 
 @dataclass
 class Experience:
     """經驗元組"""
+
     state: np.ndarray
     action: int
     reward: float
@@ -63,7 +62,7 @@ class SimpleReplayBuffer:
     def push(self, experience: Experience):
         self.buffer.append(experience)
 
-    def sample(self, batch_size: int) -> List[Experience]:
+    def sample(self, batch_size: int) -> list[Experience]:
         if len(self.buffer) < batch_size:
             return []
         return random.sample(list(self.buffer), batch_size)
@@ -78,13 +77,25 @@ class SimpleStateEncoder:
     def __init__(self):
         # 模擬的詞彙表
         self.vocab = {
-            '藝術': 1, '文藝復興': 2, '達文西': 3, '米開朗基羅': 4,
-            '印象派': 5, '梵谷': 6, '畢卡索': 7, '巴洛克': 8,
-            '什麼': 10, '如何': 11, '為什麼': 12, '介紹': 13,
-            '比較': 14, '分析': 15, '特色': 16, '風格': 17
+            "藝術": 1,
+            "文藝復興": 2,
+            "達文西": 3,
+            "米開朗基羅": 4,
+            "印象派": 5,
+            "梵谷": 6,
+            "畢卡索": 7,
+            "巴洛克": 8,
+            "什麼": 10,
+            "如何": 11,
+            "為什麼": 12,
+            "介紹": 13,
+            "比較": 14,
+            "分析": 15,
+            "特色": 16,
+            "風格": 17,
         }
 
-    def encode(self, query: str, context: Dict) -> np.ndarray:
+    def encode(self, query: str, context: dict) -> np.ndarray:
         """簡化的編碼方法"""
         # 1. 基於詞彙的編碼 (20維)
         vocab_features = np.zeros(20)
@@ -93,18 +104,21 @@ class SimpleStateEncoder:
                 vocab_features[idx] = 1.0
 
         # 2. 查詢特徵 (10維)
-        query_features = np.array([
-            len(query.split()),  # 查詢長度
-            len(query),          # 字符數
-            int('?' in query),   # 是否有問號
-            int('什麼' in query),
-            int('如何' in query),
-            int('為什麼' in query),
-            int('藝術' in query),
-            int('畫家' in query),
-            context.get('user_expertise', 0.5),
-            0.0  # 填充
-        ], dtype=np.float32)
+        query_features = np.array(
+            [
+                len(query.split()),  # 查詢長度
+                len(query),  # 字符數
+                int("?" in query),  # 是否有問號
+                int("什麼" in query),
+                int("如何" in query),
+                int("為什麼" in query),
+                int("藝術" in query),
+                int("畫家" in query),
+                context.get("user_expertise", 0.5),
+                0.0,  # 填充
+            ],
+            dtype=np.float32,
+        )
 
         # 合併特徵
         state = np.concatenate([vocab_features, query_features])
@@ -138,14 +152,16 @@ class SimpleRewardModel:
 class SimpleRLAgent:
     """簡化的 RL Agent（使用 Q-learning 代替 DQN）"""
 
-    def __init__(self,
-                 state_dim: int = 30,
-                 action_dim: int = 10,
-                 learning_rate: float = 0.01,
-                 gamma: float = 0.99,
-                 epsilon: float = 1.0,
-                 epsilon_min: float = 0.05,
-                 epsilon_decay: float = 0.995):
+    def __init__(
+        self,
+        state_dim: int = 30,
+        action_dim: int = 10,
+        learning_rate: float = 0.01,
+        gamma: float = 0.99,
+        epsilon: float = 1.0,
+        epsilon_min: float = 0.05,
+        epsilon_decay: float = 0.995,
+    ):
 
         logger.info("🤖 初始化簡化版 RL Agent...")
 
@@ -169,24 +185,24 @@ class SimpleRLAgent:
 
         # 策略映射
         self.action_to_strategy = {
-            0: 'vector_rag',
-            1: 'graph_rag',
-            2: 'hybrid_rag',
-            3: 'advanced_rag',
-            4: 'agentic_rag',
-            5: 'self_rag',
-            6: 'adaptive_rag',
-            7: 'multimodal_rag',
-            8: 'dynamic_weight_0.3',
-            9: 'dynamic_weight_0.7',
+            0: "vector_rag",
+            1: "graph_rag",
+            2: "hybrid_rag",
+            3: "advanced_rag",
+            4: "agentic_rag",
+            5: "self_rag",
+            6: "adaptive_rag",
+            7: "multimodal_rag",
+            8: "dynamic_weight_0.3",
+            9: "dynamic_weight_0.7",
         }
 
         # 統計
         self.stats = {
-            'total_queries': 0,
-            'action_counts': {i: 0 for i in range(action_dim)},
-            'rewards_history': [],
-            'training_steps': 0
+            "total_queries": 0,
+            "action_counts": {i: 0 for i in range(action_dim)},
+            "rewards_history": [],
+            "training_steps": 0,
         }
 
         logger.info("✅ 簡化版 RL Agent 初始化完成")
@@ -223,22 +239,17 @@ class SimpleRLAgent:
             td_error = target_q - current_q
 
             # 更新網絡
-            self.q_network.update(
-                exp.state,
-                exp.action,
-                td_error,
-                self.learning_rate
-            )
+            self.q_network.update(exp.state, exp.action, td_error, self.learning_rate)
 
-            total_loss += td_error ** 2
+            total_loss += td_error**2
 
         # 更新 epsilon
         self.epsilon = max(self.epsilon_min, self.epsilon * self.epsilon_decay)
-        self.stats['training_steps'] += 1
+        self.stats["training_steps"] += 1
 
         return total_loss / len(experiences)
 
-    def query(self, query_text: str, context: Dict = None) -> Dict[str, Any]:
+    def query(self, query_text: str, context: dict = None) -> dict[str, Any]:
         """執行查詢"""
         if context is None:
             context = {}
@@ -278,33 +289,32 @@ class SimpleRLAgent:
                 logger.debug(f"Loss: {loss:.6f}, Epsilon: {self.epsilon:.4f}")
 
         # 7. 統計
-        self.stats['total_queries'] += 1
-        self.stats['action_counts'][action] += 1
-        self.stats['rewards_history'].append(reward)
+        self.stats["total_queries"] += 1
+        self.stats["action_counts"][action] += 1
+        self.stats["rewards_history"].append(reward)
 
         return {
-            'query': query_text,
-            'strategy': strategy,
-            'action': action,
-            'confidence': confidence,
-            'reward': reward,
-            'processing_time': processing_time,
-            'epsilon': self.epsilon
+            "query": query_text,
+            "strategy": strategy,
+            "action": action,
+            "confidence": confidence,
+            "reward": reward,
+            "processing_time": processing_time,
+            "epsilon": self.epsilon,
         }
 
-    def get_stats(self) -> Dict:
+    def get_stats(self) -> dict:
         """獲取統計信息"""
-        recent_rewards = self.stats['rewards_history'][-100:]
+        recent_rewards = self.stats["rewards_history"][-100:]
 
         return {
-            'total_queries': self.stats['total_queries'],
-            'training_steps': self.stats['training_steps'],
-            'epsilon': self.epsilon,
-            'average_reward': np.mean(recent_rewards) if recent_rewards else 0,
-            'action_distribution': {
-                self.action_to_strategy[k]: v
-                for k, v in self.stats['action_counts'].items()
-            }
+            "total_queries": self.stats["total_queries"],
+            "training_steps": self.stats["training_steps"],
+            "epsilon": self.epsilon,
+            "average_reward": np.mean(recent_rewards) if recent_rewards else 0,
+            "action_distribution": {
+                self.action_to_strategy[k]: v for k, v in self.stats["action_counts"].items()
+            },
         }
 
 
@@ -328,7 +338,7 @@ def test_simple_rl_agent():
         "蒙娜麗莎的微笑為何神秘？",
         "現代藝術和當代藝術的區別",
         "如何欣賞抽象畫？",
-        "洛可可風格的特點是什麼？"
+        "洛可可風格的特點是什麼？",
     ]
 
     # 執行多個 episode
@@ -336,7 +346,7 @@ def test_simple_rl_agent():
     queries_per_episode = 10
 
     for episode in range(num_episodes):
-        print(f"\n{'='*70}")
+        print(f"\n{'=' * 70}")
         print(f"📊 Episode {episode + 1}/{num_episodes}")
         print("=" * 70)
 
@@ -346,13 +356,13 @@ def test_simple_rl_agent():
             query = test_queries[i % len(test_queries)]
 
             context = {
-                'user_expertise': 0.5 + np.random.random() * 0.3,
+                "user_expertise": 0.5 + np.random.random() * 0.3,
             }
 
-            print(f"\n--- 查詢 {i+1}/{queries_per_episode} ---")
+            print(f"\n--- 查詢 {i + 1}/{queries_per_episode} ---")
             result = agent.query(query, context)
 
-            episode_rewards.append(result['reward'])
+            episode_rewards.append(result["reward"])
 
             # 顯示重要信息
             print(f"策略: {result['strategy']}")
@@ -376,18 +386,18 @@ def test_simple_rl_agent():
     print(f"最終 Epsilon: {stats['epsilon']:.4f}")
 
     print("\n策略使用分布:")
-    for strategy, count in sorted(stats['action_distribution'].items(),
-                                  key=lambda x: x[1],
-                                  reverse=True):
-        percentage = (count / stats['total_queries']) * 100
+    for strategy, count in sorted(
+        stats["action_distribution"].items(), key=lambda x: x[1], reverse=True
+    ):
+        percentage = (count / stats["total_queries"]) * 100
         print(f"  {strategy:20s}: {count:3d} 次 ({percentage:5.1f}%)")
 
     # 繪製獎勵趨勢
     print("\n獎勵趨勢 (最近20次):")
-    recent_rewards = agent.stats['rewards_history'][-20:]
+    recent_rewards = agent.stats["rewards_history"][-20:]
     for i, reward in enumerate(recent_rewards, 1):
         bar_length = int(reward * 50) if reward > 0 else 0
-        bar = '█' * bar_length
+        bar = "█" * bar_length
         print(f"  {i:2d}. {bar} {reward:.3f}")
 
     print("\n" + "=" * 70)
@@ -396,16 +406,16 @@ def test_simple_rl_agent():
 
     # 保存結果
     results = {
-        'test_date': time.strftime('%Y-%m-%d %H:%M:%S'),
-        'final_stats': stats,
-        'rewards_history': [float(r) for r in agent.stats['rewards_history']],
-        'notes': '這是使用純 Python/NumPy 的簡化版本，演示 RL 概念'
+        "test_date": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "final_stats": stats,
+        "rewards_history": [float(r) for r in agent.stats["rewards_history"]],
+        "notes": "這是使用純 Python/NumPy 的簡化版本，演示 RL 概念",
     }
 
-    with open('rl_simple_test_results.json', 'w', encoding='utf-8') as f:
+    with open("rl_simple_test_results.json", "w", encoding="utf-8") as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
-    print(f"\n📄 測試結果已保存到: rl_simple_test_results.json")
+    print("\n📄 測試結果已保存到: rl_simple_test_results.json")
 
 
 if __name__ == "__main__":

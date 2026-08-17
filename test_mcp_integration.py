@@ -6,27 +6,24 @@ MCP工具集成測試腳本
 
 import asyncio
 import logging
-import sys
 import os
+import sys
 import time
 from datetime import datetime
-from typing import Dict, List, Any
 
 # 添加src目錄到Python路徑
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 # 導入MCP組件
 from mcp import (
-    get_mcp_registry,
-    get_proxy_manager,
-    get_mcp_integration_manager,
+    MCPAgentFactory,
     MCPToolSpec,
     MCPToolType,
-    MCPToolStatus,
-    ProxyRequest,
-    ProxyResponse,
-    MCPAgentFactory
+    get_mcp_integration_manager,
+    get_mcp_registry,
+    get_proxy_manager,
 )
+
 
 class MCPIntegrationTester:
     """MCP集成測試器"""
@@ -41,18 +38,18 @@ class MCPIntegrationTester:
             "passed_tests": 0,
             "failed_tests": 0,
             "skipped_tests": 0,
-            "test_details": []
+            "test_details": [],
         }
 
     def setup_logging(self):
         """設置日誌"""
         logging.basicConfig(
             level=logging.INFO,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
             handlers=[
                 logging.StreamHandler(sys.stdout),
-                logging.FileHandler('logs/mcp_integration_test.log', encoding='utf-8')
-            ]
+                logging.FileHandler("logs/mcp_integration_test.log", encoding="utf-8"),
+            ],
         )
 
     def log_test_result(self, test_name: str, success: bool, details: str = None):
@@ -66,12 +63,14 @@ class MCPIntegrationTester:
             self.test_results["failed_tests"] += 1
             self.logger.error(f"❌ 測試失敗: {test_name}")
 
-        self.test_results["test_details"].append({
-            "test_name": test_name,
-            "success": success,
-            "details": details,
-            "timestamp": datetime.now().isoformat()
-        })
+        self.test_results["test_details"].append(
+            {
+                "test_name": test_name,
+                "success": success,
+                "details": details,
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
 
     async def test_mcp_registry(self):
         """測試MCP工具註冊表"""
@@ -86,9 +85,7 @@ class MCPIntegrationTester:
             await registry.register_core_tools()
             core_tool_count = len(registry.tool_specs)
             self.log_test_result(
-                "註冊核心MCP工具",
-                core_tool_count > 0,
-                f"註冊了 {core_tool_count} 個工具"
+                "註冊核心MCP工具", core_tool_count > 0, f"註冊了 {core_tool_count} 個工具"
             )
 
             # 測試工具分類
@@ -99,7 +96,7 @@ class MCPIntegrationTester:
             self.log_test_result(
                 "工具分類功能",
                 len(ai_tools) > 0 and len(vector_db_tools) > 0,
-                f"AI工具: {len(ai_tools)}, 向量DB: {len(vector_db_tools)}, 多模態: {len(multimodal_tools)}"
+                f"AI工具: {len(ai_tools)}, 向量DB: {len(vector_db_tools)}, 多模態: {len(multimodal_tools)}",
             )
 
             # 測試工具發現
@@ -107,7 +104,7 @@ class MCPIntegrationTester:
             self.log_test_result(
                 "自動工具發現",
                 True,  # 即使沒有發現工具也算成功
-                f"發現 {len(discovered_tools)} 個工具服務"
+                f"發現 {len(discovered_tools)} 個工具服務",
             )
 
             # 測試工具狀態
@@ -115,7 +112,7 @@ class MCPIntegrationTester:
             self.log_test_result(
                 "註冊表統計",
                 "total_tools" in stats and stats["total_tools"] > 0,
-                f"統計信息: {stats}"
+                f"統計信息: {stats}",
             )
 
         except Exception as e:
@@ -140,22 +137,18 @@ class MCPIntegrationTester:
                     self.log_test_result(
                         f"創建{tool_name}代理",
                         proxy is not None,
-                        "代理創建成功" if proxy else "工具服務不可用（預期行為）"
+                        "代理創建成功" if proxy else "工具服務不可用（預期行為）",
                     )
                 except Exception as e:
                     self.log_test_result(
                         f"創建{tool_name}代理",
                         True,  # 預期會失敗（服務不運行）
-                        f"預期異常: {str(e)}"
+                        f"預期異常: {str(e)}",
                     )
 
             # 測試代理統計
             stats = proxy_manager.get_proxy_stats()
-            self.log_test_result(
-                "代理統計功能",
-                isinstance(stats, dict),
-                f"代理統計: {stats}"
-            )
+            self.log_test_result("代理統計功能", isinstance(stats, dict), f"代理統計: {stats}")
 
         except Exception as e:
             self.log_test_result("MCP代理管理器測試", False, f"異常: {str(e)}")
@@ -181,7 +174,7 @@ class MCPIntegrationTester:
             self.log_test_result(
                 "MCP Agent創建",
                 len(agents) > 0,
-                f"創建了 {len(agents)} 個MCP Agent: {list(agents.keys())}"
+                f"創建了 {len(agents)} 個MCP Agent: {list(agents.keys())}",
             )
 
         except Exception as e:
@@ -198,13 +191,12 @@ class MCPIntegrationTester:
             for agent_type in agent_types:
                 try:
                     agent = MCPAgentFactory.create_mcp_agent(
-                        agent_type,
-                        agent_id=f"test_{agent_type}"
+                        agent_type, agent_id=f"test_{agent_type}"
                     )
                     self.log_test_result(
                         f"創建{agent_type} Agent",
                         agent is not None,
-                        f"Agent類型: {type(agent).__name__}"
+                        f"Agent類型: {type(agent).__name__}",
                     )
 
                     # 測試Agent初始化
@@ -216,15 +208,11 @@ class MCPIntegrationTester:
                             self.log_test_result(
                                 f"{agent_type} Agent初始化",
                                 True,  # 預期可能失敗（依賴外部服務）
-                                f"預期異常: {str(e)}"
+                                f"預期異常: {str(e)}",
                             )
 
                 except Exception as e:
-                    self.log_test_result(
-                        f"創建{agent_type} Agent",
-                        False,
-                        f"異常: {str(e)}"
-                    )
+                    self.log_test_result(f"創建{agent_type} Agent", False, f"異常: {str(e)}")
 
         except Exception as e:
             self.log_test_result("MCP Agent工廠測試", False, f"異常: {str(e)}")
@@ -241,7 +229,7 @@ class MCPIntegrationTester:
                 description="測試工具",
                 version="1.0.0",
                 port=8999,  # 使用不存在的端口
-                capabilities=["test_capability"]
+                capabilities=["test_capability"],
             )
 
             # 測試工具註冊
@@ -258,7 +246,7 @@ class MCPIntegrationTester:
             self.log_test_result(
                 "工具狀態查詢",
                 status is not None,
-                f"工具狀態: {status.value if status else 'None'}"
+                f"工具狀態: {status.value if status else 'None'}",
             )
 
         except Exception as e:
@@ -273,22 +261,14 @@ class MCPIntegrationTester:
 
             # 測試不存在工具的代理創建
             proxy = await proxy_manager.create_proxy("nonexistent_tool")
-            self.log_test_result(
-                "不存在工具代理創建",
-                proxy is None,
-                "正確處理不存在的工具"
-            )
+            self.log_test_result("不存在工具代理創建", proxy is None, "正確處理不存在的工具")
 
             # 測試無效請求
             response = await proxy_manager.execute_tool_request(
-                "nonexistent_tool",
-                "test_method",
-                {"test": "param"}
+                "nonexistent_tool", "test_method", {"test": "param"}
             )
             self.log_test_result(
-                "無效工具請求處理",
-                not response.success,
-                f"錯誤消息: {response.error}"
+                "無效工具請求處理", not response.success, f"錯誤消息: {response.error}"
             )
 
             # 測試無效Agent類型創建
@@ -314,7 +294,7 @@ class MCPIntegrationTester:
             self.test_mcp_integration_manager,
             self.test_mcp_agent_factory,
             self.test_mock_tool_interactions,
-            self.test_error_handling
+            self.test_error_handling,
         ]
 
         for test_method in test_methods:
@@ -331,40 +311,43 @@ class MCPIntegrationTester:
 
     def print_test_summary(self, execution_time: float):
         """打印測試摘要"""
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
         print("📊 MCP集成測試摘要")
-        print("="*60)
+        print("=" * 60)
         print(f"⏱️  執行時間: {execution_time:.2f} 秒")
         print(f"📝 總測試數: {self.test_results['total_tests']}")
         print(f"✅ 通過測試: {self.test_results['passed_tests']}")
         print(f"❌ 失敗測試: {self.test_results['failed_tests']}")
         print(f"⏭️  跳過測試: {self.test_results['skipped_tests']}")
 
-        if self.test_results['total_tests'] > 0:
-            success_rate = (self.test_results['passed_tests'] / self.test_results['total_tests']) * 100
+        if self.test_results["total_tests"] > 0:
+            success_rate = (
+                self.test_results["passed_tests"] / self.test_results["total_tests"]
+            ) * 100
             print(f"📈 成功率: {success_rate:.1f}%")
 
         print("\n📋 詳細測試結果:")
-        for detail in self.test_results['test_details']:
-            status = "✅" if detail['success'] else "❌"
+        for detail in self.test_results["test_details"]:
+            status = "✅" if detail["success"] else "❌"
             print(f"{status} {detail['test_name']}")
-            if detail['details']:
+            if detail["details"]:
                 print(f"   📝 {detail['details']}")
 
-        print("\n" + "="*60)
+        print("\n" + "=" * 60)
 
-        if self.test_results['failed_tests'] == 0:
+        if self.test_results["failed_tests"] == 0:
             print("🎉 所有測試通過！MCP集成功能正常。")
         else:
             print("⚠️  部分測試失敗，請檢查日誌了解詳情。")
 
-        print("="*60)
+        print("=" * 60)
+
 
 async def main():
     """主程序"""
     try:
         # 確保日誌目錄存在
-        os.makedirs('logs', exist_ok=True)
+        os.makedirs("logs", exist_ok=True)
 
         # 創建並運行測試器
         tester = MCPIntegrationTester()
@@ -374,6 +357,7 @@ async def main():
         print("\n用戶中斷測試")
     except Exception as e:
         print(f"測試執行失敗: {str(e)}")
+
 
 if __name__ == "__main__":
     asyncio.run(main())
