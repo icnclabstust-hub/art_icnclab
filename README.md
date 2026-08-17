@@ -22,13 +22,11 @@
 - **資料庫**: PostgreSQL + Redis + Elasticsearch
 - **爬蟲**: Playwright + Cheerio
 - **AI處理**: OpenAI API + HuggingFace
-- **部署**: Docker + Docker Compose
 
 ## 🚀 快速開始
 
 ### 環境需求
 - Node.js >= 18.0.0
-- Docker Desktop 4.0+
 - 必要的API Keys (OpenAI, HuggingFace, DeepL)
 
 ### 安裝步驟
@@ -42,10 +40,7 @@ nano .env
 # 3. 安裝依賴
 npm install
 
-# 4. 啟動Docker服務
-docker-compose up -d
-
-# 5. 啟動開發服務器
+# 4. 啟動開發服務器
 npm run dev
 ```
 
@@ -91,7 +86,6 @@ art-history-database/
 │   └── summarization-translation/
 ├── context/               # 配置與上下文文件
 ├── data/                  # 資料存儲
-├── docker-compose.yml     # Docker配置
 └── package.json          # Node.js配置
 ```
 
