@@ -1,0 +1,346 @@
+{
+  "validation_results": {
+    "categories_found": {
+      "People": {
+        "count": 5,
+        "labels": [
+          "Artist",
+          "Patron",
+          "Theorist",
+          "Collector"
+        ]
+      },
+      "Artworks": {
+        "count": 4,
+        "labels": [
+          "Painting",
+          "Sculpture",
+          "Architecture"
+        ]
+      },
+      "Movements": {
+        "count": 3,
+        "labels": [
+          "EarlyRenaissance",
+          "HighRenaissance",
+          "Mannerism"
+        ]
+      },
+      "Techniques": {
+        "count": 3,
+        "labels": [
+          "OilPainting",
+          "Fresco",
+          "Sfumato"
+        ]
+      },
+      "Themes": {
+        "count": 3,
+        "labels": [
+          "ReligiousMotif",
+          "Mythology",
+          "Portrait"
+        ]
+      },
+      "Chronology": {
+        "count": 3,
+        "labels": [
+          "MediciPeriod",
+          "Century"
+        ]
+      },
+      "Places": {
+        "count": 3,
+        "labels": [
+          "City",
+          "Museum"
+        ]
+      },
+      "Institutions": {
+        "count": 2,
+        "labels": [
+          "PatronageFamily",
+          "Workshop"
+        ]
+      },
+      "Events": {
+        "count": 2,
+        "labels": [
+          "Commission",
+          "Publication"
+        ]
+      },
+      "Sources": {
+        "count": 2,
+        "labels": [
+          "PrimarySource",
+          "Treatise"
+        ]
+      },
+      "Concepts": {
+        "count": 2,
+        "labels": [
+          "ArtisticTechnique"
+        ]
+      },
+      "Translations": {
+        "count": 3,
+        "labels": [
+          "TermMapping"
+        ]
+      }
+    },
+    "total_nodes": 35,
+    "total_relationships": 27,
+    "category_stats": {
+      "TermMapping": 3,
+      "Artist": 2,
+      "Painting": 2,
+      "Century": 2,
+      "City": 2,
+      "ArtisticTechnique": 2,
+      "Patron": 1,
+      "Theorist": 1,
+      "Collector": 1,
+      "Sculpture": 1,
+      "Architecture": 1,
+      "EarlyRenaissance": 1,
+      "HighRenaissance": 1,
+      "Mannerism": 1,
+      "OilPainting": 1,
+      "Fresco": 1,
+      "Sfumato": 1,
+      "ReligiousMotif": 1,
+      "Mythology": 1,
+      "Portrait": 1,
+      "MediciPeriod": 1,
+      "Museum": 1,
+      "PatronageFamily": 1,
+      "Workshop": 1,
+      "Commission": 1,
+      "Publication": 1,
+      "PrimarySource": 1,
+      "Treatise": 1
+    },
+    "sample_nodes": {
+      "People": {
+        "full_name": "Leonardo di ser Piero da Vinci",
+        "role": "畫家、發明家、科學家",
+        "birthplace": "Vinci, Republic of Florence",
+        "nationality": "Italian",
+        "name": "Leonardo da Vinci",
+        "death_year": 1519,
+        "specialization": "Polymath",
+        "biography": "文藝復興時期的博學者，在繪畫、雕塑、建築、科學等領域都有傑出貢獻",
+        "subcategory": "Artist",
+        "category": "People",
+        "birth_year": 1452
+      },
+      "Artworks": {
+        "significance": "世界最著名的畫作",
+        "alternative_titles": "La Gioconda, Portrait of Lisa Gherardini",
+        "artist": "Leonardo da Vinci",
+        "description": "神秘微笑的麗莎‧格拉迪尼肖像",
+        "medium": "Oil on poplar panel",
+        "creation_date": "1503-1519",
+        "subcategory": "Painting",
+        "category": "Artworks",
+        "title": "Mona Lisa",
+        "dimensions": "77 cm × 53 cm",
+        "current_location": "Louvre Museum, Paris"
+      },
+      "Movements": {
+        "chinese_name": "早期文藝復興",
+        "origin_location": "Florence, Italy",
+        "key_characteristics": "透視法復興、人文主義、古典元素",
+        "name": "Early Renaissance",
+        "start_period": 1400,
+        "subcategory": "EarlyRenaissance",
+        "category": "Movements",
+        "major_figures": [
+          "Brunelleschi",
+          "Donatello",
+          "Masaccio"
+        ],
+        "end_period": 1490
+      },
+      "Techniques": {
+        "chinese_name": "油畫技法",
+        "advantages": "緩慢乾燥、易於混合、色彩豐富",
+        "materials": [
+          "oil binder",
+          "pigments",
+          "canvas or wood panel"
+        ],
+        "name": "Oil Painting",
+        "description": "使用油性顏料的繪畫技法",
+        "category": "Techniques",
+        "subcategory": "OilPainting",
+        "notable_practitioners": [
+          "Jan van Eyck",
+          "Leonardo da Vinci"
+        ]
+      },
+      "Themes": {
+        "chinese_name": "天使報喜",
+        "religious_tradition": "Christianity",
+        "common_compositions": "天使左側，聖母右側",
+        "name": "Annunciation",
+        "description": "天使加百列向聖母瑪利亞報告聖子降生",
+        "symbolic_elements": [
+          "lily (purity)",
+          "dove (Holy Spirit)",
+          "book (Word of God)"
+        ],
+        "category": "Themes",
+        "subcategory": "ReligiousMotif"
+      },
+      "Chronology": {
+        "chinese_name": "美第奇家族統治期",
+        "key_rulers": [
+          "Cosimo the Elder",
+          "Lorenzo the Magnificent",
+          "Cosimo I"
+        ],
+        "cultural_impact": "文藝復興的重要贊助者",
+        "start_year": 1434,
+        "name": "Medici Rule in Florence",
+        "subcategory": "MediciPeriod",
+        "category": "Chronology",
+        "patronage_style": "人文主義、古典復興",
+        "end_year": 1737
+      },
+      "Places": {
+        "chinese_name": "佛羅倫斯",
+        "country": "Italy",
+        "artistic_importance": "早期文藝復興中心",
+        "ruling_family": "Medici",
+        "name": "Florence",
+        "cultural_significance": "文藝復興發源地",
+        "notable_sites": [
+          "Uffizi Gallery",
+          "Palazzo Pitti",
+          "Duomo"
+        ],
+        "subcategory": "City",
+        "category": "Places",
+        "region": "Tuscany"
+      },
+      "Institutions": {
+        "chinese_name": "美第奇家族",
+        "supported_artists": [
+          "Michelangelo",
+          "Botticelli",
+          "Donatello"
+        ],
+        "active_period": "1434-1737",
+        "cultural_contribution": "文藝復興主要推動者",
+        "name": "Medici Family",
+        "location": "Florence",
+        "subcategory": "PatronageFamily",
+        "category": "Institutions",
+        "type": "Banking and ruling family"
+      },
+      "Events": {
+        "significance": "盛期文藝復興巔峰作品",
+        "chinese_name": "西斯廷禮拜堂天頂委託",
+        "artist": "Michelangelo",
+        "name": "Sistine Chapel Ceiling Commission",
+        "commission_date": 1508,
+        "payment": "3000 ducats",
+        "completion_date": 1512,
+        "category": "Events",
+        "subcategory": "Commission",
+        "commissioner": "Pope Julius II"
+      },
+      "Sources": {
+        "significance": "第一部系統性藝術史著作",
+        "coverage": "13-16世紀義大利藝術家",
+        "author": "Giorgio Vasari",
+        "publication_date": "1550, 1568",
+        "chinese_title": "最傑出的畫家、雕塑家和建築師的生平",
+        "language": "Italian",
+        "category": "Sources",
+        "subcategory": "PrimarySource",
+        "title": "Lives of the Most Excellent Painters, Sculptors, and Architects"
+      },
+      "Concepts": {
+        "chinese_name": "線性透視法",
+        "italian_term": "prospettiva",
+        "name": "Linear Perspective",
+        "description": "在二維平面上表現三維空間的數學方法",
+        "inventor": "Filippo Brunelleschi",
+        "category": "Concepts",
+        "subcategory": "ArtisticTechnique",
+        "key_principles": [
+          "vanishing point",
+          "horizon line",
+          "orthogonal lines"
+        ]
+      },
+      "Translations": {
+        "pronunciation": "sfu-MA-to",
+        "italian_term": "sfumato",
+        "art_context": "無邊界色彩過渡技法",
+        "category": "Translations",
+        "subcategory": "TermMapping",
+        "english_term": "sfumato technique",
+        "chinese_term": "暈塗法",
+        "literal_meaning": "smoky"
+      }
+    },
+    "validation_status": "success"
+  },
+  "test_results": {
+    "人物-作品關係": [
+      {
+        "artist_name": "Leonardo da Vinci",
+        "relationship": "CREATED_BY",
+        "artwork_title": "The Last Supper"
+      },
+      {
+        "artist_name": "Leonardo da Vinci",
+        "relationship": "CREATED_BY",
+        "artwork_title": "Mona Lisa"
+      },
+      {
+        "artist_name": "Michelangelo Buonarroti",
+        "relationship": "CREATED_BY",
+        "artwork_title": "David"
+      }
+    ],
+    "技法-作品關係": [],
+    "地點-人物關係": [],
+    "時間-流派關係": [],
+    "術語翻譯關係": [
+      {
+        "italian_term": "sfumato",
+        "chinese_term": "暈塗法",
+        "english_term": "sfumato technique"
+      },
+      {
+        "italian_term": "contrapposto",
+        "chinese_term": "對位法",
+        "english_term": "contrapposto"
+      },
+      {
+        "italian_term": "chiaroscuro",
+        "chinese_term": "明暗法",
+        "english_term": "chiaroscuro"
+      }
+    ],
+    "機構-人物關係": [
+      {
+        "institution_name": "Medici Family",
+        "relationship": "PATRONIZED_BY",
+        "person_name": "Michelangelo Buonarroti"
+      },
+      {
+        "institution_name": "Verrocchio's Workshop",
+        "relationship": "APPRENTICED_AT",
+        "person_name": "Leonardo da Vinci"
+      }
+    ]
+  },
+  "timestamp": "2024-01-01"
+}

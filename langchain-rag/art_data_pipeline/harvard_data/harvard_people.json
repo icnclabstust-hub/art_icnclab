@@ -1,0 +1,3818 @@
+[
+  {
+    "gender": "male",
+    "displaydate": "1812-1870",
+    "objectcount": 2,
+    "roles": [
+      {
+        "role": "Sitter",
+        "context": "object",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:06-05:00",
+    "wikidata_id": "Q5686",
+    "dateend": 1870,
+    "url": "https://www.harvardartmuseums.org/collections/person/2",
+    "viaf_id": "88666393",
+    "names": [
+      {
+        "displayname": "Charles Dickens",
+        "type": "Primary Name"
+      }
+    ],
+    "birthplace": null,
+    "wikipedia_id": "5884",
+    "datebegin": 1812,
+    "culture": null,
+    "displayname": "Charles Dickens",
+    "alphasort": "Dickens, Charles",
+    "ulan_id": "500106117",
+    "personid": 2,
+    "deathplace": null,
+    "id": 2,
+    "lastupdate": "2025-10-30T05:27:34-04:00",
+    "lcnaf_id": "n78087607"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/5",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Aspasia Papanastasiou",
+    "alphasort": "Papanastasiou, Aspasia",
+    "personid": 5,
+    "deathplace": null,
+    "id": 5,
+    "lastupdate": "2025-10-30T05:27:30-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 14
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/6",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Aristotle University of Thessaloniki",
+    "alphasort": "Aristotle University of Thessaloniki",
+    "personid": 6,
+    "deathplace": null,
+    "id": 6,
+    "lastupdate": "2025-10-30T05:27:40-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/7",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Madison Art Center",
+    "alphasort": "Madison Art Center",
+    "personid": 7,
+    "deathplace": null,
+    "id": 7,
+    "lastupdate": "2025-10-30T05:27:36-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/9",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "University Gallery, University of Massachusetts",
+    "alphasort": "University Gallery, University of Massachusetts",
+    "personid": 9,
+    "deathplace": null,
+    "id": 9,
+    "lastupdate": "2025-10-30T05:27:38-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/10",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Roland Conilleau",
+    "alphasort": "Conilleau, Roland",
+    "personid": 10,
+    "deathplace": null,
+    "id": 10,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/13",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "R. E. Lewis, Incorporated",
+    "alphasort": "Lewis, Incorporated, R. E.",
+    "personid": 13,
+    "deathplace": null,
+    "id": 13,
+    "lastupdate": "2025-10-30T05:27:31-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/14",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Duncan Todd",
+    "alphasort": "Todd, Duncan",
+    "personid": 14,
+    "deathplace": null,
+    "id": 14,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/15",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Joan Marter",
+    "alphasort": "Marter, Joan",
+    "personid": 15,
+    "deathplace": null,
+    "id": 15,
+    "lastupdate": "2025-10-30T05:27:40-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/17",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Bavarian Television",
+    "alphasort": "Bavarian Television",
+    "personid": 17,
+    "deathplace": null,
+    "id": 17,
+    "lastupdate": "2025-10-30T05:27:28-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 5
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/19",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Azimuth Editions Ltd.",
+    "alphasort": "Azimuth Editions Ltd.",
+    "personid": 19,
+    "deathplace": null,
+    "id": 19,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/20",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Richard Studing",
+    "alphasort": "Studing, Richard",
+    "personid": 20,
+    "deathplace": null,
+    "id": 20,
+    "lastupdate": "2025-10-30T05:27:47-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/22",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Asahi Bank",
+    "alphasort": "Asahi Bank",
+    "personid": 22,
+    "deathplace": null,
+    "id": 22,
+    "lastupdate": "2025-10-30T05:27:28-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 4
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/25",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Darius Alexander Spieth",
+    "alphasort": "Spieth, Darius Alexander",
+    "personid": 25,
+    "deathplace": null,
+    "id": 25,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Curator",
+        "context": "object",
+        "frequency": 3
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 4
+      },
+      {
+        "role": "Curator",
+        "context": "exhibition",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/26",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Susan Anderson",
+    "alphasort": "Anderson, Susan",
+    "personid": 26,
+    "deathplace": null,
+    "id": 26,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Curator",
+        "context": "object",
+        "frequency": 1
+      },
+      {
+        "role": "Curator",
+        "context": "exhibition",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/27",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Kimberly Mims",
+    "alphasort": "Mims, Kimberly",
+    "personid": 27,
+    "deathplace": null,
+    "id": 27,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:07-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/28",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Deborah Carton",
+    "alphasort": "Carton, Deborah",
+    "personid": 28,
+    "deathplace": null,
+    "id": 28,
+    "lastupdate": "2025-10-30T05:27:45-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/36",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Allyn and Bacon",
+    "alphasort": "Allyn and Bacon",
+    "personid": 36,
+    "deathplace": null,
+    "id": 36,
+    "lastupdate": "2025-10-30T05:27:31-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/38",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Éditions Tallandier",
+    "alphasort": "Tallandier",
+    "personid": 38,
+    "deathplace": null,
+    "id": 38,
+    "lastupdate": "2025-10-30T05:27:25-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/39",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Bennard Perlman",
+    "alphasort": "Perlman, Bennard",
+    "personid": 39,
+    "deathplace": null,
+    "id": 39,
+    "lastupdate": "2025-10-30T05:27:28-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/40",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "SUNY Press",
+    "alphasort": "SUNY Press",
+    "personid": 40,
+    "deathplace": null,
+    "id": 40,
+    "lastupdate": "2025-10-30T05:27:22-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/41",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Kendall Whaling Museum",
+    "alphasort": "Kendall Whaling Museum",
+    "personid": 41,
+    "deathplace": null,
+    "id": 41,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/42",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "John Coffey",
+    "alphasort": "Coffey, John",
+    "personid": 42,
+    "deathplace": null,
+    "id": 42,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/43",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Will South",
+    "alphasort": "South, Will",
+    "personid": 43,
+    "deathplace": null,
+    "id": 43,
+    "lastupdate": "2025-10-30T05:27:24-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 6
+      },
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 7
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/44",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "North Carolina Museum of Art",
+    "alphasort": "North Carolina Museum of Art",
+    "personid": 44,
+    "deathplace": null,
+    "id": 44,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 44
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/45",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Carol and Sol LeWitt",
+    "alphasort": "LeWitt, Carol and Sol",
+    "personid": 45,
+    "deathplace": null,
+    "id": 45,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/48",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Marilyn Stokstad",
+    "alphasort": "Stokstad, Marilyn",
+    "personid": 48,
+    "deathplace": null,
+    "id": 48,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/50",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Albert Christ-Janer",
+    "alphasort": "Christ-Janer, Albert",
+    "personid": 50,
+    "deathplace": null,
+    "id": 50,
+    "lastupdate": "2025-10-30T05:27:31-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 2
+      },
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:08-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/52",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "The Artists' Gallery",
+    "alphasort": "Artists' Gallery",
+    "personid": 52,
+    "deathplace": null,
+    "id": 52,
+    "lastupdate": "2025-10-30T05:27:44-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/53",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Alison McNeil Kettering",
+    "alphasort": "Kettering, Alison McNeil",
+    "personid": 53,
+    "deathplace": null,
+    "id": 53,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 5
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/60",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Nikkei Visual Images, Inc.",
+    "alphasort": "Nikkei Visual Images, Inc.",
+    "personid": 60,
+    "deathplace": null,
+    "id": 60,
+    "lastupdate": "2025-10-30T05:27:42-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/62",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "BBC",
+    "alphasort": "Birkett, Julian",
+    "personid": 62,
+    "deathplace": null,
+    "id": 62,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/63",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Anne and Graham Gund",
+    "alphasort": "Gund, Anne and Graham",
+    "personid": 63,
+    "deathplace": null,
+    "id": 63,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/64",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Natalia B. Teteriatnikov",
+    "alphasort": "Teteriatnikov, Natalia B.",
+    "personid": 64,
+    "deathplace": null,
+    "id": 64,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/65",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Ms. Mary-Ann Winkelmes",
+    "alphasort": "Winkelmes, Mary-Ann Ms.",
+    "personid": 65,
+    "deathplace": null,
+    "id": 65,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/68",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Oliver Wick",
+    "alphasort": "Wick, Oliver",
+    "personid": 68,
+    "deathplace": null,
+    "id": 68,
+    "lastupdate": "2025-10-30T05:27:34-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 416
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/71",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Estate of H. Bartlett Wells",
+    "alphasort": "Well, Estate of H. Bartlett",
+    "personid": 71,
+    "deathplace": null,
+    "id": 71,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:09-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/72",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Stiftung Bauhaus Dessau",
+    "alphasort": "Stiftung Bauhaus Dessau",
+    "personid": 72,
+    "deathplace": null,
+    "id": 72,
+    "lastupdate": "2025-10-30T05:27:22-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 18
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/74",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Fondation Beyeler",
+    "alphasort": "Fondation Beyeler",
+    "personid": 74,
+    "deathplace": null,
+    "id": 74,
+    "lastupdate": "2025-10-30T05:27:25-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 11
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/76",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Musée des Beaux-Arts de Rennes",
+    "alphasort": "Musée des Beaux-Arts de Rennes",
+    "personid": 76,
+    "deathplace": null,
+    "id": 76,
+    "lastupdate": "2025-10-30T05:27:44-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/77",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Hart G. W. Lidov",
+    "alphasort": "Lidov, Hart G. W.",
+    "personid": 77,
+    "deathplace": null,
+    "id": 77,
+    "lastupdate": "2025-10-30T05:27:29-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/78",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "John Buchanan-Brown",
+    "alphasort": "Buchanan-Brown, John",
+    "personid": 78,
+    "deathplace": null,
+    "id": 78,
+    "lastupdate": "2025-10-30T05:27:22-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/79",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Wilhelm Schreiber",
+    "alphasort": "Schreiber, Wilhelm",
+    "personid": 79,
+    "deathplace": null,
+    "id": 79,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/80",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Virginia M. Mecklenburg",
+    "alphasort": "Mecklenburg, Virginia M.",
+    "personid": 80,
+    "deathplace": null,
+    "id": 80,
+    "lastupdate": "2025-10-30T05:27:29-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/81",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Teresa A. Carbone",
+    "alphasort": "Carbone, Teresa A.",
+    "personid": 81,
+    "deathplace": null,
+    "id": 81,
+    "lastupdate": "2025-10-30T05:27:33-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/82",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Harold Fisch",
+    "alphasort": "Fisch, Harold",
+    "personid": 82,
+    "deathplace": null,
+    "id": 82,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/83",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Gilles Néret",
+    "alphasort": "Néret, Gilles",
+    "personid": 83,
+    "deathplace": null,
+    "id": 83,
+    "lastupdate": "2025-10-30T05:27:30-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/84",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Institut du Monde Arabe",
+    "alphasort": "Institut du Monde Arabe",
+    "personid": 84,
+    "deathplace": null,
+    "id": 84,
+    "lastupdate": "2025-10-30T05:27:43-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/85",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Philippe Roberts-Jones",
+    "alphasort": "Roberts-Jones, Philippe",
+    "personid": 85,
+    "deathplace": null,
+    "id": 85,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/87",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Françoise Roberts-Jones",
+    "alphasort": "Roberts-Jones, Françoise",
+    "personid": 87,
+    "deathplace": null,
+    "id": 87,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/88",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Alan Wintermute",
+    "alphasort": "Wintermute, Alan",
+    "personid": 88,
+    "deathplace": null,
+    "id": 88,
+    "lastupdate": "2025-10-30T05:27:25-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/89",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Brian Dale",
+    "alphasort": "Dale, Brian",
+    "personid": 89,
+    "deathplace": null,
+    "id": 89,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 7
+      },
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 16
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/93",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "The Chinese Porcelain Company",
+    "alphasort": "Chinese Porcelain Company",
+    "personid": 93,
+    "deathplace": null,
+    "id": 93,
+    "lastupdate": "2025-10-30T05:27:38-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 61
+      }
+    ],
+    "createdate": "2006-03-27T15:27:10-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/94",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Harvard Art Museum Archives",
+    "alphasort": "Harvard Art Museum Archives",
+    "personid": 94,
+    "deathplace": null,
+    "id": 94,
+    "lastupdate": "2025-10-30T05:27:22-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/95",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Alexandra Wettlaufer",
+    "alphasort": "Wettlaufer, Alexandra",
+    "personid": 95,
+    "deathplace": null,
+    "id": 95,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 7
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/96",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "St. Martin's Press",
+    "alphasort": "St. Martin's Press",
+    "personid": 96,
+    "deathplace": null,
+    "id": 96,
+    "lastupdate": "2025-10-30T05:27:35-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/98",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Philip Hardie",
+    "alphasort": "Hardie, Philip",
+    "personid": 98,
+    "deathplace": null,
+    "id": 98,
+    "lastupdate": "2025-10-30T05:27:25-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/101",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Bertoncello Artigrafiche",
+    "alphasort": "Bertoncello Artigrafiche",
+    "personid": 101,
+    "deathplace": null,
+    "id": 101,
+    "lastupdate": "2025-10-30T05:27:47-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/103",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Emma Sutton",
+    "alphasort": "Sutton, Emma",
+    "personid": 103,
+    "deathplace": null,
+    "id": 103,
+    "lastupdate": "2025-10-30T05:27:28-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/105",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Anne Hollander",
+    "alphasort": "Hollander, Anne",
+    "personid": 105,
+    "deathplace": null,
+    "id": 105,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/106",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Jane Mayo Roos",
+    "alphasort": "Roos, Jane Mayo",
+    "personid": 106,
+    "deathplace": null,
+    "id": 106,
+    "lastupdate": "2025-10-30T05:27:35-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 94
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/107",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Light Gallery",
+    "alphasort": "Light Gallery",
+    "personid": 107,
+    "deathplace": null,
+    "id": 107,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/108",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Albert Borowitz",
+    "alphasort": "Borowitz, Albert",
+    "personid": 108,
+    "deathplace": null,
+    "id": 108,
+    "lastupdate": "2025-10-30T05:27:34-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 4
+      },
+      {
+        "role": "Artist",
+        "context": "object",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/109",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Cheonae Kim",
+    "alphasort": "Kim, Cheonae",
+    "personid": 109,
+    "deathplace": null,
+    "id": 109,
+    "lastupdate": "2025-10-30T05:27:36-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      },
+      {
+        "role": "Artist",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/110",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": "American",
+    "displayname": "Cathryn Griffin",
+    "alphasort": "Griffin, Cathryn",
+    "personid": 110,
+    "deathplace": null,
+    "id": 110,
+    "lastupdate": "2025-10-30T05:27:31-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "object",
+        "frequency": 1
+      },
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 11
+      },
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/112",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Gagosian Gallery, New York",
+    "alphasort": "Gagosian Gallery, New York",
+    "personid": 112,
+    "deathplace": null,
+    "id": 112,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:11-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/113",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Douglas A. Russell",
+    "alphasort": "Russell, Douglas A.",
+    "personid": 113,
+    "deathplace": null,
+    "id": 113,
+    "lastupdate": "2025-10-30T05:27:42-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/114",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Catherine Lampert",
+    "alphasort": "Lampert, Catherine",
+    "personid": 114,
+    "deathplace": null,
+    "id": 114,
+    "lastupdate": "2025-10-30T05:27:36-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/115",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Natalie and Irving Forman",
+    "alphasort": "Forman, Natalie and Irving",
+    "personid": 115,
+    "deathplace": null,
+    "id": 115,
+    "lastupdate": "2025-10-30T05:27:47-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/116",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Edward Katz",
+    "alphasort": "Katz, Edward",
+    "personid": 116,
+    "deathplace": null,
+    "id": 116,
+    "lastupdate": "2025-10-30T05:27:22-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/119",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Florence Valdès-Forain",
+    "alphasort": "Valdès-Forain, Florence",
+    "personid": 119,
+    "deathplace": null,
+    "id": 119,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/120",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "John E. Buchanan, Jr.",
+    "alphasort": "Buchanan, John E. Jr.",
+    "personid": 120,
+    "deathplace": null,
+    "id": 120,
+    "lastupdate": "2025-10-30T05:27:34-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/121",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Henry A. Millon",
+    "alphasort": "Millon, Henry A.",
+    "personid": 121,
+    "deathplace": null,
+    "id": 121,
+    "lastupdate": "2025-10-30T05:27:24-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/122",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Philippe Durey",
+    "alphasort": "Durey, Philippe",
+    "personid": 122,
+    "deathplace": null,
+    "id": 122,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/124",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "St. Martin de Porres Lay Dominican Community",
+    "alphasort": "St. Martin de Porres Lay Dominican Community",
+    "personid": 124,
+    "deathplace": null,
+    "id": 124,
+    "lastupdate": "2025-10-30T05:27:21-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/125",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "James H. Maroney Jr.",
+    "alphasort": "Maroney, James H. Jr.",
+    "personid": 125,
+    "deathplace": null,
+    "id": 125,
+    "lastupdate": "2025-10-30T05:27:38-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/126",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Agnes Schwarzmaier",
+    "alphasort": "Schwarzmaier, Agnes",
+    "personid": 126,
+    "deathplace": null,
+    "id": 126,
+    "lastupdate": "2025-10-30T05:27:40-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/127",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Donald Antrim",
+    "alphasort": "Antrim, Donald",
+    "personid": 127,
+    "deathplace": null,
+    "id": 127,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Artist",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/130",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Steven Hutchison",
+    "alphasort": "Hutchison, Steven",
+    "personid": 130,
+    "deathplace": null,
+    "id": 130,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/131",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Mary Ann Scott",
+    "alphasort": "Scott, Mary Ann",
+    "personid": 131,
+    "deathplace": null,
+    "id": 131,
+    "lastupdate": "2025-10-30T05:27:44-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/132",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Martin Lorber",
+    "alphasort": "Lorber, Martin",
+    "personid": 132,
+    "deathplace": null,
+    "id": 132,
+    "lastupdate": "2025-10-30T05:27:30-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:12-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/134",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Shibunkaku Shuppan Company",
+    "alphasort": "Shibunkaku Shuppan Company",
+    "personid": 134,
+    "deathplace": null,
+    "id": 134,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/140",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "ARTicle Press",
+    "alphasort": "ARTicle Press",
+    "personid": 140,
+    "deathplace": null,
+    "id": 140,
+    "lastupdate": "2025-10-30T05:27:34-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/141",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Aurora Publications",
+    "alphasort": "Aurora Publications",
+    "personid": 141,
+    "deathplace": null,
+    "id": 141,
+    "lastupdate": "2025-10-30T05:27:30-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Curator",
+        "context": "exhibition",
+        "frequency": 14
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 5
+      },
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 11
+      },
+      {
+        "role": "Curator",
+        "context": "object",
+        "frequency": 871
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 12
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/142",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Susanne Ebbinghaus",
+    "alphasort": "Ebbinghaus, Susanne",
+    "personid": 142,
+    "deathplace": null,
+    "id": 142,
+    "lastupdate": "2025-10-30T05:27:44-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/145",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Robert Haber, Inc.",
+    "alphasort": "Robert Haber, Inc.",
+    "personid": 145,
+    "deathplace": null,
+    "id": 145,
+    "lastupdate": "2025-10-30T05:27:47-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 8
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/146",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Adam Bartos",
+    "alphasort": "Bartos, Adam",
+    "personid": 146,
+    "deathplace": null,
+    "id": 146,
+    "lastupdate": "2025-10-30T05:27:25-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 5
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/147",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Reuben Kadish Foundation",
+    "alphasort": "Kadish Foundation, Reuben",
+    "personid": 147,
+    "deathplace": null,
+    "id": 147,
+    "lastupdate": "2025-10-30T05:27:35-04:00"
+  },
+  {
+    "gender": "male",
+    "displaydate": "born 1950",
+    "objectcount": 4,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      },
+      {
+        "role": "Artist",
+        "context": "object",
+        "frequency": 5
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/151",
+    "names": [
+      {
+        "displayname": "Mark Cooper",
+        "type": "Primary Name"
+      }
+    ],
+    "birthplace": null,
+    "wikipedia_id": "46909763",
+    "datebegin": 1950,
+    "culture": "American",
+    "displayname": "Mark Cooper",
+    "alphasort": "Cooper, Mark",
+    "personid": 151,
+    "deathplace": null,
+    "id": 151,
+    "lastupdate": "2025-10-30T05:27:46-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/153",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Antoon Erftemeijer",
+    "alphasort": "Erftemeijer, Antoon",
+    "personid": 153,
+    "deathplace": null,
+    "id": 153,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/154",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Gottmer Becht Aramith",
+    "alphasort": "Gottmer Becht Aramith",
+    "personid": 154,
+    "deathplace": null,
+    "id": 154,
+    "lastupdate": "2025-10-30T05:27:27-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 5
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/156",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Rhoda Eitel-Porter",
+    "alphasort": "Eitel-Porter, Rhoda",
+    "personid": 156,
+    "deathplace": null,
+    "id": 156,
+    "lastupdate": "2025-10-30T05:27:30-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 6
+      },
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:13-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/157",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Freer Gallery of Art and Arthur M. Sackler Gallery",
+    "alphasort": "Freer Gallery of Art and Arthur M. Sackler Gallery",
+    "personid": 157,
+    "deathplace": null,
+    "id": 157,
+    "lastupdate": "2025-10-30T05:27:35-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/159",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Longfellow National Historical Site",
+    "alphasort": "Longfellow National Historical Site",
+    "personid": 159,
+    "deathplace": null,
+    "id": 159,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/160",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Houtan Adib",
+    "alphasort": "Adib, Houtan",
+    "personid": 160,
+    "deathplace": null,
+    "id": 160,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/161",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "James J. Wilhelm",
+    "alphasort": "Wilhelm, James J.",
+    "personid": 161,
+    "deathplace": null,
+    "id": 161,
+    "lastupdate": "2025-10-30T05:27:36-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/162",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Richard Rambuss",
+    "alphasort": "Rambuss, Richard",
+    "personid": 162,
+    "deathplace": null,
+    "id": 162,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/163",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Stefan Grohé",
+    "alphasort": "Grohé, Stefan",
+    "personid": 163,
+    "deathplace": null,
+    "id": 163,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/165",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Hendrik J. Horn",
+    "alphasort": "Horn, Hendrik J.",
+    "personid": 165,
+    "deathplace": null,
+    "id": 165,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/166",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Marjorie Welish",
+    "alphasort": "Welish, Marjorie",
+    "personid": 166,
+    "deathplace": null,
+    "id": 166,
+    "lastupdate": "2025-10-30T05:27:35-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 9
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/167",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "David Leventhal",
+    "alphasort": "Leventhal, David",
+    "personid": 167,
+    "deathplace": null,
+    "id": 167,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/169",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Gurion Taussig",
+    "alphasort": "Taussig, Gurion",
+    "personid": 169,
+    "deathplace": null,
+    "id": 169,
+    "lastupdate": "2025-10-30T05:27:29-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/170",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Sabra Loomis",
+    "alphasort": "Loomis, Sabra",
+    "personid": 170,
+    "deathplace": null,
+    "id": 170,
+    "lastupdate": "2025-10-30T05:27:24-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/171",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Annick Lemoine",
+    "alphasort": "Lemoine, Annick",
+    "personid": 171,
+    "deathplace": null,
+    "id": 171,
+    "lastupdate": "2025-10-30T05:27:30-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:14-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/172",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "University of Paris IV - Sorbonne",
+    "alphasort": "University of Paris IV - Sorbonne",
+    "personid": 172,
+    "deathplace": null,
+    "id": 172,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/173",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Clovis Whitfield",
+    "alphasort": "Whitfield, Clovis",
+    "personid": 173,
+    "deathplace": null,
+    "id": 173,
+    "lastupdate": "2025-10-30T05:27:26-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/175",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "A. van Suchtelen",
+    "alphasort": "Suchtelen, A. van",
+    "personid": 175,
+    "deathplace": null,
+    "id": 175,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 2
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/176",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Roger Keverne Limited",
+    "alphasort": "Roger Keverne Limited",
+    "personid": 176,
+    "deathplace": null,
+    "id": 176,
+    "lastupdate": "2025-10-30T05:27:45-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/179",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Judith Childs",
+    "alphasort": "Childs, Judith",
+    "personid": 179,
+    "deathplace": null,
+    "id": 179,
+    "lastupdate": "2025-10-30T05:27:31-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/180",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Marina Belozerskaya",
+    "alphasort": "Belozerskaya, Marina",
+    "personid": 180,
+    "deathplace": null,
+    "id": 180,
+    "lastupdate": "2025-10-30T05:27:41-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/183",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Robert N. Linrothe",
+    "alphasort": "Linrothe, Robert N.",
+    "personid": 183,
+    "deathplace": null,
+    "id": 183,
+    "lastupdate": "2025-10-30T05:27:36-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/184",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Catherine Ryan",
+    "alphasort": "Ryan, Catherine",
+    "personid": 184,
+    "deathplace": null,
+    "id": 184,
+    "lastupdate": "2025-10-30T05:27:45-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/185",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Richard Dyer",
+    "alphasort": "Dyer, Richard",
+    "personid": 185,
+    "deathplace": null,
+    "id": 185,
+    "lastupdate": "2025-10-30T05:27:24-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 24
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/188",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Somogy Éditions d'Art",
+    "alphasort": "Somogy Éditions d'Art",
+    "personid": 188,
+    "deathplace": null,
+    "id": 188,
+    "lastupdate": "2025-10-30T05:27:45-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": "1731 - 1794",
+    "objectcount": 1,
+    "roles": [
+      {
+        "role": "Sitter",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 1794,
+    "url": "https://www.harvardartmuseums.org/collections/person/189",
+    "names": [
+      {
+        "displayname": "Edward Wigglesworth",
+        "type": "Primary Name"
+      }
+    ],
+    "birthplace": null,
+    "datebegin": 1731,
+    "culture": null,
+    "displayname": "Edward Wigglesworth",
+    "alphasort": "Wigglesworth, Edward",
+    "personid": 189,
+    "deathplace": null,
+    "id": 189,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/190",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Donna R. Barnes",
+    "alphasort": "Barnes, Donna R.",
+    "personid": 190,
+    "deathplace": null,
+    "id": 190,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/191",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Linda Stone-Ferrier",
+    "alphasort": "Stone-Ferrier, Linda",
+    "personid": 191,
+    "deathplace": null,
+    "id": 191,
+    "lastupdate": "2025-10-30T05:27:36-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      },
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 42
+      }
+    ],
+    "createdate": "2006-03-27T15:27:15-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/192",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Los Angeles County Museum of Art",
+    "alphasort": "Los Angeles County Museum of Art",
+    "personid": 192,
+    "deathplace": null,
+    "id": 192,
+    "lastupdate": "2025-10-30T05:27:38-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/193",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Elizabeth McGrath",
+    "alphasort": "McGrath, Elizabeth",
+    "personid": 193,
+    "deathplace": null,
+    "id": 193,
+    "lastupdate": "2025-10-30T05:27:32-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/194",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Pieter Jacobus Johannes van Thiel",
+    "alphasort": "Thiel, Pieter Jacobus Johannes van",
+    "personid": 194,
+    "deathplace": null,
+    "id": 194,
+    "lastupdate": "2025-10-30T05:27:27-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      },
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/195",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Hessel Miedema",
+    "alphasort": "Miedema, Hessel",
+    "personid": 195,
+    "deathplace": null,
+    "id": 195,
+    "lastupdate": "2025-10-30T05:27:33-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/196",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Jane Glaubinger",
+    "alphasort": "Glaubinger, Jane",
+    "personid": 196,
+    "deathplace": null,
+    "id": 196,
+    "lastupdate": "2025-10-30T05:27:42-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": "1853 - 1930",
+    "objectcount": 1,
+    "roles": [
+      {
+        "role": "Sitter",
+        "context": "object",
+        "frequency": 1
+      },
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 14
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 1930,
+    "url": "https://www.harvardartmuseums.org/collections/person/197",
+    "names": [
+      {
+        "displayname": "George Wigglesworth",
+        "type": "Primary Name"
+      }
+    ],
+    "birthplace": null,
+    "datebegin": 1853,
+    "culture": null,
+    "displayname": "George Wigglesworth",
+    "alphasort": "Wigglesworth, George",
+    "personid": 197,
+    "deathplace": null,
+    "id": 197,
+    "lastupdate": "2025-10-30T05:27:30-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 5
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/199",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Elizabeth Pike",
+    "alphasort": "Pike, Elizabeth",
+    "personid": 199,
+    "deathplace": null,
+    "id": 199,
+    "lastupdate": "2025-10-30T05:27:28-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/200",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Mrs. Henry Eliot",
+    "alphasort": "Eliot, Henry Mrs.",
+    "personid": 200,
+    "deathplace": null,
+    "id": 200,
+    "lastupdate": "2025-10-30T05:27:34-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/201",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Josua de Bruyn",
+    "alphasort": "Bruyn, Josua de",
+    "personid": 201,
+    "deathplace": null,
+    "id": 201,
+    "lastupdate": "2025-10-30T05:27:35-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/204",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Melissa Katz",
+    "alphasort": "Katz, Melissa",
+    "personid": 204,
+    "deathplace": null,
+    "id": 204,
+    "lastupdate": "2025-10-30T05:27:36-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/205",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Kurt Bauch",
+    "alphasort": "Bauch, Kurt",
+    "personid": 205,
+    "deathplace": null,
+    "id": 205,
+    "lastupdate": "2025-10-30T05:27:35-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/206",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "H. van Hall",
+    "alphasort": "Hall, H. van",
+    "personid": 206,
+    "deathplace": null,
+    "id": 206,
+    "lastupdate": "2025-10-30T05:27:28-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/208",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Sebastien A. C. Dudok van Heel",
+    "alphasort": "Dudok van Heel, Sebastien A. C.",
+    "personid": 208,
+    "deathplace": null,
+    "id": 208,
+    "lastupdate": "2025-10-30T05:27:25-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/209",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "J. H. Giskes",
+    "alphasort": "Giskes, J. H.",
+    "personid": 209,
+    "deathplace": null,
+    "id": 209,
+    "lastupdate": "2025-10-30T05:27:38-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/210",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "D. Hannema",
+    "alphasort": "Hannema, D.",
+    "personid": 210,
+    "deathplace": null,
+    "id": 210,
+    "lastupdate": "2025-10-30T05:27:45-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 5
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/211",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Karel G. Boon",
+    "alphasort": "Boon, Karel G.",
+    "personid": 211,
+    "deathplace": null,
+    "id": 211,
+    "lastupdate": "2025-10-30T05:27:25-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": "1818 - 1891",
+    "objectcount": 1,
+    "roles": [
+      {
+        "role": "Sitter",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 1891,
+    "url": "https://www.harvardartmuseums.org/collections/person/213",
+    "names": [
+      {
+        "displayname": "Thomas Hill",
+        "type": "Primary Name"
+      }
+    ],
+    "birthplace": null,
+    "datebegin": 1818,
+    "culture": null,
+    "displayname": "Thomas Hill",
+    "alphasort": "Hill, Thomas",
+    "personid": 213,
+    "deathplace": null,
+    "id": 213,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/215",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Free Association Books",
+    "alphasort": "Free Association Books",
+    "personid": 215,
+    "deathplace": null,
+    "id": 215,
+    "lastupdate": "2025-10-30T05:27:44-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/220",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Yves Henry Buhler",
+    "alphasort": "Buhler, Yves Henry",
+    "personid": 220,
+    "deathplace": null,
+    "id": 220,
+    "lastupdate": "2025-10-30T05:27:33-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 2
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:16-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/225",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Bates Lowry",
+    "alphasort": "Lowry, Bates",
+    "personid": 225,
+    "deathplace": null,
+    "id": 225,
+    "lastupdate": "2025-10-30T05:27:41-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Publisher",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/227",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "William Morris Society",
+    "alphasort": "Morris Society, William",
+    "personid": 227,
+    "deathplace": null,
+    "id": 227,
+    "lastupdate": "2025-10-30T05:27:40-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/229",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Steven Platzman",
+    "alphasort": "Platzman, Steven",
+    "personid": 229,
+    "deathplace": null,
+    "id": 229,
+    "lastupdate": "2025-10-30T05:27:34-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": "died 2017",
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 511
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 2017,
+    "url": "https://www.harvardartmuseums.org/collections/person/231",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Dr. Daniel Tassel",
+    "alphasort": "Tassel, Daniel Dr.",
+    "personid": 231,
+    "deathplace": "Lexington, MA",
+    "id": 231,
+    "lastupdate": "2025-10-30T05:27:33-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 4
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/232",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Hester Diamond",
+    "alphasort": "Diamond, Hester",
+    "personid": 232,
+    "deathplace": null,
+    "id": 232,
+    "lastupdate": "2025-10-30T05:27:41-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/233",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Thomas Ehrlich",
+    "alphasort": "Ehrlich, Thomas",
+    "personid": 233,
+    "deathplace": null,
+    "id": 233,
+    "lastupdate": "2025-10-30T05:27:38-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/234",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Sylvaine Hänsel",
+    "alphasort": "Hänsel, Sylvaine",
+    "personid": 234,
+    "deathplace": null,
+    "id": 234,
+    "lastupdate": "2025-10-30T05:27:40-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      },
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 2
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/235",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Terez Gerszi",
+    "alphasort": "Gerszi, Terez",
+    "personid": 235,
+    "deathplace": null,
+    "id": 235,
+    "lastupdate": "2025-10-30T05:27:34-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/237",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Johannes Rein ter Molen",
+    "alphasort": "Molen, Johannes Rein ter",
+    "personid": 237,
+    "deathplace": null,
+    "id": 237,
+    "lastupdate": "2025-10-30T05:27:39-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/238",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Thomas DaCosta Kaufmann",
+    "alphasort": "Kaufmann, Thomas DaCosta",
+    "personid": 238,
+    "deathplace": null,
+    "id": 238,
+    "lastupdate": "2025-10-30T05:27:24-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Author",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/239",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Clara Johanna Welcker",
+    "alphasort": "Welcker, Clara Johanna",
+    "personid": 239,
+    "deathplace": null,
+    "id": 239,
+    "lastupdate": "2025-10-30T05:27:23-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Editor",
+        "context": "publication",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/240",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Franz Rauhut",
+    "alphasort": "Rauhut, Franz",
+    "personid": 240,
+    "deathplace": null,
+    "id": 240,
+    "lastupdate": "2025-10-30T05:27:42-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 3
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/241",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "A. H. Baldwin & Sons, Ltd.",
+    "alphasort": "A. H. Baldwin & Sons, Ltd.",
+    "personid": 241,
+    "deathplace": null,
+    "id": 241,
+    "lastupdate": "2025-10-30T05:27:45-04:00"
+  },
+  {
+    "gender": "unknown",
+    "displaydate": null,
+    "objectcount": 0,
+    "roles": [
+      {
+        "role": "Donor/Lender/Vendor",
+        "context": "object",
+        "frequency": 1
+      }
+    ],
+    "createdate": "2006-03-27T15:27:17-05:00",
+    "dateend": 0,
+    "url": "https://www.harvardartmuseums.org/collections/person/242",
+    "birthplace": null,
+    "datebegin": 0,
+    "culture": null,
+    "displayname": "Jacoba van Schaik",
+    "alphasort": "Schaik, Jacoba van",
+    "personid": 242,
+    "deathplace": null,
+    "id": 242,
+    "lastupdate": "2025-10-30T05:27:37-04:00"
+  }
+]

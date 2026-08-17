@@ -1,0 +1,143 @@
+{
+  "info": {
+    "totalrecordsperquery": 5,
+    "totalrecords": 42246,
+    "pages": 8450,
+    "page": 1,
+    "next": "https://api.harvardartmuseums.org/person?page=2&size=5&sort=id&sortorder=asc&apikey=CHANGE_ME_HARVARD_API_KEY",
+    "responsetime": "6 ms"
+  },
+  "records": [
+    {
+      "gender": "male",
+      "displaydate": "1812-1870",
+      "objectcount": 2,
+      "roles": [
+        {
+          "role": "Sitter",
+          "context": "object",
+          "frequency": 2
+        }
+      ],
+      "createdate": "2006-03-27T15:27:06-05:00",
+      "wikidata_id": "Q5686",
+      "dateend": 1870,
+      "url": "https://www.harvardartmuseums.org/collections/person/2",
+      "viaf_id": "88666393",
+      "names": [
+        {
+          "displayname": "Charles Dickens",
+          "type": "Primary Name"
+        }
+      ],
+      "birthplace": null,
+      "wikipedia_id": "5884",
+      "datebegin": 1812,
+      "culture": null,
+      "displayname": "Charles Dickens",
+      "alphasort": "Dickens, Charles",
+      "ulan_id": "500106117",
+      "personid": 2,
+      "deathplace": null,
+      "id": 2,
+      "lastupdate": "2025-09-28T05:26:53-04:00",
+      "lcnaf_id": "n78087607"
+    },
+    {
+      "gender": "unknown",
+      "displaydate": null,
+      "objectcount": 0,
+      "roles": [
+        {
+          "role": "Author",
+          "context": "publication",
+          "frequency": 1
+        }
+      ],
+      "createdate": "2006-03-27T15:27:07-05:00",
+      "dateend": 0,
+      "url": "https://www.harvardartmuseums.org/collections/person/5",
+      "birthplace": null,
+      "datebegin": 0,
+      "culture": null,
+      "displayname": "Aspasia Papanastasiou",
+      "alphasort": "Papanastasiou, Aspasia",
+      "personid": 5,
+      "deathplace": null,
+      "id": 5,
+      "lastupdate": "2025-09-28T05:26:49-04:00"
+    },
+    {
+      "gender": "unknown",
+      "displaydate": null,
+      "objectcount": 0,
+      "roles": [
+        {
+          "role": "Publisher",
+          "context": "publication",
+          "frequency": 14
+        }
+      ],
+      "createdate": "2006-03-27T15:27:07-05:00",
+      "dateend": 0,
+      "url": "https://www.harvardartmuseums.org/collections/person/6",
+      "birthplace": null,
+      "datebegin": 0,
+      "culture": null,
+      "displayname": "Aristotle University of Thessaloniki",
+      "alphasort": "Aristotle University of Thessaloniki",
+      "personid": 6,
+      "deathplace": null,
+      "id": 6,
+      "lastupdate": "2025-09-28T05:26:58-04:00"
+    },
+    {
+      "gender": "unknown",
+      "displaydate": null,
+      "objectcount": 0,
+      "roles": [
+        {
+          "role": "Donor/Lender/Vendor",
+          "context": "object",
+          "frequency": 1
+        }
+      ],
+      "createdate": "2006-03-27T15:27:07-05:00",
+      "dateend": 0,
+      "url": "https://www.harvardartmuseums.org/collections/person/7",
+      "birthplace": null,
+      "datebegin": 0,
+      "culture": null,
+      "displayname": "Madison Art Center",
+      "alphasort": "Madison Art Center",
+      "personid": 7,
+      "deathplace": null,
+      "id": 7,
+      "lastupdate": "2025-09-28T05:26:54-04:00"
+    },
+    {
+      "gender": "unknown",
+      "displaydate": null,
+      "objectcount": 0,
+      "roles": [
+        {
+          "role": "Publisher",
+          "context": "publication",
+          "frequency": 1
+        }
+      ],
+      "createdate": "2006-03-27T15:27:07-05:00",
+      "dateend": 0,
+      "url": "https://www.harvardartmuseums.org/collections/person/9",
+      "birthplace": null,
+      "datebegin": 0,
+      "culture": null,
+      "displayname": "University Gallery, University of Massachusetts",
+      "alphasort": "University Gallery, University of Massachusetts",
+      "personid": 9,
+      "deathplace": null,
+      "id": 9,
+      "lastupdate": "2025-09-28T05:26:55-04:00"
+    }
+  ]
+}

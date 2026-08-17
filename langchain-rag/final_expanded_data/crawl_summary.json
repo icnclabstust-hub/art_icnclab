@@ -1,0 +1,11 @@
+{
+  "start_time": "2025-09-28T11:48:15.320490",
+  "sources_processed": [
+    "Harvard Art Museums"
+  ],
+  "total_entities": 16,
+  "total_relationships": 5,
+  "errors": [
+    "Europeana error: Unknown"
+  ]
+}

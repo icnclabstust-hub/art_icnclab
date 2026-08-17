@@ -1,0 +1,360 @@
+{
+  "classifications": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 64,
+      "pages": 7,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/classification?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "5 ms"
+    },
+    "records": [
+      {
+        "objectcount": 62,
+        "name": "Brick Stamps",
+        "id": 304,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 304
+      },
+      {
+        "objectcount": 46,
+        "name": "Cameos",
+        "id": 1086,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 1086
+      },
+      {
+        "objectcount": 1,
+        "name": "Casts",
+        "id": 1139,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 1139
+      },
+      {
+        "objectcount": 6,
+        "name": "Containers",
+        "id": 1203,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 1203
+      },
+      {
+        "objectcount": 11,
+        "name": "Frames",
+        "id": 1188,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 1188
+      },
+      {
+        "objectcount": 248,
+        "name": "Gems",
+        "id": 1078,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 1078
+      },
+      {
+        "objectcount": 16,
+        "name": "Graphic Design",
+        "id": 171,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 171
+      },
+      {
+        "objectcount": 69,
+        "name": "Inscriptions",
+        "id": 344,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 344
+      },
+      {
+        "objectcount": 344,
+        "name": "Material Specimens",
+        "id": 1075,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 1075
+      },
+      {
+        "objectcount": 470,
+        "name": "Rubbings",
+        "id": 173,
+        "lastupdate": "2025-09-27T04:03:16-04:00",
+        "classificationid": 173
+      }
+    ]
+  },
+  "cultures": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 255,
+      "pages": 26,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/culture?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "4 ms"
+    },
+    "records": [
+      {
+        "objectcount": 3,
+        "name": "Himyarite",
+        "id": 37527588,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 1,
+        "name": "Turkistan",
+        "id": 37528794,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 2,
+        "name": "Uruk",
+        "id": 37528902,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 3,
+        "name": "Turkistani",
+        "id": 37528803,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 2,
+        "name": "Graeco-Phoenician",
+        "id": 37527507,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 21,
+        "name": "Uruguayan",
+        "id": 37528893,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 3,
+        "name": "Zimbabwean",
+        "id": 37528992,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 7,
+        "name": "Turkmen",
+        "id": 37528812,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 18,
+        "name": "Scythian",
+        "id": 37528515,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      },
+      {
+        "objectcount": 1,
+        "name": "Kushite",
+        "id": 37527903,
+        "lastupdate": "2025-09-27T04:03:20-04:00"
+      }
+    ]
+  },
+  "mediums": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 324,
+      "pages": 33,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/medium?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "5 ms"
+    },
+    "records": [
+      {
+        "pathforward": "",
+        "level": 1,
+        "objectcount": 78,
+        "parentmediumid": null,
+        "mediumid": 2028348,
+        "name": "Horn",
+        "id": 2028348,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Wood\\",
+        "level": 2,
+        "objectcount": 89,
+        "parentmediumid": 2028326,
+        "mediumid": 2028356,
+        "name": "mahogany",
+        "id": 2028356,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Stone\\",
+        "level": 2,
+        "objectcount": 7,
+        "parentmediumid": 2028228,
+        "mediumid": 2028458,
+        "name": "soapstone",
+        "id": 2028458,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Stone\\",
+        "level": 2,
+        "objectcount": 2,
+        "parentmediumid": 2028228,
+        "mediumid": 2028463,
+        "name": "malachite",
+        "id": 2028463,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Stone\\",
+        "level": 2,
+        "objectcount": 2,
+        "parentmediumid": 2028228,
+        "mediumid": 2028466,
+        "name": "turquoise",
+        "id": 2028466,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "",
+        "level": 1,
+        "objectcount": 41,
+        "parentmediumid": null,
+        "mediumid": 2028676,
+        "name": "Conté crayon",
+        "id": 2028676,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "",
+        "level": 1,
+        "objectcount": 14,
+        "parentmediumid": null,
+        "mediumid": 2028693,
+        "name": "Tortoise shell",
+        "id": 2028693,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Wood\\",
+        "level": 2,
+        "objectcount": 4,
+        "parentmediumid": 2028326,
+        "mediumid": 2028699,
+        "name": "pine",
+        "id": 2028699,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "",
+        "level": 1,
+        "objectcount": 8,
+        "parentmediumid": null,
+        "mediumid": 2028704,
+        "name": "Paintstick",
+        "id": 2028704,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Chalk\\",
+        "level": 2,
+        "objectcount": 44,
+        "parentmediumid": 2028184,
+        "mediumid": 2028721,
+        "name": "red and white chalk",
+        "id": 2028721,
+        "lastupdate": "2025-09-27T04:26:37-04:00",
+        "haschildren": 0
+      }
+    ]
+  },
+  "techniques": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 321,
+      "pages": 33,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/technique?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "4 ms"
+    },
+    "records": [
+      {
+        "objectcount": 78,
+        "name": "Brocade",
+        "id": 738,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 738
+      },
+      {
+        "objectcount": 3,
+        "name": "Bromoil print",
+        "id": 3234,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 3234
+      },
+      {
+        "objectcount": 3,
+        "name": "Brushwork",
+        "id": 3885,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 3885
+      },
+      {
+        "objectcount": 10,
+        "name": "Carbon print",
+        "id": 996,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 996
+      },
+      {
+        "objectcount": 2,
+        "name": "Carborundum print",
+        "id": 5155,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 5155
+      },
+      {
+        "objectcount": 1,
+        "name": "Cerograph",
+        "id": 3589,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 3589
+      },
+      {
+        "objectcount": 5,
+        "name": "Chased",
+        "id": 2230,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 2230
+      },
+      {
+        "objectcount": 66,
+        "name": "Cliché-verre",
+        "id": 1758,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 1758
+      },
+      {
+        "objectcount": 4,
+        "name": "Cloisonné",
+        "id": 554,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 554
+      },
+      {
+        "objectcount": 16,
+        "name": "Collagraph",
+        "id": 3431,
+        "lastupdate": "2025-09-27T05:21:41-04:00",
+        "techniqueid": 3431
+      }
+    ]
+  }
+}

@@ -1,0 +1,714 @@
+{
+  "info": {
+    "totalrecordsperquery": 5,
+    "totalrecords": 247779,
+    "pages": 49556,
+    "page": 1,
+    "next": "https://api.harvardartmuseums.org/object?page=2&size=5&sort=id&sortorder=asc&apikey=CHANGE_ME_HARVARD_API_KEY",
+    "responsetime": "22 ms"
+  },
+  "records": [
+    {
+      "copyright": "© Artists Rights Society (ARS), New York / VG Bild-Kunst, Bonn",
+      "contextualtextcount": 0,
+      "creditline": "Harvard Art Museums/Busch-Reisinger Museum, Gift of T. Lux Feininger",
+      "accesslevel": 1,
+      "createdate": "2006-01-20T00:00:00-05:00",
+      "dateoflastpageview": "2025-09-10",
+      "classificationid": 17,
+      "division": "Modern and Contemporary Art",
+      "markscount": 0,
+      "publicationcount": 0,
+      "totaluniquepageviews": 77,
+      "contact": "am_moderncontemporary@harvard.edu",
+      "colorcount": 3,
+      "rank": 196472,
+      "id": 1412,
+      "state": null,
+      "verificationleveldescription": "Adequate. Object is adequately described but information may not be vetted",
+      "period": null,
+      "images": [],
+      "worktypes": [
+        {
+          "worktypeid": "341",
+          "worktype": "slide"
+        },
+        {
+          "worktypeid": "268",
+          "worktype": "photograph"
+        }
+      ],
+      "imagecount": 1,
+      "totalpageviews": 164,
+      "accessionyear": null,
+      "standardreferencenumber": null,
+      "signed": null,
+      "classification": "Photographs",
+      "relatedcount": 1,
+      "verificationlevel": 2,
+      "primaryimageurl": null,
+      "titlescount": 1,
+      "peoplecount": 1,
+      "style": null,
+      "lastupdate": "2025-09-27T04:28:34-04:00",
+      "commentary": null,
+      "periodid": null,
+      "technique": "Slide, 35 mm, black and white",
+      "edition": null,
+      "description": "Corresponds to negative BRLF.457.10",
+      "medium": null,
+      "lendingpermissionlevel": 0,
+      "title": "[Buildings, Germany (Siemensstadt?)]",
+      "accessionmethod": "Gift",
+      "colors": [
+        {
+          "color": "#000000",
+          "spectrum": "#1eb264",
+          "hue": "Black",
+          "percent": 0.6587987987987988,
+          "css3": "#000000"
+        },
+        {
+          "color": "#191919",
+          "spectrum": "#1eb264",
+          "hue": "Grey",
+          "percent": 0.18684684684684685,
+          "css3": "#000000"
+        },
+        {
+          "color": "#969696",
+          "spectrum": "#8761aa",
+          "hue": "Grey",
+          "percent": 0.15435435435435435,
+          "css3": "#a9a9a9"
+        }
+      ],
+      "provenance": null,
+      "groupcount": 2,
+      "dated": "1940s-1950s",
+      "department": "Busch-Reisinger Museum",
+      "dateend": 1959,
+      "people": [
+        {
+          "role": "Artist",
+          "birthplace": "New York, NY",
+          "gender": "male",
+          "displaydate": "1871 - 1956",
+          "prefix": null,
+          "culture": "American",
+          "displayname": "Lyonel Feininger",
+          "alphasort": "Feininger, Lyonel",
+          "name": "Lyonel Feininger",
+          "personid": 20002,
+          "deathplace": "New York, NY",
+          "displayorder": 1
+        }
+      ],
+      "url": "https://www.harvardartmuseums.org/collections/object/1412",
+      "dateoffirstpageview": "2009-05-12",
+      "century": "20th century",
+      "objectnumber": "BRLF.1002.214",
+      "labeltext": null,
+      "datebegin": 1940,
+      "culture": "American",
+      "exhibitioncount": 0,
+      "imagepermissionlevel": 1,
+      "mediacount": 0,
+      "objectid": 1412,
+      "techniqueid": 220,
+      "dimensions": "3 x 3.5 cm (1 3/16 x 1 3/8 in.)",
+      "seeAlso": [
+        {
+          "id": "https://iiif.harvardartmuseums.org/manifests/object/1412",
+          "type": "IIIF Manifest",
+          "format": "application/json",
+          "profile": "http://iiif.io/api/presentation/2/context.json"
+        }
+      ]
+    },
+    {
+      "copyright": "© Artists Rights Society (ARS), New York / VG Bild-Kunst, Bonn",
+      "contextualtextcount": 0,
+      "creditline": "Harvard Art Museums/Busch-Reisinger Museum, Gift of T. Lux Feininger",
+      "accesslevel": 1,
+      "createdate": "2006-01-20T00:00:00-05:00",
+      "dateoflastpageview": "2025-05-18",
+      "classificationid": 17,
+      "division": "Modern and Contemporary Art",
+      "markscount": 0,
+      "publicationcount": 0,
+      "totaluniquepageviews": 31,
+      "contact": "am_moderncontemporary@harvard.edu",
+      "colorcount": 8,
+      "rank": 196473,
+      "id": 1413,
+      "state": null,
+      "verificationleveldescription": "Adequate. Object is adequately described but information may not be vetted",
+      "period": null,
+      "images": [],
+      "worktypes": [
+        {
+          "worktypeid": "341",
+          "worktype": "slide"
+        },
+        {
+          "worktypeid": "268",
+          "worktype": "photograph"
+        }
+      ],
+      "imagecount": 1,
+      "totalpageviews": 70,
+      "accessionyear": null,
+      "standardreferencenumber": null,
+      "signed": null,
+      "classification": "Photographs",
+      "relatedcount": 1,
+      "verificationlevel": 2,
+      "primaryimageurl": null,
+      "titlescount": 1,
+      "peoplecount": 1,
+      "style": null,
+      "lastupdate": "2025-09-27T04:28:34-04:00",
+      "commentary": null,
+      "periodid": null,
+      "technique": "Slide, 35 mm, black and white",
+      "edition": null,
+      "description": "Corresponds to negative BRLF.196.13",
+      "medium": null,
+      "lendingpermissionlevel": 0,
+      "title": "[Buildings, Stockholm, 1936]",
+      "accessionmethod": "Gift",
+      "colors": [
+        {
+          "color": "#323232",
+          "spectrum": "#2eb45d",
+          "hue": "Grey",
+          "percent": 0.20660493827160495,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#4b4b4b",
+          "spectrum": "#3db657",
+          "hue": "Grey",
+          "percent": 0.17969135802469136,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#afafaf",
+          "spectrum": "#8c5fa8",
+          "hue": "Grey",
+          "percent": 0.14703703703703705,
+          "css3": "#a9a9a9"
+        },
+        {
+          "color": "#000000",
+          "spectrum": "#1eb264",
+          "hue": "Black",
+          "percent": 0.11549382716049383,
+          "css3": "#000000"
+        },
+        {
+          "color": "#191919",
+          "spectrum": "#1eb264",
+          "hue": "Grey",
+          "percent": 0.11475308641975308,
+          "css3": "#000000"
+        },
+        {
+          "color": "#c8c8c8",
+          "spectrum": "#8c5fa8",
+          "hue": "Grey",
+          "percent": 0.09358024691358025,
+          "css3": "#c0c0c0"
+        },
+        {
+          "color": "#646464",
+          "spectrum": "#7866ad",
+          "hue": "Grey",
+          "percent": 0.08179012345679013,
+          "css3": "#696969"
+        },
+        {
+          "color": "#7d7d7d",
+          "spectrum": "#8362aa",
+          "hue": "Grey",
+          "percent": 0.061049382716049386,
+          "css3": "#808080"
+        }
+      ],
+      "provenance": null,
+      "groupcount": 2,
+      "dated": "1940s-1950s",
+      "department": "Busch-Reisinger Museum",
+      "dateend": 1959,
+      "people": [
+        {
+          "role": "Artist",
+          "birthplace": "New York, NY",
+          "gender": "male",
+          "displaydate": "1871 - 1956",
+          "prefix": null,
+          "culture": "American",
+          "displayname": "Lyonel Feininger",
+          "alphasort": "Feininger, Lyonel",
+          "name": "Lyonel Feininger",
+          "personid": 20002,
+          "deathplace": "New York, NY",
+          "displayorder": 1
+        }
+      ],
+      "url": "https://www.harvardartmuseums.org/collections/object/1413",
+      "dateoffirstpageview": "2009-07-06",
+      "century": "20th century",
+      "objectnumber": "BRLF.1002.215",
+      "labeltext": null,
+      "datebegin": 1940,
+      "culture": "American",
+      "exhibitioncount": 0,
+      "imagepermissionlevel": 1,
+      "mediacount": 0,
+      "objectid": 1413,
+      "techniqueid": 220,
+      "dimensions": "3 x 3.5 cm (1 3/16 x 1 3/8 in.)",
+      "seeAlso": [
+        {
+          "id": "https://iiif.harvardartmuseums.org/manifests/object/1413",
+          "type": "IIIF Manifest",
+          "format": "application/json",
+          "profile": "http://iiif.io/api/presentation/2/context.json"
+        }
+      ]
+    },
+    {
+      "copyright": "© Artists Rights Society (ARS), New York / VG Bild-Kunst, Bonn",
+      "contextualtextcount": 0,
+      "creditline": "Harvard Art Museums/Busch-Reisinger Museum, Gift of T. Lux Feininger",
+      "accesslevel": 1,
+      "createdate": "2006-01-20T00:00:00-05:00",
+      "dateoflastpageview": "2025-03-26",
+      "classificationid": 17,
+      "division": "Modern and Contemporary Art",
+      "markscount": 0,
+      "publicationcount": 0,
+      "totaluniquepageviews": 64,
+      "contact": "am_moderncontemporary@harvard.edu",
+      "colorcount": 7,
+      "rank": 196480,
+      "id": 1414,
+      "state": null,
+      "verificationleveldescription": "Adequate. Object is adequately described but information may not be vetted",
+      "period": null,
+      "images": [],
+      "worktypes": [
+        {
+          "worktypeid": "341",
+          "worktype": "slide"
+        },
+        {
+          "worktypeid": "268",
+          "worktype": "photograph"
+        }
+      ],
+      "imagecount": 1,
+      "totalpageviews": 113,
+      "accessionyear": null,
+      "standardreferencenumber": null,
+      "signed": null,
+      "classification": "Photographs",
+      "relatedcount": 1,
+      "verificationlevel": 2,
+      "primaryimageurl": null,
+      "titlescount": 1,
+      "peoplecount": 1,
+      "style": null,
+      "lastupdate": "2025-09-27T04:28:34-04:00",
+      "commentary": null,
+      "periodid": null,
+      "technique": "Slide, 35 mm, black and white",
+      "edition": null,
+      "description": "Corresponds to negative BRLF.413.6",
+      "medium": null,
+      "lendingpermissionlevel": 0,
+      "title": "[Street scene, Berlin]",
+      "accessionmethod": "Gift",
+      "colors": [
+        {
+          "color": "#000000",
+          "spectrum": "#1eb264",
+          "hue": "Black",
+          "percent": 0.2083809523809524,
+          "css3": "#000000"
+        },
+        {
+          "color": "#afafaf",
+          "spectrum": "#8c5fa8",
+          "hue": "Grey",
+          "percent": 0.18641269841269842,
+          "css3": "#a9a9a9"
+        },
+        {
+          "color": "#323232",
+          "spectrum": "#2eb45d",
+          "hue": "Grey",
+          "percent": 0.17142857142857143,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#c8c8c8",
+          "spectrum": "#8c5fa8",
+          "hue": "Grey",
+          "percent": 0.12692063492063493,
+          "css3": "#c0c0c0"
+        },
+        {
+          "color": "#191919",
+          "spectrum": "#1eb264",
+          "hue": "Grey",
+          "percent": 0.12266666666666666,
+          "css3": "#000000"
+        },
+        {
+          "color": "#4b4b4b",
+          "spectrum": "#3db657",
+          "hue": "Grey",
+          "percent": 0.10165079365079364,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#646464",
+          "spectrum": "#7866ad",
+          "hue": "Grey",
+          "percent": 0.08253968253968254,
+          "css3": "#696969"
+        }
+      ],
+      "provenance": null,
+      "groupcount": 2,
+      "dated": "1940s-1950s",
+      "department": "Busch-Reisinger Museum",
+      "dateend": 1959,
+      "people": [
+        {
+          "role": "Artist",
+          "birthplace": "New York, NY",
+          "gender": "male",
+          "displaydate": "1871 - 1956",
+          "prefix": null,
+          "culture": "American",
+          "displayname": "Lyonel Feininger",
+          "alphasort": "Feininger, Lyonel",
+          "name": "Lyonel Feininger",
+          "personid": 20002,
+          "deathplace": "New York, NY",
+          "displayorder": 1
+        }
+      ],
+      "url": "https://www.harvardartmuseums.org/collections/object/1414",
+      "dateoffirstpageview": "2009-07-06",
+      "century": "20th century",
+      "objectnumber": "BRLF.1003.6",
+      "labeltext": null,
+      "datebegin": 1940,
+      "culture": "American",
+      "exhibitioncount": 0,
+      "imagepermissionlevel": 1,
+      "mediacount": 0,
+      "objectid": 1414,
+      "techniqueid": 220,
+      "dimensions": "3 x 3.5 cm (1 3/16 x 1 3/8 in.)",
+      "seeAlso": [
+        {
+          "id": "https://iiif.harvardartmuseums.org/manifests/object/1414",
+          "type": "IIIF Manifest",
+          "format": "application/json",
+          "profile": "http://iiif.io/api/presentation/2/context.json"
+        }
+      ]
+    },
+    {
+      "copyright": "© Artists Rights Society (ARS), New York / VG Bild-Kunst, Bonn",
+      "contextualtextcount": 0,
+      "creditline": "Harvard Art Museums/Busch-Reisinger Museum, Gift of T. Lux Feininger",
+      "accesslevel": 1,
+      "createdate": "2006-01-20T00:00:00-05:00",
+      "dateoflastpageview": "2023-04-05",
+      "classificationid": 17,
+      "division": "Modern and Contemporary Art",
+      "markscount": 0,
+      "publicationcount": 0,
+      "totaluniquepageviews": 36,
+      "contact": "am_moderncontemporary@harvard.edu",
+      "colorcount": 6,
+      "rank": 196482,
+      "id": 1415,
+      "state": null,
+      "verificationleveldescription": "Adequate. Object is adequately described but information may not be vetted",
+      "period": null,
+      "images": [],
+      "worktypes": [
+        {
+          "worktypeid": "341",
+          "worktype": "slide"
+        },
+        {
+          "worktypeid": "268",
+          "worktype": "photograph"
+        }
+      ],
+      "imagecount": 1,
+      "totalpageviews": 66,
+      "accessionyear": null,
+      "standardreferencenumber": null,
+      "signed": null,
+      "classification": "Photographs",
+      "relatedcount": 1,
+      "verificationlevel": 2,
+      "primaryimageurl": null,
+      "titlescount": 1,
+      "peoplecount": 1,
+      "style": null,
+      "lastupdate": "2025-09-27T04:28:34-04:00",
+      "commentary": null,
+      "periodid": null,
+      "technique": "Slide, 35 mm, black and white",
+      "edition": null,
+      "description": null,
+      "medium": null,
+      "lendingpermissionlevel": 0,
+      "title": "[Street scene in Berlin]",
+      "accessionmethod": "Gift",
+      "colors": [
+        {
+          "color": "#000000",
+          "spectrum": "#1eb264",
+          "hue": "Black",
+          "percent": 0.3748076923076923,
+          "css3": "#000000"
+        },
+        {
+          "color": "#191919",
+          "spectrum": "#1eb264",
+          "hue": "Grey",
+          "percent": 0.1621153846153846,
+          "css3": "#000000"
+        },
+        {
+          "color": "#323232",
+          "spectrum": "#2eb45d",
+          "hue": "Grey",
+          "percent": 0.11679487179487179,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#646464",
+          "spectrum": "#7866ad",
+          "hue": "Grey",
+          "percent": 0.11647435897435897,
+          "css3": "#696969"
+        },
+        {
+          "color": "#4b4b4b",
+          "spectrum": "#3db657",
+          "hue": "Grey",
+          "percent": 0.11576923076923076,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#7d7d7d",
+          "spectrum": "#8362aa",
+          "hue": "Grey",
+          "percent": 0.11403846153846153,
+          "css3": "#808080"
+        }
+      ],
+      "provenance": null,
+      "groupcount": 2,
+      "dated": "1940s-1950s",
+      "department": "Busch-Reisinger Museum",
+      "dateend": 1959,
+      "people": [
+        {
+          "role": "Artist",
+          "birthplace": "New York, NY",
+          "gender": "male",
+          "displaydate": "1871 - 1956",
+          "prefix": null,
+          "culture": "American",
+          "displayname": "Lyonel Feininger",
+          "alphasort": "Feininger, Lyonel",
+          "name": "Lyonel Feininger",
+          "personid": 20002,
+          "deathplace": "New York, NY",
+          "displayorder": 1
+        }
+      ],
+      "url": "https://www.harvardartmuseums.org/collections/object/1415",
+      "dateoffirstpageview": "2009-09-17",
+      "century": "20th century",
+      "objectnumber": "BRLF.1003.8",
+      "labeltext": null,
+      "datebegin": 1940,
+      "culture": "American",
+      "exhibitioncount": 0,
+      "imagepermissionlevel": 1,
+      "mediacount": 0,
+      "objectid": 1415,
+      "techniqueid": 220,
+      "dimensions": "3 x 3.5 cm (1 3/16 x 1 3/8 in.)",
+      "seeAlso": [
+        {
+          "id": "https://iiif.harvardartmuseums.org/manifests/object/1415",
+          "type": "IIIF Manifest",
+          "format": "application/json",
+          "profile": "http://iiif.io/api/presentation/2/context.json"
+        }
+      ]
+    },
+    {
+      "copyright": "© Artists Rights Society (ARS), New York / VG Bild-Kunst, Bonn",
+      "contextualtextcount": 0,
+      "creditline": "Harvard Art Museums/Busch-Reisinger Museum, Gift of T. Lux Feininger",
+      "accesslevel": 1,
+      "createdate": "2006-01-20T00:00:00-05:00",
+      "dateoflastpageview": "2025-06-08",
+      "classificationid": 17,
+      "division": "Modern and Contemporary Art",
+      "markscount": 0,
+      "publicationcount": 0,
+      "totaluniquepageviews": 28,
+      "contact": "am_moderncontemporary@harvard.edu",
+      "colorcount": 7,
+      "rank": 196483,
+      "id": 1416,
+      "state": null,
+      "verificationleveldescription": "Adequate. Object is adequately described but information may not be vetted",
+      "period": null,
+      "images": [],
+      "worktypes": [
+        {
+          "worktypeid": "341",
+          "worktype": "slide"
+        },
+        {
+          "worktypeid": "268",
+          "worktype": "photograph"
+        }
+      ],
+      "imagecount": 1,
+      "totalpageviews": 56,
+      "accessionyear": null,
+      "standardreferencenumber": null,
+      "signed": null,
+      "classification": "Photographs",
+      "relatedcount": 1,
+      "verificationlevel": 2,
+      "primaryimageurl": null,
+      "titlescount": 1,
+      "peoplecount": 1,
+      "style": null,
+      "lastupdate": "2025-09-27T04:28:34-04:00",
+      "commentary": null,
+      "periodid": null,
+      "technique": "Slide, 35 mm, black and white",
+      "edition": null,
+      "description": "Corresponds to negative BRLF.106.2",
+      "medium": null,
+      "lendingpermissionlevel": 0,
+      "title": "[Shellhaus, Berlin]",
+      "accessionmethod": "Gift",
+      "colors": [
+        {
+          "color": "#7d7d7d",
+          "spectrum": "#8362aa",
+          "hue": "Grey",
+          "percent": 0.34425925925925926,
+          "css3": "#808080"
+        },
+        {
+          "color": "#4b4b4b",
+          "spectrum": "#3db657",
+          "hue": "Grey",
+          "percent": 0.12524691358024692,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#969696",
+          "spectrum": "#8761aa",
+          "hue": "Grey",
+          "percent": 0.11888888888888889,
+          "css3": "#a9a9a9"
+        },
+        {
+          "color": "#000000",
+          "spectrum": "#1eb264",
+          "hue": "Black",
+          "percent": 0.11098765432098766,
+          "css3": "#000000"
+        },
+        {
+          "color": "#323232",
+          "spectrum": "#2eb45d",
+          "hue": "Grey",
+          "percent": 0.1097530864197531,
+          "css3": "#2f4f4f"
+        },
+        {
+          "color": "#646464",
+          "spectrum": "#7866ad",
+          "hue": "Grey",
+          "percent": 0.10030864197530864,
+          "css3": "#696969"
+        },
+        {
+          "color": "#191919",
+          "spectrum": "#1eb264",
+          "hue": "Grey",
+          "percent": 0.09055555555555556,
+          "css3": "#000000"
+        }
+      ],
+      "provenance": null,
+      "groupcount": 2,
+      "dated": "1940s-1950s",
+      "department": "Busch-Reisinger Museum",
+      "dateend": 1959,
+      "people": [
+        {
+          "role": "Artist",
+          "birthplace": "New York, NY",
+          "gender": "male",
+          "displaydate": "1871 - 1956",
+          "prefix": null,
+          "culture": "American",
+          "displayname": "Lyonel Feininger",
+          "alphasort": "Feininger, Lyonel",
+          "name": "Lyonel Feininger",
+          "personid": 20002,
+          "deathplace": "New York, NY",
+          "displayorder": 1
+        }
+      ],
+      "url": "https://www.harvardartmuseums.org/collections/object/1416",
+      "dateoffirstpageview": "2009-09-17",
+      "century": "20th century",
+      "objectnumber": "BRLF.1003.9",
+      "labeltext": null,
+      "datebegin": 1940,
+      "culture": "American",
+      "exhibitioncount": 0,
+      "imagepermissionlevel": 1,
+      "mediacount": 0,
+      "objectid": 1416,
+      "techniqueid": 220,
+      "dimensions": "3 x 3.5 cm (1 3/16 x 1 3/8 in.)",
+      "seeAlso": [
+        {
+          "id": "https://iiif.harvardartmuseums.org/manifests/object/1416",
+          "type": "IIIF Manifest",
+          "format": "application/json",
+          "profile": "http://iiif.io/api/presentation/2/context.json"
+        }
+      ]
+    }
+  ]
+}

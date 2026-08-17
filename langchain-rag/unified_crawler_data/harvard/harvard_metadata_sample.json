@@ -1,0 +1,360 @@
+{
+  "classifications": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 64,
+      "pages": 7,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/classification?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "5 ms"
+    },
+    "records": [
+      {
+        "objectcount": 1,
+        "name": "Natural History Specimens",
+        "id": 1133,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 1133
+      },
+      {
+        "objectcount": 1,
+        "name": "Paintings with Text",
+        "id": 197,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 197
+      },
+      {
+        "objectcount": 66,
+        "name": "Performance Artifacts",
+        "id": 224,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 224
+      },
+      {
+        "objectcount": 1,
+        "name": "Text",
+        "id": 204,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 204
+      },
+      {
+        "objectcount": 80,
+        "name": "Tokens",
+        "id": 492,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 492
+      },
+      {
+        "objectcount": 62,
+        "name": "Brick Stamps",
+        "id": 304,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 304
+      },
+      {
+        "objectcount": 46,
+        "name": "Cameos",
+        "id": 1086,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 1086
+      },
+      {
+        "objectcount": 1,
+        "name": "Casts",
+        "id": 1139,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 1139
+      },
+      {
+        "objectcount": 6,
+        "name": "Containers",
+        "id": 1203,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 1203
+      },
+      {
+        "objectcount": 11,
+        "name": "Frames",
+        "id": 1188,
+        "lastupdate": "2025-09-28T04:03:19-04:00",
+        "classificationid": 1188
+      }
+    ]
+  },
+  "cultures": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 255,
+      "pages": 26,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/culture?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "5 ms"
+    },
+    "records": [
+      {
+        "objectcount": 18,
+        "name": "Scythian",
+        "id": 37528515,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 3,
+        "name": "Himyarite",
+        "id": 37527588,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 2,
+        "name": "Uruk",
+        "id": 37528902,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 1,
+        "name": "Turkistan",
+        "id": 37528794,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 3,
+        "name": "Turkistani",
+        "id": 37528803,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 2,
+        "name": "Graeco-Phoenician",
+        "id": 37527507,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 21,
+        "name": "Uruguayan",
+        "id": 37528893,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 3,
+        "name": "Zimbabwean",
+        "id": 37528992,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 7,
+        "name": "Turkmen",
+        "id": 37528812,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      },
+      {
+        "objectcount": 27,
+        "name": "Seleucid",
+        "id": 37528524,
+        "lastupdate": "2025-09-28T04:03:24-04:00"
+      }
+    ]
+  },
+  "mediums": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 324,
+      "pages": 33,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/medium?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "3 ms"
+    },
+    "records": [
+      {
+        "pathforward": "Chalk\\",
+        "level": 2,
+        "objectcount": 44,
+        "parentmediumid": 2028184,
+        "mediumid": 2028721,
+        "name": "red and white chalk",
+        "id": 2028721,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Chalk\\",
+        "level": 2,
+        "objectcount": 6,
+        "parentmediumid": 2028184,
+        "mediumid": 2029582,
+        "name": "brown chalk",
+        "id": 2029582,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Ink\\",
+        "level": 2,
+        "objectcount": 4,
+        "parentmediumid": 2028195,
+        "mediumid": 2028722,
+        "name": "iron-gall ink",
+        "id": 2028722,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Ink\\",
+        "level": 2,
+        "objectcount": 1,
+        "parentmediumid": 2028195,
+        "mediumid": 2029602,
+        "name": "bistre",
+        "id": 2029602,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Ink\\",
+        "level": 2,
+        "objectcount": null,
+        "parentmediumid": 2028195,
+        "mediumid": 2036065,
+        "name": "sepia",
+        "id": 2036065,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Ink\\",
+        "level": 2,
+        "objectcount": 4,
+        "parentmediumid": 2028195,
+        "mediumid": 2038604,
+        "name": "blue ink",
+        "id": 2038604,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Ink\\",
+        "level": 2,
+        "objectcount": null,
+        "parentmediumid": 2028195,
+        "mediumid": 2038843,
+        "name": "typewriter ribbon ink",
+        "id": 2038843,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Metalpoint\\",
+        "level": 2,
+        "objectcount": 22,
+        "parentmediumid": 2028200,
+        "mediumid": 2028933,
+        "name": "silverpoint",
+        "id": 2028933,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Metalpoint\\",
+        "level": 2,
+        "objectcount": 4,
+        "parentmediumid": 2028200,
+        "mediumid": 2028990,
+        "name": "copperpoint",
+        "id": 2028990,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      },
+      {
+        "pathforward": "Metal\\",
+        "level": 2,
+        "objectcount": 64,
+        "parentmediumid": 2028222,
+        "mediumid": 2029773,
+        "name": "white metal",
+        "id": 2029773,
+        "lastupdate": "2025-09-28T04:29:05-04:00",
+        "haschildren": 0
+      }
+    ]
+  },
+  "techniques": {
+    "info": {
+      "totalrecordsperquery": 10,
+      "totalrecords": 321,
+      "pages": 33,
+      "page": 1,
+      "next": "https://api.harvardartmuseums.org/technique?apikey=CHANGE_ME_HARVARD_API_KEY&page=2",
+      "responsetime": "5 ms"
+    },
+    "records": [
+      {
+        "objectcount": 2,
+        "name": "8 x 10 Polaroid print",
+        "id": 4851,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 4851
+      },
+      {
+        "objectcount": 23,
+        "name": "Ambrotype",
+        "id": 3025,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 3025
+      },
+      {
+        "objectcount": 2,
+        "name": "Appliqué",
+        "id": 4101,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 4101
+      },
+      {
+        "objectcount": 8,
+        "name": "Aquatint and drypoint",
+        "id": 2644,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 2644
+      },
+      {
+        "objectcount": 8,
+        "name": "Aquatint and lithograph",
+        "id": 5244,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 5244
+      },
+      {
+        "objectcount": 3,
+        "name": "Aquatint and mezzotint",
+        "id": 4303,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 4303
+      },
+      {
+        "objectcount": 7,
+        "name": "Aquatint and roulette",
+        "id": 3577,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 3577
+      },
+      {
+        "objectcount": 4,
+        "name": "Aquatint and softground etching",
+        "id": 1794,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 1794
+      },
+      {
+        "objectcount": 2,
+        "name": "Aquatint and stipple engraving",
+        "id": 6459,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 6459
+      },
+      {
+        "objectcount": 1,
+        "name": "Aquatone",
+        "id": 7220,
+        "lastupdate": "2025-09-28T05:56:00-04:00",
+        "techniqueid": 7220
+      }
+    ]
+  }
+}

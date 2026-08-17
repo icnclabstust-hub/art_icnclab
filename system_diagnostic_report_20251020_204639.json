@@ -1,0 +1,87 @@
+{
+  "timestamp": "2025-10-20T20:46:34.907949",
+  "checks": [
+    {
+      "name": "Docker容器健康檢查",
+      "status": "warning",
+      "message": "5/6 容器健康",
+      "details": {
+        "containers": [
+          "art-history-openwebui\tUp 46 minutes (healthy)",
+          "art-history-rag-manager-v2\tUp 2 days (unhealthy)",
+          "art-history-openwebui-integration\tExited (0) 23 hours ago",
+          "art-history-neo4j\tUp 4 days (healthy)",
+          "art-history-ollama\tUp 4 days (unhealthy)",
+          "art-history-chromadb\tUp 34 minutes (unhealthy)"
+        ]
+      }
+    },
+    {
+      "name": "Neo4j數據檢查",
+      "status": "fail",
+      "message": "無法連接到Neo4j或密碼錯誤",
+      "details": null
+    },
+    {
+      "name": "ChromaDB狀態",
+      "status": "warning",
+      "message": "ChromaDB運行中但使用新版API (v2)",
+      "details": {
+        "note": "需要更新客戶端代碼使用v2 API"
+      }
+    },
+    {
+      "name": "Ollama模型檢查",
+      "status": "pass",
+      "message": "找到 10 個模型，其中 4 個RAG組合模型",
+      "details": {
+        "total": 10,
+        "rag_models": 4
+      }
+    },
+    {
+      "name": "RAG Manager狀態",
+      "status": "pass",
+      "message": "狀態: degraded",
+      "details": {
+        "status": "degraded",
+        "services": {
+          "neo4j": true,
+          "chromadb": false,
+          "ollama": true
+        },
+        "timestamp": "2025-10-20T12:46:39.492901"
+      }
+    },
+    {
+      "name": "OpenWebUI狀態",
+      "status": "pass",
+      "message": "OpenWebUI運行正常",
+      "details": null
+    },
+    {
+      "name": "數據檢查: 原始數據",
+      "status": "pass",
+      "message": "找到 47 個文件",
+      "details": null
+    },
+    {
+      "name": "數據檢查: 處理後數據",
+      "status": "pass",
+      "message": "找到 3 個文件",
+      "details": null
+    },
+    {
+      "name": "數據檢查: 圖像數據",
+      "status": "warning",
+      "message": "找到 0 個文件",
+      "details": null
+    },
+    {
+      "name": "數據檢查: 嵌入向量",
+      "status": "warning",
+      "message": "找到 0 個文件",
+      "details": null
+    }
+  ]
+}

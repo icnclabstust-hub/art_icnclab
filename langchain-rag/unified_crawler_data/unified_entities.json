@@ -1,0 +1,348 @@
+[
+  {
+    "type": "Artwork",
+    "name": "Person: Charles Dickens",
+    "properties": {
+      "title": "Person: Charles Dickens",
+      "description": "Dickens, Charles",
+      "creation_date": "1812",
+      "medium": "",
+      "genre": "",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": "Dickens, Charles",
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/collections/person/2",
+      "external_id": "2",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artist",
+    "name": "Charles Dickens",
+    "properties": {
+      "name": "Charles Dickens",
+      "full_name": "Charles Dickens",
+      "biography": "Artist mentioned in Harvard Art Museums",
+      "notable_works": [
+        "Person: Charles Dickens"
+      ],
+      "historical_significance": "Dickens, Charles",
+      "active_period": "1812",
+      "associated_locations": [
+        ""
+      ],
+      "source_references": [
+        "https://www.harvardartmuseums.org/collections/person/2"
+      ]
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Museum",
+    "name": "Harvard Art Museums",
+    "properties": {
+      "name": "Harvard Art Museums",
+      "full_name": "Harvard Art Museums",
+      "country": "United States",
+      "collection_focus": [
+        "General collection"
+      ],
+      "notable_collections": [
+        "Person: Charles Dickens"
+      ],
+      "website": "https://www.harvardartmuseums.org/collections/person/2",
+      "specialization": [
+        ""
+      ],
+      "source_data": "Europeana"
+    },
+    "source": "Europeana"
+  },
+  {
+    "type": "Artwork",
+    "name": "Person: Aspasia Papanastasiou",
+    "properties": {
+      "title": "Person: Aspasia Papanastasiou",
+      "description": "Papanastasiou, Aspasia",
+      "creation_date": "0-0",
+      "medium": "",
+      "genre": "",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": "Papanastasiou, Aspasia",
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/collections/person/5",
+      "external_id": "5",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artist",
+    "name": "Aspasia Papanastasiou",
+    "properties": {
+      "name": "Aspasia Papanastasiou",
+      "full_name": "Aspasia Papanastasiou",
+      "biography": "Artist mentioned in Harvard Art Museums",
+      "notable_works": [
+        "Person: Aspasia Papanastasiou"
+      ],
+      "historical_significance": "Papanastasiou, Aspasia",
+      "active_period": "0-0",
+      "associated_locations": [
+        ""
+      ],
+      "source_references": [
+        "https://www.harvardartmuseums.org/collections/person/5"
+      ]
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "Person: Aristotle University of Thessaloniki",
+    "properties": {
+      "title": "Person: Aristotle University of Thessaloniki",
+      "description": "Aristotle University of Thessaloniki",
+      "creation_date": "0-0",
+      "medium": "",
+      "genre": "",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": "Aristotle University of Thessaloniki",
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/collections/person/6",
+      "external_id": "6",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artist",
+    "name": "Aristotle University of Thessaloniki",
+    "properties": {
+      "name": "Aristotle University of Thessaloniki",
+      "full_name": "Aristotle University of Thessaloniki",
+      "biography": "Artist mentioned in Harvard Art Museums",
+      "notable_works": [
+        "Person: Aristotle University of Thessaloniki"
+      ],
+      "historical_significance": "Aristotle University of Thessaloniki",
+      "active_period": "0-0",
+      "associated_locations": [
+        ""
+      ],
+      "source_references": [
+        "https://www.harvardartmuseums.org/collections/person/6"
+      ]
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "Person: Madison Art Center",
+    "properties": {
+      "title": "Person: Madison Art Center",
+      "description": "Madison Art Center",
+      "creation_date": "0-0",
+      "medium": "",
+      "genre": "",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": "Madison Art Center",
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/collections/person/7",
+      "external_id": "7",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artist",
+    "name": "Madison Art Center",
+    "properties": {
+      "name": "Madison Art Center",
+      "full_name": "Madison Art Center",
+      "biography": "Artist mentioned in Harvard Art Museums",
+      "notable_works": [
+        "Person: Madison Art Center"
+      ],
+      "historical_significance": "Madison Art Center",
+      "active_period": "0-0",
+      "associated_locations": [
+        ""
+      ],
+      "source_references": [
+        "https://www.harvardartmuseums.org/collections/person/7"
+      ]
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "Person: University Gallery, University of Massachusetts",
+    "properties": {
+      "title": "Person: University Gallery, University of Massachusetts",
+      "description": "University Gallery, University of Massachusetts",
+      "creation_date": "0-0",
+      "medium": "",
+      "genre": "",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": "University Gallery, University of Massachusetts",
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/collections/person/9",
+      "external_id": "9",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artist",
+    "name": "University Gallery, University of Massachusetts",
+    "properties": {
+      "name": "University Gallery, University of Massachusetts",
+      "full_name": "University Gallery, University of Massachusetts",
+      "biography": "Artist mentioned in Harvard Art Museums",
+      "notable_works": [
+        "Person: University Gallery, University of Massachusetts"
+      ],
+      "historical_significance": "University Gallery, University of Massachusetts",
+      "active_period": "0-0",
+      "associated_locations": [
+        ""
+      ],
+      "source_references": [
+        "https://www.harvardartmuseums.org/collections/person/9"
+      ]
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "Worlds within Worlds: The Rosenblum Collection of Chinese Scholar's Rocks",
+    "properties": {
+      "title": "Worlds within Worlds: The Rosenblum Collection of Chinese Scholar's Rocks",
+      "description": null,
+      "creation_date": "1997",
+      "medium": "",
+      "genre": "Exhibition",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": null,
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/visit/exhibitions/2",
+      "external_id": "2",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "The American Line: 100 Years of Drawing",
+    "properties": {
+      "title": "The American Line: 100 Years of Drawing",
+      "description": null,
+      "creation_date": "1959",
+      "medium": "",
+      "genre": "Exhibition",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": null,
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/visit/exhibitions/3",
+      "external_id": "3",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "George Grosz",
+    "properties": {
+      "title": "George Grosz",
+      "description": null,
+      "creation_date": "1997",
+      "medium": "",
+      "genre": "Exhibition",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": null,
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/visit/exhibitions/4",
+      "external_id": "4",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "Vija Celmins - A Retrospective; Works 1964-1996",
+    "properties": {
+      "title": "Vija Celmins - A Retrospective; Works 1964-1996",
+      "description": null,
+      "creation_date": "1996",
+      "medium": "",
+      "genre": "Exhibition",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": null,
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/visit/exhibitions/5",
+      "external_id": "5",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  },
+  {
+    "type": "Artwork",
+    "name": "Within the Atrium: A Context for Roman Daily Life",
+    "properties": {
+      "title": "Within the Atrium: A Context for Roman Daily Life",
+      "description": null,
+      "creation_date": "1997",
+      "medium": "",
+      "genre": "Exhibition",
+      "subject_matter": [],
+      "current_location": "Harvard Art Museums",
+      "cultural_significance": null,
+      "provenance": [
+        "Harvard Art Museums"
+      ],
+      "source_url": "https://www.harvardartmuseums.org/visit/exhibitions/6",
+      "external_id": "6",
+      "language": "",
+      "rights": ""
+    },
+    "source": "unknown"
+  }
+]

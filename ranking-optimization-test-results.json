@@ -1,0 +1,883 @@
+{
+  "timestamp": "2025-10-18T18:48:02.032Z",
+  "test_config": {
+    "total_queries": 8,
+    "strategies": [
+      "graph_only",
+      "vector_only",
+      "hybrid_balanced"
+    ]
+  },
+  "results": {
+    "達文西的作品": {
+      "graph_only": {
+        "query": "達文西的作品",
+        "type": "artist",
+        "language": "zh",
+        "strategy": "graph_only",
+        "confidence": 0,
+        "processing_time": 0.015007972717285156,
+        "sources": []
+      },
+      "vector_only": {
+        "query": "達文西的作品",
+        "type": "artist",
+        "language": "zh",
+        "strategy": "vector_only",
+        "confidence": 0.631613453712018,
+        "processing_time": 0.5356545448303223,
+        "sources": [
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5748879563745306
+          },
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5748879563745306
+          },
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5748879563745306
+          },
+          {
+            "title": "Leonardo da Vinci (1452–1519)",
+            "artist": "Antonio Berini",
+            "score": 0.5732101416879544
+          },
+          {
+            "title": "Compositional Sketches for the Virgin Adoring the Christ Child, with and without the Infant St. John the Baptist; Diagram of a Perspectival Projection (recto); Slight Doodles (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5678919267433158
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "達文西的作品",
+        "type": "artist",
+        "language": "zh",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.4872286204347612,
+        "processing_time": 0.024963855743408203,
+        "sources": [
+          {
+            "title": "Leonardo da Vinci (1452–1519)",
+            "artist": "Antonio Berini",
+            "score": 0.4872286204347612,
+            "graph_score": 0,
+            "vector_score": 0.5732101416879544,
+            "source": "vector"
+          },
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.26444845993228405,
+            "graph_score": 0,
+            "vector_score": 0.5748879563745306,
+            "source": "hybrid"
+          },
+          {
+            "title": "Compositional Sketches for the Virgin Adoring the Christ Child, with and without the Infant St. John the Baptist; Diagram of a Perspectival Projection (recto); Slight Doodles (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.26123028630192524,
+            "graph_score": 0,
+            "vector_score": 0.5678919267433158,
+            "source": "hybrid"
+          }
+        ]
+      }
+    },
+    "Leonardo da Vinci artworks": {
+      "graph_only": {
+        "query": "Leonardo da Vinci artworks",
+        "type": "artist",
+        "language": "en",
+        "strategy": "graph_only",
+        "confidence": 0.95,
+        "processing_time": 0.011193275451660156,
+        "sources": [
+          {
+            "title": "Leonardo da Vinci",
+            "artist": "Leonardo da Vinci",
+            "score": 0.9500000000000001,
+            "bm25_score": 0.12241548544867079
+          },
+          {
+            "title": "Leonardo da Vinci",
+            "artist": "Leonardo da Vinci",
+            "score": 0.9423401726722277,
+            "bm25_score": 0.12218830593107274
+          },
+          {
+            "title": "Leonardo da Vinci",
+            "artist": "Leonardo",
+            "score": 0.5961508897568054,
+            "bm25_score": 0.1119208271844977
+          },
+          {
+            "title": "Leonardo da Vinci",
+            "artist": "Schumann, Gebr.",
+            "score": 0.4042665911413068,
+            "bm25_score": 0.10622981346724919
+          },
+          {
+            "title": "Leonardo da Vinci",
+            "artist": "Schumann, Gebr.",
+            "score": 0.4,
+            "bm25_score": 0.10610327247934
+          }
+        ]
+      },
+      "vector_only": {
+        "query": "Leonardo da Vinci artworks",
+        "type": "artist",
+        "language": "en",
+        "strategy": "vector_only",
+        "confidence": 0.6396974331020303,
+        "processing_time": 0.016329050064086914,
+        "sources": [
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5823741851967531
+          },
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5823741851967531
+          },
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5823741851967531
+          },
+          {
+            "title": "Leonardo da Vinci (1452–1519)",
+            "artist": "Antonio Berini",
+            "score": 0.5799236513937844
+          },
+          {
+            "title": "Vitruvian Man",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5744364165633794
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "Leonardo da Vinci artworks",
+        "type": "artist",
+        "language": "en",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.49293510368471677,
+        "processing_time": 0.02201557159423828,
+        "sources": [
+          {
+            "title": "Leonardo da Vinci (1452–1519)",
+            "artist": "Antonio Berini",
+            "score": 0.49293510368471677,
+            "graph_score": 0,
+            "vector_score": 0.5799236513937844,
+            "source": "vector"
+          },
+          {
+            "title": "Leonardo da Vinci",
+            "artist": "Rosenberg, Adolf",
+            "score": 0.38755053007826684,
+            "graph_score": 0.5536436143975241,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "Studies for Hercules Holding a Club Seen in Frontal View, Male Nude Unsheathing a Sword, and the Movements of Water (recto); Study for Hercules Holding a Club Seen in Rear View (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.2678921251905064,
+            "graph_score": 0,
+            "vector_score": 0.5823741851967531,
+            "source": "hybrid"
+          },
+          {
+            "title": "Vitruvian Man",
+            "artist": "Leonardo da Vinci",
+            "score": 0.26424075161915456,
+            "graph_score": 0,
+            "vector_score": 0.5744364165633794,
+            "source": "hybrid"
+          },
+          {
+            "title": "Compositional Sketches for the Virgin Adoring the Christ Child, with and without the Infant St. John the Baptist; Diagram of a Perspectival Projection (recto); Slight Doodles (verso)",
+            "artist": "Leonardo da Vinci",
+            "score": 0.26065633620890555,
+            "graph_score": 0,
+            "vector_score": 0.5666442091497947,
+            "source": "hybrid"
+          }
+        ]
+      }
+    },
+    "Renaissance paintings": {
+      "graph_only": {
+        "query": "Renaissance paintings",
+        "type": "period",
+        "language": "en",
+        "strategy": "graph_only",
+        "confidence": 0.95,
+        "processing_time": 0.010808467864990234,
+        "sources": [
+          {
+            "title": "Imaginary Renaissance Palace",
+            "artist": null,
+            "score": 0.9500000000000001,
+            "bm25_score": 0.1858744119022689
+          },
+          {
+            "title": "Michelangelo Buonarroti. David",
+            "artist": "Michelangelo Buonarroti",
+            "score": 0.573369983299406,
+            "bm25_score": 0.0908854686361531
+          },
+          {
+            "title": "Die Malerei der Renaissance",
+            "artist": "Wiemann, Hermann",
+            "score": 0.41290961431078516,
+            "bm25_score": 0.05041614805505646
+          },
+          {
+            "title": "Die klassische Kunst :e. Einf. in d. ital. Renaissance",
+            "artist": "Wölfflin, Heinrich",
+            "score": 0.4000426163434256,
+            "bm25_score": 0.047170993697382514
+          },
+          {
+            "title": "Apotheose der Renaissance",
+            "artist": "http://d-nb.info/118735268",
+            "score": 0.4,
+            "bm25_score": 0.04716024553274252
+          }
+        ]
+      },
+      "vector_only": {
+        "query": "Renaissance paintings",
+        "type": "period",
+        "language": "en",
+        "strategy": "vector_only",
+        "confidence": 0.6319489471545364,
+        "processing_time": 0.01882004737854004,
+        "sources": [
+          {
+            "title": "Sistine Madonna",
+            "artist": "Raphael",
+            "score": 0.5749118719100205
+          },
+          {
+            "title": "Sistine Madonna",
+            "artist": "Raphael",
+            "score": 0.5749118719100205
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.573191750900603
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.573191750900603
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.573191750900603
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "Renaissance paintings",
+        "type": "period",
+        "language": "en",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.6299999999999999,
+        "processing_time": 0.017472028732299805,
+        "sources": [
+          {
+            "title": "Imaginary Renaissance Palace",
+            "artist": null,
+            "score": 0.6299999999999999,
+            "graph_score": 0.8999999999999999,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "Michelangelo Buonarroti. David",
+            "artist": "Michelangelo Buonarroti",
+            "score": 0.36584920342688587,
+            "graph_score": 0.5226417191812656,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "Sistine Madonna",
+            "artist": "Raphael",
+            "score": 0.2644594610786094,
+            "graph_score": 0,
+            "vector_score": 0.5749118719100205,
+            "source": "hybrid"
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.2636682054142774,
+            "graph_score": 0,
+            "vector_score": 0.573191750900603,
+            "source": "hybrid"
+          },
+          {
+            "title": "The Birth of Venus",
+            "artist": "Sandro Botticelli",
+            "score": 0.26186257089895804,
+            "graph_score": 0,
+            "vector_score": 0.5692664584759958,
+            "source": "hybrid"
+          }
+        ]
+      }
+    },
+    "文藝復興時期的繪畫": {
+      "graph_only": {
+        "query": "文藝復興時期的繪畫",
+        "type": "period",
+        "language": "zh",
+        "strategy": "graph_only",
+        "confidence": 0.95,
+        "processing_time": 0.019633769989013672,
+        "sources": [
+          {
+            "title": "Imaginary Renaissance Palace",
+            "artist": null,
+            "score": 0.9500000000000001,
+            "bm25_score": 0.16356
+          },
+          {
+            "title": "Michelangelo Buonarroti. David",
+            "artist": "Michelangelo Buonarroti",
+            "score": 0.6240192307692308,
+            "bm25_score": 0.0711
+          },
+          {
+            "title": "Angelus Politianus :ein Culturbild aus der Renaissance",
+            "artist": "Maehly, Jakob",
+            "score": 0.40634615384615386,
+            "bm25_score": 0.009359999999999999
+          },
+          {
+            "title": "Die klassische Kunst :e. Einf. in d. ital. Renaissance",
+            "artist": "Wölfflin, Heinrich",
+            "score": 0.4050769230769231,
+            "bm25_score": 0.009
+          },
+          {
+            "title": "Die Malerei der Renaissance",
+            "artist": "Wiemann, Hermann",
+            "score": 0.4,
+            "bm25_score": 0.00756
+          }
+        ]
+      },
+      "vector_only": {
+        "query": "文藝復興時期的繪畫",
+        "type": "period",
+        "language": "zh",
+        "strategy": "vector_only",
+        "confidence": 0.6549000050665333,
+        "processing_time": 0.016503095626831055,
+        "sources": [
+          {
+            "title": "The Birth of Venus",
+            "artist": "Sandro Botticelli",
+            "score": 0.5955338996170177
+          },
+          {
+            "title": "The Birth of Venus",
+            "artist": "Sandro Botticelli",
+            "score": 0.5955338996170177
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.5948244885860094
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.5948244885860094
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.5948244885860094
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "文藝復興時期的繪畫",
+        "type": "period",
+        "language": "zh",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.6299999999999999,
+        "processing_time": 0.029071569442749023,
+        "sources": [
+          {
+            "title": "Imaginary Renaissance Palace",
+            "artist": null,
+            "score": 0.6299999999999999,
+            "graph_score": 0.8999999999999999,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "Michelangelo Buonarroti. David",
+            "artist": "Michelangelo Buonarroti",
+            "score": 0.3925752017608216,
+            "graph_score": 0.5608217168011738,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "The Birth of Venus",
+            "artist": "Sandro Botticelli",
+            "score": 0.27394559382382816,
+            "graph_score": 0,
+            "vector_score": 0.5955338996170177,
+            "source": "hybrid"
+          },
+          {
+            "title": "Giuliano de' Medici (1479–1516), Duke of Nemours",
+            "artist": "Raphael",
+            "score": 0.27361926474956433,
+            "graph_score": 0,
+            "vector_score": 0.5948244885860094,
+            "source": "hybrid"
+          },
+          {
+            "title": "Primavera",
+            "artist": "Sandro Botticelli",
+            "score": 0.2713977566366358,
+            "graph_score": 0,
+            "vector_score": 0.5899951231231213,
+            "source": "hybrid"
+          }
+        ]
+      }
+    },
+    "Mona Lisa": {
+      "graph_only": {
+        "query": "Mona Lisa",
+        "type": "artwork",
+        "language": "en",
+        "strategy": "graph_only",
+        "confidence": 0.75,
+        "processing_time": 0.01221156120300293,
+        "sources": [
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.4,
+            "bm25_score": 0.40275490143249315
+          }
+        ]
+      },
+      "vector_only": {
+        "query": "Mona Lisa",
+        "type": "artwork",
+        "language": "en",
+        "strategy": "vector_only",
+        "confidence": 0.6087803471631573,
+        "processing_time": 0.015501260757446289,
+        "sources": [
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5676248664388953
+          },
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5676248664388953
+          },
+          {
+            "title": "Girl with a Pearl Earring",
+            "artist": "Johannes Vermeer",
+            "score": 0.5131039937331855
+          },
+          {
+            "title": "Girl with a Pearl Earring",
+            "artist": "Johannes Vermeer",
+            "score": 0.5131039937331855
+          },
+          {
+            "title": "Pendant in the form of a mermaid",
+            "artist": "Reinhold Vasters",
+            "score": 0.49931427185454763
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "Mona Lisa",
+        "type": "artwork",
+        "language": "en",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.46810743856189185,
+        "processing_time": 0.01820206642150879,
+        "sources": [
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.46810743856189185,
+            "graph_score": 0.3,
+            "vector_score": 0.5676248664388953,
+            "source": "hybrid"
+          },
+          {
+            "title": "Leonardo da Vinci (1452–1519)",
+            "artist": "Antonio Berini",
+            "score": 0.42208665462566736,
+            "graph_score": 0,
+            "vector_score": 0.4965725348537263,
+            "source": "vector"
+          },
+          {
+            "title": "Girl with a Pearl Earring",
+            "artist": "Johannes Vermeer",
+            "score": 0.2360278371172653,
+            "graph_score": 0,
+            "vector_score": 0.5131039937331855,
+            "source": "hybrid"
+          },
+          {
+            "title": "Pendant in the form of a mermaid",
+            "artist": "Reinhold Vasters",
+            "score": 0.2296845650530919,
+            "graph_score": 0,
+            "vector_score": 0.49931427185454763,
+            "source": "hybrid"
+          }
+        ]
+      }
+    },
+    "蒙娜麗莎": {
+      "graph_only": {
+        "query": "蒙娜麗莎",
+        "type": "artwork",
+        "language": "zh",
+        "strategy": "graph_only",
+        "confidence": 0.75,
+        "processing_time": 0.012200355529785156,
+        "sources": [
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.4,
+            "bm25_score": 0.40275490143249315
+          }
+        ]
+      },
+      "vector_only": {
+        "query": "蒙娜麗莎",
+        "type": "artwork",
+        "language": "zh",
+        "strategy": "vector_only",
+        "confidence": 0.6087803471631573,
+        "processing_time": 0.017110347747802734,
+        "sources": [
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5676248664388953
+          },
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.5676248664388953
+          },
+          {
+            "title": "Girl with a Pearl Earring",
+            "artist": "Johannes Vermeer",
+            "score": 0.5131039937331855
+          },
+          {
+            "title": "Girl with a Pearl Earring",
+            "artist": "Johannes Vermeer",
+            "score": 0.5131039937331855
+          },
+          {
+            "title": "Pendant in the form of a mermaid",
+            "artist": "Reinhold Vasters",
+            "score": 0.49931427185454763
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "蒙娜麗莎",
+        "type": "artwork",
+        "language": "zh",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.46810743856189185,
+        "processing_time": 0.02547621726989746,
+        "sources": [
+          {
+            "title": "Mona Lisa",
+            "artist": "Leonardo da Vinci",
+            "score": 0.46810743856189185,
+            "graph_score": 0.3,
+            "vector_score": 0.5676248664388953,
+            "source": "hybrid"
+          },
+          {
+            "title": "Leonardo da Vinci (1452–1519)",
+            "artist": "Antonio Berini",
+            "score": 0.42208665462566736,
+            "graph_score": 0,
+            "vector_score": 0.4965725348537263,
+            "source": "vector"
+          },
+          {
+            "title": "Girl with a Pearl Earring",
+            "artist": "Johannes Vermeer",
+            "score": 0.2360278371172653,
+            "graph_score": 0,
+            "vector_score": 0.5131039937331855,
+            "source": "hybrid"
+          },
+          {
+            "title": "Pendant in the form of a mermaid",
+            "artist": "Reinhold Vasters",
+            "score": 0.2296845650530919,
+            "graph_score": 0,
+            "vector_score": 0.49931427185454763,
+            "source": "hybrid"
+          }
+        ]
+      }
+    },
+    "Baroque art in museums": {
+      "graph_only": {
+        "query": "Baroque art in museums",
+        "type": "complex",
+        "language": "en",
+        "strategy": "graph_only",
+        "confidence": 0.95,
+        "processing_time": 0.009245157241821289,
+        "sources": [
+          {
+            "title": "Baroque pulpit",
+            "artist": null,
+            "score": 0.9500000000000001,
+            "bm25_score": 0.12597227944430361
+          },
+          {
+            "title": "Baroque pulpit",
+            "artist": null,
+            "score": 0.9500000000000001,
+            "bm25_score": 0.12597227944430361
+          },
+          {
+            "title": "Wilanów - Baroque vase",
+            "artist": "Marek Wieczorek",
+            "score": 0.7735913225951944,
+            "bm25_score": 0.10290227548293768
+          },
+          {
+            "title": "Baroque door",
+            "artist": null,
+            "score": 0.6991370511017112,
+            "bm25_score": 0.09316545094820264
+          },
+          {
+            "title": "Baroque gel",
+            "artist": null,
+            "score": 0.4,
+            "bm25_score": 0.05404553317867119
+          }
+        ]
+      },
+      "vector_only": {
+        "query": "Baroque art in museums",
+        "type": "complex",
+        "language": "en",
+        "strategy": "vector_only",
+        "confidence": 0.5983516004076572,
+        "processing_time": 0.014367341995239258,
+        "sources": [
+          {
+            "title": "Barber's Bowl with Baroque Decorations",
+            "artist": "Unknown Artist",
+            "score": 0.5439560003705974
+          },
+          {
+            "title": "Barber's Bowl with Baroque Decorations",
+            "artist": "Unknown Artist",
+            "score": 0.5439560003705974
+          },
+          {
+            "title": "Barber's Bowl with Baroque Decorations",
+            "artist": "Unknown Artist",
+            "score": 0.5439560003705974
+          },
+          {
+            "title": "Barber's Bowl with Baroque Decorations",
+            "artist": "Unknown Artist",
+            "score": 0.5439560003705974
+          },
+          {
+            "title": "Barber's Bowl with Baroque Decorations",
+            "artist": "Unknown Artist",
+            "score": 0.5439560003705974
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "Baroque art in museums",
+        "type": "complex",
+        "language": "en",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.6299999999999999,
+        "processing_time": 0.01882648468017578,
+        "sources": [
+          {
+            "title": "Baroque pulpit",
+            "artist": null,
+            "score": 0.6299999999999999,
+            "graph_score": 0.8999999999999999,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "Wilanów - Baroque vase",
+            "artist": "Marek Wieczorek",
+            "score": 0.504296411840463,
+            "graph_score": 0.7204234454863758,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "Musette Baroque",
+            "artist": null,
+            "score": 0.4750800426255144,
+            "graph_score": 0.32824315997801623,
+            "vector_score": 0.5404179613927896,
+            "source": "hybrid"
+          },
+          {
+            "title": "Baroque door",
+            "artist": null,
+            "score": 0.4512425075868836,
+            "graph_score": 0.644632153695548,
+            "vector_score": 0,
+            "source": "graph"
+          },
+          {
+            "title": "Barber's Bowl with Baroque Decorations",
+            "artist": "Unknown Artist",
+            "score": 0.2502197601704748,
+            "graph_score": 0,
+            "vector_score": 0.5439560003705974,
+            "source": "hybrid"
+          }
+        ]
+      }
+    },
+    "羅浮宮收藏的作品": {
+      "graph_only": {
+        "query": "羅浮宮收藏的作品",
+        "type": "complex",
+        "language": "zh",
+        "strategy": "graph_only",
+        "confidence": 0,
+        "processing_time": 0.011319398880004883,
+        "sources": []
+      },
+      "vector_only": {
+        "query": "羅浮宮收藏的作品",
+        "type": "complex",
+        "language": "zh",
+        "strategy": "vector_only",
+        "confidence": 0.6276504722278875,
+        "processing_time": 0.017710447311401367,
+        "sources": [
+          {
+            "title": "Bodhidharma in meditation",
+            "artist": "Unknown Artist",
+            "score": 0.5705913383889886
+          },
+          {
+            "title": "Bodhidharma in meditation",
+            "artist": "Unknown Artist",
+            "score": 0.5705913383889886
+          },
+          {
+            "title": "Bodhidharma in meditation",
+            "artist": "Unknown Artist",
+            "score": 0.5705913383889886
+          },
+          {
+            "title": "Bodhidharma in meditation",
+            "artist": "Unknown Artist",
+            "score": 0.5705913383889886
+          },
+          {
+            "title": "Bodhidharma in meditation",
+            "artist": "Unknown Artist",
+            "score": 0.5705913383889886
+          }
+        ]
+      },
+      "hybrid_balanced": {
+        "query": "羅浮宮收藏的作品",
+        "type": "complex",
+        "language": "zh",
+        "strategy": "hybrid_balanced",
+        "confidence": 0.26247201565893474,
+        "processing_time": 0.01969766616821289,
+        "sources": [
+          {
+            "title": "Bodhidharma in meditation",
+            "artist": "Unknown Artist",
+            "score": 0.26247201565893474,
+            "graph_score": 0,
+            "vector_score": 0.5705913383889886,
+            "source": "hybrid"
+          },
+          {
+            "title": "Buddhist monk Bodhidharma (Chinese: Damo)",
+            "artist": "Unknown Artist",
+            "score": 0.2618034043344188,
+            "graph_score": 0,
+            "vector_score": 0.5691378355096061,
+            "source": "hybrid"
+          }
+        ]
+      }
+    }
+  },
+  "stats": {
+    "graph_only": {
+      "avg_confidence": 5.3,
+      "avg_processing_time": 0.10161995887756348,
+      "total_results": 22,
+      "count": 8
+    },
+    "vector_only": {
+      "avg_confidence": 5.001722605996978,
+      "avg_processing_time": 0.6519961357116699,
+      "total_results": 40,
+      "count": 8
+    },
+    "hybrid_balanced": {
+      "avg_confidence": 4.068850616902196,
+      "avg_processing_time": 0.17572546005249023,
+      "total_results": 33,
+      "count": 8
+    }
+  }
+}

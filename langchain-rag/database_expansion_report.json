@@ -1,0 +1,46 @@
+{
+  "start_time": "2025-09-28T11:44:03.332130",
+  "phases": [
+    {
+      "phase": "Harvard Complete Crawl",
+      "start_time": "2025-09-28T11:44:03.332882",
+      "data_types": {
+        "objects": 1500,
+        "people": 1000,
+        "exhibitions": 800
+      },
+      "status": "error",
+      "error": "'HarvardArtMuseumsCrawler' object has no attribute 'crawl_all_galleries'"
+    },
+    {
+      "phase": "Unified Integration",
+      "start_time": "2025-09-28T11:44:29.137691",
+      "sources_processed": [
+        "Harvard Art Museums"
+      ],
+      "total_entities": 16,
+      "total_relationships": 5,
+      "errors": [
+        "Europeana error: Unknown"
+      ],
+      "end_time": "2025-09-28T11:44:35.286741",
+      "status": "success"
+    },
+    {
+      "phase": "Advanced Crawling",
+      "start_time": "2025-09-28T11:44:35.286893",
+      "strategies": [
+        {
+          "name": "Modern Art",
+          "count": 800
+        }
+      ],
+      "status": "success",
+      "end_time": "2025-09-28T11:44:44.432784"
+    }
+  ],
+  "total_data_collected": 0,
+  "api_calls_used": 0,
+  "errors": [],
+  "end_time": "2025-09-28T11:44:44.434611"
+}

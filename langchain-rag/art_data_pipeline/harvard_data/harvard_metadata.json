@@ -1,0 +1,320 @@
+{
+  "classifications": [
+    {
+      "objectcount": 1,
+      "name": "Natural History Specimens",
+      "id": 1133,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 1133
+    },
+    {
+      "objectcount": 1,
+      "name": "Paintings with Text",
+      "id": 197,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 197
+    },
+    {
+      "objectcount": 66,
+      "name": "Performance Artifacts",
+      "id": 224,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 224
+    },
+    {
+      "objectcount": 1,
+      "name": "Text",
+      "id": 204,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 204
+    },
+    {
+      "objectcount": 80,
+      "name": "Tokens",
+      "id": 492,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 492
+    },
+    {
+      "objectcount": 350,
+      "name": "(not assigned)",
+      "id": 0,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 0
+    },
+    {
+      "objectcount": 62,
+      "name": "Brick Stamps",
+      "id": 304,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 304
+    },
+    {
+      "objectcount": 46,
+      "name": "Cameos",
+      "id": 1086,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 1086
+    },
+    {
+      "objectcount": 1,
+      "name": "Casts",
+      "id": 1139,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 1139
+    },
+    {
+      "objectcount": 8,
+      "name": "Containers",
+      "id": 1203,
+      "lastupdate": "2025-10-30T04:03:08-04:00",
+      "classificationid": 1203
+    }
+  ],
+  "cultures": [
+    {
+      "objectcount": 2,
+      "name": "Graeco-Phoenician",
+      "id": 37527507,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 21,
+      "name": "Uruguayan",
+      "id": 37528893,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 3,
+      "name": "Zimbabwean",
+      "id": 37528992,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 7,
+      "name": "Turkmen",
+      "id": 37528812,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 3,
+      "name": "Himyarite",
+      "id": 37527588,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 2,
+      "name": "Uruk",
+      "id": 37528902,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 1,
+      "name": "Turkistan",
+      "id": 37528794,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 3,
+      "name": "Turkistani",
+      "id": 37528803,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 18,
+      "name": "Scythian",
+      "id": 37528515,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    },
+    {
+      "objectcount": 106,
+      "name": "Ethiopian",
+      "id": 37527345,
+      "lastupdate": "2025-10-30T04:03:13-04:00"
+    }
+  ],
+  "mediums": [
+    {
+      "pathforward": "Chalk\\",
+      "level": 2,
+      "objectcount": 44,
+      "parentmediumid": 2028184,
+      "mediumid": 2028721,
+      "name": "red and white chalk",
+      "id": 2028721,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Chalk\\",
+      "level": 2,
+      "objectcount": 6,
+      "parentmediumid": 2028184,
+      "mediumid": 2029582,
+      "name": "brown chalk",
+      "id": 2029582,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Ink\\",
+      "level": 2,
+      "objectcount": 4,
+      "parentmediumid": 2028195,
+      "mediumid": 2028722,
+      "name": "iron-gall ink",
+      "id": 2028722,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Ink\\",
+      "level": 2,
+      "objectcount": 1,
+      "parentmediumid": 2028195,
+      "mediumid": 2029602,
+      "name": "bistre",
+      "id": 2029602,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Ink\\",
+      "level": 2,
+      "objectcount": null,
+      "parentmediumid": 2028195,
+      "mediumid": 2036065,
+      "name": "sepia",
+      "id": 2036065,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Ink\\",
+      "level": 2,
+      "objectcount": 4,
+      "parentmediumid": 2028195,
+      "mediumid": 2038604,
+      "name": "blue ink",
+      "id": 2038604,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Ink\\",
+      "level": 2,
+      "objectcount": null,
+      "parentmediumid": 2028195,
+      "mediumid": 2038843,
+      "name": "typewriter ribbon ink",
+      "id": 2038843,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Metalpoint\\",
+      "level": 2,
+      "objectcount": 22,
+      "parentmediumid": 2028200,
+      "mediumid": 2028933,
+      "name": "silverpoint",
+      "id": 2028933,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Metalpoint\\",
+      "level": 2,
+      "objectcount": 4,
+      "parentmediumid": 2028200,
+      "mediumid": 2028990,
+      "name": "copperpoint",
+      "id": 2028990,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    },
+    {
+      "pathforward": "Metal\\",
+      "level": 2,
+      "objectcount": 64,
+      "parentmediumid": 2028222,
+      "mediumid": 2029773,
+      "name": "white metal",
+      "id": 2029773,
+      "lastupdate": "2025-10-30T04:29:00-04:00",
+      "haschildren": 0
+    }
+  ],
+  "techniques": [
+    {
+      "objectcount": 78,
+      "name": "Brocade",
+      "id": 738,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 738
+    },
+    {
+      "objectcount": 3,
+      "name": "Bromoil print",
+      "id": 3234,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 3234
+    },
+    {
+      "objectcount": 3,
+      "name": "Brushwork",
+      "id": 3885,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 3885
+    },
+    {
+      "objectcount": 10,
+      "name": "Carbon print",
+      "id": 996,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 996
+    },
+    {
+      "objectcount": 2,
+      "name": "Carborundum print",
+      "id": 5155,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 5155
+    },
+    {
+      "objectcount": 1,
+      "name": "Cerograph",
+      "id": 3589,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 3589
+    },
+    {
+      "objectcount": 5,
+      "name": "Chased",
+      "id": 2230,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 2230
+    },
+    {
+      "objectcount": 66,
+      "name": "Cliché-verre",
+      "id": 1758,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 1758
+    },
+    {
+      "objectcount": 4,
+      "name": "Cloisonné",
+      "id": 554,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 554
+    },
+    {
+      "objectcount": 16,
+      "name": "Collagraph",
+      "id": 3431,
+      "lastupdate": "2025-10-30T05:30:07-04:00",
+      "techniqueid": 3431
+    }
+  ]
+}

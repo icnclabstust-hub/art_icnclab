@@ -1,0 +1,82 @@
+{
+  "crawlers": [
+    {
+      "name": "文藝復興與巴洛克時期爬蟲",
+      "startTime": 1760774481318,
+      "status": "success",
+      "endTime": 1760775471442,
+      "duration": 990.124
+    },
+    {
+      "name": "專門藝術主題爬蟲",
+      "startTime": 1760775474460,
+      "status": "success",
+      "endTime": 1760775777911,
+      "duration": 303.451
+    },
+    {
+      "name": "哈佛藝術博物館爬蟲",
+      "startTime": 1760775780185,
+      "status": "failed",
+      "endTime": 1760775778763,
+      "duration": -1.422,
+      "error": "Exit code: 1"
+    },
+    {
+      "name": "Europeana爬蟲",
+      "startTime": 1760775781779,
+      "status": "success",
+      "endTime": 1760775865225,
+      "duration": 83.446
+    }
+  ],
+  "totalArtworks": 2913,
+  "timestamp": "2025-10-18T08:01:21.298Z",
+  "errors": [
+    "哈佛藝術博物館爬蟲: Exit code 1"
+  ],
+  "dataFiles": [
+    {
+      "file": "europeana_crawled_2025-10-18T08-24-25-191Z.json",
+      "items": 1,
+      "size": "1158.23 KB",
+      "modified": "10/18/2025, 4:24:26 PM"
+    },
+    {
+      "file": "renaissance_baroque_2025-10-18T08-17-51-384Z.json",
+      "items": 439,
+      "size": "833.29 KB",
+      "modified": "10/18/2025, 4:17:52 PM"
+    },
+    {
+      "file": "specialized_art_2025-10-18T08-19-17.527Z.json",
+      "items": 171,
+      "size": "2495.74 KB",
+      "modified": "10/18/2025, 4:19:17 PM"
+    },
+    {
+      "file": "specialized_art_2025-10-18T08-20-37.579Z.json",
+      "items": 366,
+      "size": "6155.83 KB",
+      "modified": "10/18/2025, 4:20:37 PM"
+    },
+    {
+      "file": "specialized_art_2025-10-18T08-21-55.573Z.json",
+      "items": 540,
+      "size": "8849.66 KB",
+      "modified": "10/18/2025, 4:21:55 PM"
+    },
+    {
+      "file": "specialized_art_2025-10-18T08-22-56.590Z.json",
+      "items": 698,
+      "size": "12922.10 KB",
+      "modified": "10/18/2025, 4:22:56 PM"
+    },
+    {
+      "file": "specialized_art_2025-10-18T08-22-57.743Z.json",
+      "items": 698,
+      "size": "12922.10 KB",
+      "modified": "10/18/2025, 4:22:57 PM"
+    }
+  ]
+}

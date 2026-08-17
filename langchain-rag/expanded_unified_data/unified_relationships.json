@@ -1,0 +1,52 @@
+[
+  {
+    "from": "Worlds within Worlds: The Rosenblum Collection of Chinese Scholar's Rocks",
+    "type": "HOUSED_IN",
+    "to": "Harvard Art Museums",
+    "properties": {
+      "collection_type": "Digital collection",
+      "access_type": "Online",
+      "source": "Europeana"
+    }
+  },
+  {
+    "from": "The American Line: 100 Years of Drawing",
+    "type": "HOUSED_IN",
+    "to": "Harvard Art Museums",
+    "properties": {
+      "collection_type": "Digital collection",
+      "access_type": "Online",
+      "source": "Europeana"
+    }
+  },
+  {
+    "from": "George Grosz",
+    "type": "HOUSED_IN",
+    "to": "Harvard Art Museums",
+    "properties": {
+      "collection_type": "Digital collection",
+      "access_type": "Online",
+      "source": "Europeana"
+    }
+  },
+  {
+    "from": "Vija Celmins - A Retrospective; Works 1964-1996",
+    "type": "HOUSED_IN",
+    "to": "Harvard Art Museums",
+    "properties": {
+      "collection_type": "Digital collection",
+      "access_type": "Online",
+      "source": "Europeana"
+    }
+  },
+  {
+    "from": "Within the Atrium: A Context for Roman Daily Life",
+    "type": "HOUSED_IN",
+    "to": "Harvard Art Museums",
+    "properties": {
+      "collection_type": "Digital collection",
+      "access_type": "Online",
+      "source": "Europeana"
+    }
+  }
+]
