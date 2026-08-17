@@ -111,6 +111,7 @@ openwebui-data/
 webui_backup.db
 *.db
 backups/
+.webui_secret_key
 
 # 大型爬蟲資料快取（跟 data/raw、data/processed 同性質）
 comprehensive_art_data/
