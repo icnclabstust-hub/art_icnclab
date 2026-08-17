@@ -6,7 +6,11 @@
 #
 # 套件清單由掃描 repo 內 130 個 .py 檔的 import 產生（已排除標準函式庫與本地模組）。
 #
-# ⚠ 版號來源：2026-08-17 查 PyPI 當時最新版，**未在實際環境驗證過**。
+# 目標 Python：3.10 與 3.11 皆可安裝（部署機 /opt/arthistory/venv 是 py3.10，
+# pyproject.toml 宣告 target-version = py311）。版號取「同時相容兩者的最新版」，
+# 已逐一比對 PyPI 的 Requires-Python。
+#
+# ⚠ 版號來源：2026-08-17 查 PyPI，**未在實際環境驗證過**。
 #    repo 內既有的四個 venv（langchain-env / importer_venv / rl_venv / cuda_art_env）
 #    都未納入版控，無 freeze 可還原原始版本。
 #    正確做法是在 Ubuntu-22.04 部署機上跑 `pip freeze` 覆蓋此檔——那才是真正跑得起來的版本組合。
@@ -29,8 +33,8 @@ sentence-transformers==5.7.0     # BGE-M3 等嵌入模型
 transformers==5.15.0
 torch==2.13.0                    # CUDA 版請改用 https://download.pytorch.org/whl/cuXXX 索引安裝
 faiss-cpu==1.15.0                # 若走 GPU 檢索請改裝 faiss-gpu
-numpy==2.5.2
-scipy==1.18.0
+numpy==2.2.6
+scipy==1.15.3
 
 # ==================== Web 服務 ====================
 fastapi==0.141.1                 # RAG API（RAG_API_PORT=8008）與監控服務
@@ -62,5 +66,5 @@ psutil==7.2.2
 prometheus-client==0.26.0
 nvidia-ml-py==13.610.43          # 提供 pynvml；GPU 監控
 GPUtil==1.4.0
-matplotlib==3.11.1               # 策略比較分析圖表
+matplotlib==3.10.9               # 策略比較分析圖表
 tqdm==4.70.0
