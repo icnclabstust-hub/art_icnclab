@@ -1,60 +1,66 @@
 # 藝術史資料庫 — Python 依賴
+# 釘版 2026-08-17
 #
-# 本檔由掃描 repo 內 130 個 .py 檔的 import 產生。
-# 未鎖定版本：repo 內沒有保留任何既有環境的 lock/freeze 檔
-# （langchain-env / importer_venv / rl_venv / cuda_art_env 皆在 .gitignore 內未追蹤），
-# 無從還原原始版本。若日後有可運作環境，請以 pip freeze 覆蓋此檔。
+# 依 CODING_STYLE.md S-16 [MUST] 釘死版本。升級是有意識的動作：
+# 跑 pip-audit → 改版號 → 跑測試 → 更新上方釘版日期。
+#
+# 套件清單由掃描 repo 內 130 個 .py 檔的 import 產生（已排除標準函式庫與本地模組）。
+#
+# ⚠ 版號來源：2026-08-17 查 PyPI 當時最新版，**未在實際環境驗證過**。
+#    repo 內既有的四個 venv（langchain-env / importer_venv / rl_venv / cuda_art_env）
+#    都未納入版控，無 freeze 可還原原始版本。
+#    正確做法是在 Ubuntu-22.04 部署機上跑 `pip freeze` 覆蓋此檔——那才是真正跑得起來的版本組合。
 
 # ==================== 資料庫 / 檢索 ====================
-neo4j                    # 圖資料庫驅動（知識圖譜主力）
-chromadb                 # 向量資料庫
-elasticsearch            # scripts/sync_chromadb_to_elasticsearch.py
-redis                    # 快取與 agent 通訊匯流排
+neo4j==6.2.0                     # 圖資料庫驅動（知識圖譜主力）
+chromadb==1.5.9                  # 向量資料庫
+elasticsearch==9.5.0             # scripts/sync_chromadb_to_elasticsearch.py
+redis==8.1.0                     # 快取與 agent 通訊匯流排
 
 # ==================== LangChain / RAG ====================
-langchain
-langchain-core
-langchain-community
-langchain-openai
-langchain-neo4j
+langchain==1.3.15
+langchain-core==1.5.5
+langchain-community==0.4.2
+langchain-openai==1.5.1
+langchain-neo4j==0.10.0
 
 # ==================== 模型 / 嵌入 ====================
-sentence-transformers    # BGE-M3 等嵌入模型
-transformers
-torch                    # CUDA 版請改用 https://download.pytorch.org/whl/cuXXX 索引安裝
-faiss-cpu                # 若走 GPU 檢索請改裝 faiss-gpu
-numpy
-scipy
+sentence-transformers==5.7.0     # BGE-M3 等嵌入模型
+transformers==5.15.0
+torch==2.13.0                    # CUDA 版請改用 https://download.pytorch.org/whl/cuXXX 索引安裝
+faiss-cpu==1.15.0                # 若走 GPU 檢索請改裝 faiss-gpu
+numpy==2.5.2
+scipy==1.18.0
 
 # ==================== Web 服務 ====================
-fastapi                  # RAG API（RAG_API_PORT=8008）與監控服務
-uvicorn[standard]
-pydantic                 # 亦為 OpenWebUI pipes 的 Valves 定義所需
-flask                    # ml-service/
-flask-cors
-httpx
-requests
-aiohttp                  # MCP tool proxy / registry
-urllib3
+fastapi==0.141.1                 # RAG API（RAG_API_PORT=8008）與監控服務
+uvicorn[standard]==0.52.3
+pydantic==2.13.4                 # 亦為 OpenWebUI pipes 的 Valves 定義所需
+flask==3.1.3                     # ml-service/
+flask-cors==6.0.5
+httpx==0.28.1
+requests==2.34.2
+aiohttp==3.14.3                  # MCP tool proxy / registry
+urllib3==2.7.0
 
 # ==================== 爬蟲 / 排程 ====================
-schedule                 # src/crawler/AutomatedCrawlerSystem.py
+schedule==1.2.2                  # src/crawler/AutomatedCrawlerSystem.py
 
 # ==================== 文件處理 ====================
-PyPDF2                   # src/importer/pdf_processor.py
-pdfplumber
-python-docx              # scripts/eval_step*.py 評測流程
-openpyxl                 # 評測結果輸出 xlsx
-Pillow                   # 多模態 RAG 影像處理
-PyYAML
+PyPDF2==3.0.1                    # src/importer/pdf_processor.py
+pdfplumber==0.11.10
+python-docx==1.2.0               # scripts/eval_step*.py 評測流程
+openpyxl==3.1.5                  # 評測結果輸出 xlsx
+Pillow==12.3.0                   # 多模態 RAG 影像處理
+PyYAML==6.0.3
 
 # ==================== 中文處理 ====================
-OpenCC                   # 簡繁轉換，11 支 OpenWebUI pipe 皆使用
+OpenCC==1.4.1                    # 簡繁轉換，11 支 OpenWebUI pipe 皆使用
 
 # ==================== 監控 / 效能 ====================
-psutil
-prometheus-client
-nvidia-ml-py             # 提供 pynvml；GPU 監控
-GPUtil
-matplotlib               # 策略比較分析圖表
-tqdm
+psutil==7.2.2
+prometheus-client==0.26.0
+nvidia-ml-py==13.610.43          # 提供 pynvml；GPU 監控
+GPUtil==1.4.0
+matplotlib==3.11.1               # 策略比較分析圖表
+tqdm==4.70.0
