@@ -37,7 +37,7 @@ def test_chromadb():
     if test_service_health("http://localhost:8000/api/v1/heartbeat", "ChromaDB心跳"):
         try:
             # 測試集合列表
-            response = requests.get("http://localhost:8000/api/v1/collections")
+            response = requests.get("http://localhost:8000/api/v1/collections", timeout=10)
             collections = response.json()
             print(f"📊 當前集合數量: {len(collections)}")
             return True
@@ -52,7 +52,7 @@ def test_qdrant():
 
     if test_service_health("http://localhost:6333/collections", "Qdrant集合API"):
         try:
-            response = requests.get("http://localhost:6333/collections")
+            response = requests.get("http://localhost:6333/collections", timeout=10)
             data = response.json()
             collections = data.get("result", {}).get("collections", [])
             print(f"📊 Qdrant集合數量: {len(collections)}")
@@ -68,7 +68,7 @@ def test_weaviate():
 
     if test_service_health("http://localhost:8081/v1/meta", "Weaviate Meta API"):
         try:
-            response = requests.get("http://localhost:8081/v1/schema")
+            response = requests.get("http://localhost:8081/v1/schema", timeout=10)
             schema = response.json()
             classes = schema.get("classes", [])
             print(f"📊 Weaviate類別數量: {len(classes)}")
@@ -94,7 +94,9 @@ def test_mlflow():
         if test_service_health("http://localhost:5000", "MLflow"):
             try:
                 # 嘗試獲取實驗列表
-                response = requests.get("http://localhost:5000/api/2.0/mlflow/experiments/search")
+                response = requests.get(
+                    "http://localhost:5000/api/2.0/mlflow/experiments/search", timeout=10
+                )
                 if response.status_code == 200:
                     experiments = response.json().get("experiments", [])
                     print(f"📊 MLflow實驗數量: {len(experiments)}")

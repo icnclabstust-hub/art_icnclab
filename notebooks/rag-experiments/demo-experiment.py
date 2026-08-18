@@ -70,14 +70,18 @@ class MultimodalRAGDemo:
             }
 
             # 檢查集合是否存在
-            collections_response = requests.get(f"{self.services['qdrant']}/collections")
+            collections_response = requests.get(
+                f"{self.services['qdrant']}/collections", timeout=10
+            )
             existing_collections = [
                 c["name"] for c in collections_response.json()["result"]["collections"]
             ]
 
             if collection_name not in existing_collections:
                 response = requests.put(
-                    f"{self.services['qdrant']}/collections/{collection_name}", json=create_payload
+                    f"{self.services['qdrant']}/collections/{collection_name}",
+                    json=create_payload,
+                    timeout=10,
                 )
                 if response.status_code == 200:
                     print(f"✅ Qdrant集合 '{collection_name}' 創建成功")
@@ -114,12 +118,14 @@ class MultimodalRAGDemo:
             }
 
             # 檢查類別是否存在
-            schema_response = requests.get(f"{self.services['weaviate']}/v1/schema")
+            schema_response = requests.get(f"{self.services['weaviate']}/v1/schema", timeout=10)
             existing_classes = [c["class"] for c in schema_response.json().get("classes", [])]
 
             if "ArtWork" not in existing_classes:
                 response = requests.post(
-                    f"{self.services['weaviate']}/v1/schema", json=schema_payload
+                    f"{self.services['weaviate']}/v1/schema",
+                    json=schema_payload,
+                    timeout=10,
                 )
                 if response.status_code == 200:
                     print("✅ Weaviate ArtWork類別創建成功")
