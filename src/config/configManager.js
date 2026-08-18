@@ -111,13 +111,16 @@ class ConfigManager extends EventEmitter {
             if (schema.mustExist && !fs.existsSync(resolvedPath)) {
                 throw new Error(`Path does not exist: ${resolvedPath}`);
             }
-            if (schema.type === 'directory' && fs.existsSync(resolvedPath)) {
+            // 子型別鍵為 pathType：dispatch 已用 type==='path' 選到本 validator，
+            // 原本這裡誤寫 schema.type（重複鍵讓 type 變 'directory'，導致查無
+            // validator、8 個路徑設定的驗證被靜默跳過）
+            if (schema.pathType === 'directory' && fs.existsSync(resolvedPath)) {
                 const stat = fs.statSync(resolvedPath);
                 if (!stat.isDirectory()) {
                     throw new Error(`Path is not a directory: ${resolvedPath}`);
                 }
             }
-            if (schema.type === 'file' && fs.existsSync(resolvedPath)) {
+            if (schema.pathType === 'file' && fs.existsSync(resolvedPath)) {
                 const stat = fs.statSync(resolvedPath);
                 if (!stat.isFile()) {
                     throw new Error(`Path is not a file: ${resolvedPath}`);
@@ -180,7 +183,7 @@ class ConfigManager extends EventEmitter {
                     const envVars = this.parseEnvironmentFile(envContent);
 
                     Object.entries(envVars).forEach(([key, value]) => {
-                        if (!process.env.hasOwnProperty(key)) {
+                        if (!Object.prototype.hasOwnProperty.call(process.env, key)) {
                             process.env[key] = value;
                         }
                     });
@@ -470,7 +473,7 @@ class ConfigManager extends EventEmitter {
         let current = obj;
 
         for (const key of keys) {
-            if (current === null || current === undefined || !current.hasOwnProperty(key)) {
+            if (current === null || current === undefined || !Object.prototype.hasOwnProperty.call(current, key)) {
                 return undefined;
             }
             current = current[key];

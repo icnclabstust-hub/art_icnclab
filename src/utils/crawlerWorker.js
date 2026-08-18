@@ -448,8 +448,7 @@ class CrawlerWorker {
                     country: item.country || '',
                     thumbnail: item.edmPreview?.[0] || '',
                     url: `https://www.europeana.eu/item${item.id}`,
-                    source: 'europeana',
-                    type: 'cultural_heritage'
+                    source: 'europeana'
                 };
 
                 items.push(processedItem);

@@ -474,13 +474,14 @@ class AdvancedErrorHandler extends EventEmitter {
                     this.options.maxDelay
                 );
 
-            case 'exponentialBackoffWithJitter':
+            case 'exponentialBackoffWithJitter': {
                 const expDelay = Math.min(
                     delay * Math.pow(this.options.backoffMultiplier, attempt),
                     this.options.maxDelay
                 );
                 const jitter = expDelay * this.options.jitterMax * Math.random();
                 return expDelay + jitter;
+            }
 
             case 'noRetry':
                 return -1; // 表示不重試

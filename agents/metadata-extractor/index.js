@@ -90,7 +90,7 @@ class MetadataExtractorAgent extends EventEmitter {
         this.outputDir = process.env.DATA_PROCESSED_DIR || './data/processed';
 
         // 初始化錯誤處理器
-        this.errorHandler = new ErrorHandler(this.id, {
+        this.errorHandler = new UnifiedErrorHandler(this.id, {
             maxRetries: 3,
             retryDelay: 2000,
             logErrors: true,

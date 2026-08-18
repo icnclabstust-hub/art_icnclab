@@ -31,6 +31,7 @@ class TextCleaner {
         let cleaned = text;
 
         // 移除特殊字符和控制字符（但保留必要的標點符號）
+            // eslint-disable-next-line no-control-regex -- 清除控制字元正是本行的目的
         cleaned = cleaned.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F-\u009F]/g, '');
 
         // 標準化空白字符

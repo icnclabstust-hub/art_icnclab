@@ -131,20 +131,23 @@ class AgentDatabaseBridge extends EventEmitter {
             for (const item of crawlerResults) {
                 try {
                     switch (item.type) {
-                        case 'artist':
+                        case 'artist': {
                             const artist = await this.artistModel.createArtist(item.data);
                             results.artists.push(artist);
                             break;
+                        }
 
-                        case 'artwork':
+                        case 'artwork': {
                             const artwork = await this.artworkModel.createArtwork(item.data);
                             results.artworks.push(artwork);
                             break;
+                        }
 
-                        case 'institution':
+                        case 'institution': {
                             const institution = await this.institutionModel.createInstitution(item.data);
                             results.institutions.push(institution);
                             break;
+                        }
 
                         default:
                             throw new Error(`未知的資料類型: ${item.type}`);

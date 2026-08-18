@@ -174,7 +174,7 @@ class HarvardIntegrationTester {
 
                 // 檢查必要欄位
                 const requiredFields = ['harvardId', 'title', 'source', 'qualityScore', 'artHistoryCategories'];
-                const missingFields = requiredFields.filter(field => !processedObject.hasOwnProperty(field));
+                const missingFields = requiredFields.filter(field => !Object.prototype.hasOwnProperty.call(processedObject, field));
 
                 if (missingFields.length === 0) {
                     this.log('PASS', '物件結構完整，包含所有必要欄位');

@@ -751,6 +751,7 @@ class WebCrawlerAgent extends EventEmitter {
             // 提取搜索結果
             const artworks = await page.evaluate(() => {
                 const results = [];
+                // eslint-disable-next-line no-undef -- page.evaluate 在瀏覽器語境執行，document 存在
                 const items = document.querySelectorAll('.search-result-item');
 
                 items.forEach(item => {

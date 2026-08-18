@@ -825,19 +825,23 @@ class CronScheduler extends EventEmitter {
      * 帶超時的執行
      */
     async executeWithTimeout(taskExecutor, timeout) {
-        return new Promise(async (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const timeoutId = setTimeout(() => {
                 reject(new Error(`任務執行超時 (${timeout}ms)`));
             }, timeout);
 
-            try {
-                const result = await taskExecutor();
-                clearTimeout(timeoutId);
-                resolve(result);
-            } catch (error) {
-                clearTimeout(timeoutId);
-                reject(error);
-            }
+            // executor 不可為 async：async executor 內未被 await 捕捉的同步拋錯
+            // 會變成懸空 rejection 而非 reject 這個 Promise
+            Promise.resolve()
+                .then(taskExecutor)
+                .then(result => {
+                    clearTimeout(timeoutId);
+                    resolve(result);
+                })
+                .catch(error => {
+                    clearTimeout(timeoutId);
+                    reject(error);
+                });
         });
     }
 

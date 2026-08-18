@@ -72,7 +72,7 @@ class DataSourceTester {
                     const sampleItem = searchResults[0];
                     const requiredFields = ['europeanaId', 'title', 'source'];
 
-                    const missingFields = requiredFields.filter(field => !sampleItem.hasOwnProperty(field));
+                    const missingFields = requiredFields.filter(field => !Object.prototype.hasOwnProperty.call(sampleItem, field));
 
                     if (missingFields.length === 0) {
                         this.log('PASS', 'Europeana 資料結構完整');
@@ -132,7 +132,7 @@ class DataSourceTester {
                     const samplePaper = searchResults[0];
                     const requiredFields = ['title', 'source'];
 
-                    const missingFields = requiredFields.filter(field => !samplePaper.hasOwnProperty(field));
+                    const missingFields = requiredFields.filter(field => !Object.prototype.hasOwnProperty.call(samplePaper, field));
 
                     if (missingFields.length === 0) {
                         this.log('PASS', 'Google Scholar 資料結構完整');

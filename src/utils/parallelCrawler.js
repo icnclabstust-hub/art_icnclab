@@ -907,7 +907,7 @@ class ResourceMonitor {
         let totalTick = 0;
 
         cpus.forEach(cpu => {
-            for (type in cpu.times) {
+            for (const type in cpu.times) {
                 totalTick += cpu.times[type];
             }
             totalIdle += cpu.times.idle;

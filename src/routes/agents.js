@@ -4,6 +4,8 @@
  */
 
 const express = require('express');
+const fs = require('fs/promises');
+const path = require('path');
 const router = express.Router();
 const AgentHub = require('../agent-hub');
 
@@ -299,9 +301,6 @@ function getEstimatedDuration(workflowName) {
 
 // 輔助函數：獲取數據流程狀態
 async function getDataFlowStatus() {
-    const fs = require('fs/promises');
-    const path = require('path');
-
     const dataDir = process.env.DATA_RAW_DIR || './data';
     const processedDir = process.env.DATA_PROCESSED_DIR || './data/processed';
 

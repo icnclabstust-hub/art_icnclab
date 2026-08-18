@@ -93,8 +93,8 @@ class RAGIntegrationTester {
             error: null
         };
 
+        const startTime = Date.now();
         try {
-            const startTime = Date.now();
 
             const response = await axios.post(
                 `${this.ragManagerUrl}/api/v1/query`,

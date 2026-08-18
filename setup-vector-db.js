@@ -168,7 +168,7 @@ async function main() {
     const command = args[0] || 'init';
 
     switch (command) {
-        case 'init':
+        case 'init': {
             const success = await setup.initializeCollections();
             if (success) {
                 await setup.listCollections();
@@ -176,6 +176,7 @@ async function main() {
             }
             process.exit(success ? 0 : 1);
             break;
+        }
 
         case 'list':
             await setup.testConnection();

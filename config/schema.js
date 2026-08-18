@@ -251,42 +251,42 @@ module.exports = {
       data: {
         type: 'path',
         required: true,
-        type: 'directory'
+        pathType: 'directory'
       },
       raw: {
         type: 'path',
         required: true,
-        type: 'directory'
+        pathType: 'directory'
       },
       processed: {
         type: 'path',
         required: true,
-        type: 'directory'
+        pathType: 'directory'
       },
       output: {
         type: 'path',
         required: true,
-        type: 'directory'
+        pathType: 'directory'
       },
       temp: {
         type: 'path',
         required: true,
-        type: 'directory'
+        pathType: 'directory'
       },
       logs: {
         type: 'path',
         required: true,
-        type: 'directory'
+        pathType: 'directory'
       },
       cache: {
         type: 'path',
         required: true,
-        type: 'directory'
+        pathType: 'directory'
       },
       backups: {
         type: 'path',
         required: false,
-        type: 'directory'
+        pathType: 'directory'
       }
     }
   },

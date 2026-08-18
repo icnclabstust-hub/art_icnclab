@@ -197,7 +197,7 @@ class ScrapingFunctionalityTester {
                 if (response.status === 200) {
                     const data = response.data;
                     const hasExpectedFields = api.expectedFields.some(field =>
-                        data.hasOwnProperty(field)
+                        Object.prototype.hasOwnProperty.call(data, field)
                     );
 
                     const result = {

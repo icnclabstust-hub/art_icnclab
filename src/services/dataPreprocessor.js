@@ -505,10 +505,11 @@ class ArtDataPreprocessor {
         case 'json':
           await fs.writeFile(filepath, JSON.stringify(data, null, 2));
           break;
-        case 'jsonl':
+        case 'jsonl': {
           const lines = data.map(item => JSON.stringify(item)).join('\n');
           await fs.writeFile(filepath, lines);
           break;
+        }
         default:
           throw new Error(`不支援的格式: ${format}`);
       }

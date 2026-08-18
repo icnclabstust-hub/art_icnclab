@@ -210,7 +210,7 @@ class EnhancedAgentTester {
      */
     async testAgentSpecificFeatures(agent, agentName) {
         switch (agentName) {
-            case 'MetadataExtractor':
+            case 'MetadataExtractor': {
                 const testRecord = {
                     title: 'Test Artwork',
                     artist: 'Test Artist',
@@ -222,8 +222,9 @@ class EnhancedAgentTester {
                     throw new Error('元數據提取結果不完整');
                 }
                 break;
+            }
 
-            case 'Classification':
+            case 'Classification': {
                 const testArtwork = {
                     'dc:title': 'Test Painting',
                     'dc:creator': 'Test Artist',
@@ -235,8 +236,9 @@ class EnhancedAgentTester {
                     throw new Error('分類結果不完整');
                 }
                 break;
+            }
 
-            case 'SummarizationTranslation':
+            case 'SummarizationTranslation': {
                 const testSummaryRecord = {
                     'dc:title': 'Test Artwork',
                     'dc:description': 'A test artwork for summary generation',
@@ -247,14 +249,16 @@ class EnhancedAgentTester {
                     throw new Error('摘要生成失敗');
                 }
                 break;
+            }
 
-            case 'WebCrawler':
+            case 'WebCrawler': {
                 // WebCrawler 只測試狀態，避免實際網絡請求
                 const config = agent.getStatus().config;
                 if (!config || typeof config.maxConcurrentRequests !== 'number') {
                     throw new Error('WebCrawler配置不正確');
                 }
                 break;
+            }
         }
     }
 
@@ -573,7 +577,7 @@ class EnhancedAgentTester {
             // 驗證必要字段
             const requiredFields = ['_id', '_extractedAt', '_confidence'];
             for (const field of requiredFields) {
-                if (!result.hasOwnProperty(field)) {
+                if (!Object.prototype.hasOwnProperty.call(result, field)) {
                     throw new Error(`缺少必要字段: ${field}`);
                 }
             }
