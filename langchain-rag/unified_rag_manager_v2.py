@@ -164,6 +164,18 @@ CHROMADB_HOST = os.getenv("CHROMADB_HOST", "localhost")
 CHROMADB_PORT = int(os.getenv("CHROMADB_PORT", "8001"))
 CHROMADB_COLLECTION = os.getenv("CHROMADB_COLLECTION", "art_history_bgem3")
 
+# 關閉思考鏈的模型前綴（逗號分隔）。qwen3 系列的 <think> 階段佔生成時間大宗
+# （實測同題 19s -> 7s、答案品質相當）；deepseek-r1 的價值就在推理，預設不關。
+NO_THINK_MODEL_PREFIXES = [
+    p.strip() for p in os.getenv("RAG_NO_THINK_MODELS", "qwen3").split(",") if p.strip()
+]
+
+
+def _no_think(model_id: str) -> bool:
+    """此模型是否應關閉思考鏈（Ollama 的 think 參數，不支援的模型會靜默忽略）。"""
+    return any(model_id.startswith(pfx) for pfx in NO_THINK_MODEL_PREFIXES)
+
+
 # Elasticsearch（hybrid_es_rag 策略用：BM25 全文檢索 + 向量 kNN，手動 RRF 融合排序）
 # 免費版授權不含 ES 原生 RRF retriever，所以用兩次查詢自己做分數融合
 ES_URL = os.getenv("ES_URL", "https://localhost:9200")
@@ -326,20 +338,24 @@ class RAGStrategy:
 
         # 調用 Ollama
         try:
+            payload = {
+                "model": model_id,
+                "prompt": prompt,
+                "stream": False,
+                # temperature/num_predict 必須放在 options 裡，放在最外層 Ollama 會直接忽略
+                # （忽略 num_predict 代表沒有生成長度上限，曾實際觀測到單次生成失控超過
+                # 1萬 token 還沒停，把 Ollama 唯一的處理槽卡死、拖累其他所有請求）
+                "options": {
+                    "temperature": temperature,
+                    "num_predict": max_tokens,
+                },
+            }
+            if _no_think(model_id):
+                # 只在要關閉時才帶 think 鍵；未帶鍵時模型維持各自預設行為
+                payload["think"] = False
             response = await conn_manager.http_client.post(
                 f"{OLLAMA_BASE_URL}/api/generate",
-                json={
-                    "model": model_id,
-                    "prompt": prompt,
-                    "stream": False,
-                    # temperature/num_predict 必須放在 options 裡，放在最外層 Ollama 會直接忽略
-                    # （忽略 num_predict 代表沒有生成長度上限，曾實際觀測到單次生成失控超過
-                    # 1萬 token 還沒停，把 Ollama 唯一的處理槽卡死、拖累其他所有請求）
-                    "options": {
-                        "temperature": temperature,
-                        "num_predict": max_tokens,
-                    },
-                },
+                json=payload,
                 timeout=900.0,  # 32B/30B 級模型在 Advanced/Graph/Agentic RAG 下常需 5-10 分鐘
             )
 
@@ -1032,8 +1048,10 @@ class AgenticGraphRAG(RAGStrategy):
                     "model": self.planner_model,
                     "prompt": prompt,
                     "stream": False,
-                    # 同上，temperature/num_predict 要放進 options 才會生效；規劃用的回應
-                    # 本來就該很短（關鍵詞列表或一句話評估），300 token 綽綽有餘
+                    # 規劃步驟不需要思考鏈：產出本來就該很短（關鍵詞列表或一句話評估），
+                    # 對支援 think 的模型一律關閉；不支援的模型會靜默忽略此鍵
+                    "think": False,
+                    # 同上，temperature/num_predict 要放進 options 才會生效
                     "options": {"temperature": 0.1, "num_predict": 300},
                 },
                 timeout=120.0,
