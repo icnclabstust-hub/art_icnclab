@@ -44,7 +44,10 @@ class Neo4jGraphRAG:
     """Neo4j GraphRAG系統"""
 
     def __init__(
-        self, uri="bolt://localhost:7687", username="neo4j", password="CHANGE_ME_NEO4J_PASSWORD"
+        self,
+        uri="bolt://localhost:7687",
+        username="neo4j",
+        password="CHANGE_ME_NEO4J_PASSWORD",  # noqa: S107 -- 佔位字串，非真實密碼
     ):
         self.uri = uri
         self.username = username
@@ -334,7 +337,8 @@ class Neo4jGraphRAG:
             return f"""
             MATCH (w:Artwork)
             WHERE w.classification IS NOT NULL OR w.culture IS NOT NULL
-            RETURN w.title as artwork, w.classification as style, w.culture as culture, w.date as period
+            RETURN w.title as artwork, w.classification as style,
+                   w.culture as culture, w.date as period
             LIMIT {max_nodes}
             """
 
@@ -443,7 +447,9 @@ async def query_graphrag(query: GraphRAGQuery):
         result = graph_rag.query(query.question, query.max_nodes)
         return result
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"GraphRAG查詢失敗: {str(e)}")
+        # S-14：例外原文只進 log，不回前端；B904：from e 保留例外鏈
+        logging.error(f"GraphRAG查詢失敗: {e}")
+        raise HTTPException(status_code=500, detail="GraphRAG查詢失敗") from e
 
 
 @app.get("/graphrag/health")
@@ -472,7 +478,8 @@ async def get_graph_stats():
 
         return {"nodes": stats, "relationships": relationships}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"獲取統計信息失敗: {str(e)}")
+        logging.error(f"獲取統計信息失敗: {e}")
+        raise HTTPException(status_code=500, detail="獲取統計信息失敗") from e
 
 
 def main():
@@ -506,7 +513,7 @@ def main():
     print("🚀 啟動API服務在端口8010...")
 
     # 啟動API服務
-    uvicorn.run(app, host="0.0.0.0", port=8010, log_level="info")
+    uvicorn.run(app, host="127.0.0.1", port=8010, log_level="info")
 
 
 if __name__ == "__main__":

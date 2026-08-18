@@ -511,7 +511,7 @@ if __name__ == "__main__":
             logger.info(f"   GPU {i}: {torch.cuda.get_device_name(i)}")
 
     app.run(
-        host="0.0.0.0",  # noqa: S104 -- 供同機其他服務（Node API、Prometheus 抓取）跨介面存取
+        host="127.0.0.1",
         port=8080,
         debug=os.getenv("FLASK_DEBUG", "False").lower() == "true",
         threaded=True,

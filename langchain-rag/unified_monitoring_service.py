@@ -36,7 +36,7 @@ class UnifiedMonitoringService:
     def __init__(
         self,
         adaptive_manager: EnhancedAdaptiveManager | None = None,
-        host: str = "0.0.0.0",  # noqa: S104 -- 監控面板需供同機其他服務跨介面存取
+        host: str = "127.0.0.1",
         port: int = 8005,
     ):
         """

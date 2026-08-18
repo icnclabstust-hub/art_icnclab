@@ -200,7 +200,8 @@ async def test_strategy_selection(request: TestQueryRequest):
     except Exception as e:
         test_stats["failed_queries"] += 1
         logger.error(f"❌ 策略選擇測試失敗: {e}")
-        raise HTTPException(status_code=500, detail=f"測試失敗: {str(e)}")
+        # S-14：原文已入 log，前端只回類別訊息；B904：from e 保留例外鏈
+        raise HTTPException(status_code=500, detail="測試失敗") from e
 
 
 @app.post("/feedback")
@@ -249,11 +250,12 @@ async def submit_performance_feedback(feedback: PerformanceFeedback):
             "timestamp": datetime.now().isoformat(),
         }
 
-    except ValueError:
-        raise HTTPException(status_code=400, detail=f"無效的策略名稱: {feedback.strategy}")
+    except ValueError as e:
+        # 策略名稱來自請求欄位而非例外原文，可回給前端；from e 保留例外鏈
+        raise HTTPException(status_code=400, detail=f"無效的策略名稱: {feedback.strategy}") from e
     except Exception as e:
         logger.error(f"❌ 提交反饋失敗: {e}")
-        raise HTTPException(status_code=500, detail=f"提交反饋失敗: {str(e)}")
+        raise HTTPException(status_code=500, detail="提交反饋失敗") from e
 
 
 @app.post("/test/batch")
@@ -404,7 +406,7 @@ if __name__ == "__main__":
 
     uvicorn.run(
         "test_adaptive_service:app",
-        host="0.0.0.0",
+        host="127.0.0.1",
         port=8003,
         reload=os.getenv("FLASK_ENV") == "testing",
         log_level="debug" if os.getenv("LOG_LEVEL") == "DEBUG" else "info",

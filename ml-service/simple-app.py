@@ -982,13 +982,13 @@ if __name__ == "__main__":
     else:
         logger.info("ℹ️ 未檢測到CUDA環境，使用CPU模擬")
 
-    logger.info("🔗 服務將在 http://0.0.0.0:8080 啟動")
+    logger.info("🔗 服務將在 http://127.0.0.1:8080 啟動")
 
     # F-01 [MUST]：生產啟動不得開 debug。debug=True 會啟用 Werkzeug 除錯器，
     # 任何能連到本服務的人都可在例外頁面上執行任意 Python。
     # 與 app.py 的啟動方式對齊：預設關閉，需要時才用環境變數開啟。
     app.run(
-        host="0.0.0.0",  # noqa: S104 -- 供同機其他服務（Node API、Prometheus 抓取）跨介面存取
+        host="127.0.0.1",
         port=8080,
         debug=os.getenv("FLASK_DEBUG", "False").lower() == "true",
         threaded=True,

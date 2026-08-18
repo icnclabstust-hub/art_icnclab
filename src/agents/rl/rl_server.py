@@ -220,7 +220,7 @@ async def query_endpoint(request: QueryRequest):
 
     except Exception as e:
         logger.error(f"查詢處理失敗: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="查詢處理失敗") from e
 
 
 @app.get("/stats", response_model=StatsResponse, tags=["Monitoring"])
@@ -244,7 +244,7 @@ async def get_stats():
 
     except Exception as e:
         logger.error(f"獲取統計信息失敗: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="獲取統計信息失敗") from e
 
 
 @app.post("/feedback", tags=["Training"])
@@ -273,7 +273,7 @@ async def submit_feedback(request: FeedbackRequest, background_tasks: Background
 
     except Exception as e:
         logger.error(f"處理反饋失敗: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="處理反饋失敗") from e
 
 
 @app.post("/save_model", tags=["Training"])
@@ -295,12 +295,12 @@ async def save_model():
 
     except Exception as e:
         logger.error(f"保存模型失敗: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail="保存模型失敗") from e
 
 
 if __name__ == "__main__":
     # 從環境變量獲取配置
-    host = os.getenv("RL_SERVER_HOST", "0.0.0.0")
+    host = os.getenv("RL_SERVER_HOST", "127.0.0.1")
     port = int(os.getenv("RL_SERVER_PORT", "8011"))
     workers = int(os.getenv("RL_SERVER_WORKERS", "1"))
 

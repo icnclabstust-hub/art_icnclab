@@ -1589,4 +1589,6 @@ if __name__ == "__main__":
     logger.info(f"   ChromaDB: {CHROMADB_HOST}:{CHROMADB_PORT}")
 
     # WSL 內部服務，需綁定所有介面供 Windows 端連線
-    uvicorn.run(app, host="0.0.0.0", port=port, log_level="info")  # noqa: S104
+    # 預設僅綁本機；部署若需跨介面（例如 WSL 對外供 Windows 側存取）以 RAG_BIND_HOST 覆蓋
+    host = os.getenv("RAG_BIND_HOST", "127.0.0.1")
+    uvicorn.run(app, host=host, port=port, log_level="info")

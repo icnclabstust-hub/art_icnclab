@@ -135,7 +135,7 @@ if [ "${FLASK_ENV:-production}" = "development" ]; then
 else
     echo "🏭 生產模式啟動"
     exec gunicorn \
-        --bind 0.0.0.0:8080 \
+        --bind 127.0.0.1:8080 \
         --workers ${GUNICORN_WORKERS:-4} \
         --worker-class gevent \
         --worker-connections ${GUNICORN_WORKER_CONNECTIONS:-1000} \

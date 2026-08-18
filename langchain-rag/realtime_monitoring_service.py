@@ -17,8 +17,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 try:
     import uvicorn
-    from fastapi import BackgroundTasks, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-    from fastapi.responses import FileResponse, HTMLResponse
+    from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+    from fastapi.responses import HTMLResponse
     from fastapi.staticfiles import StaticFiles
 
     FASTAPI_AVAILABLE = True
@@ -34,7 +34,7 @@ class RealTimeMonitoringService:
     """實時監控服務"""
 
     def __init__(
-        self, adaptive_manager: EnhancedAdaptiveManager, host: str = "0.0.0.0", port: int = 8004
+        self, adaptive_manager: EnhancedAdaptiveManager, host: str = "127.0.0.1", port: int = 8004
     ):
         """
         初始化實時監控服務
@@ -388,10 +388,12 @@ class RealTimeMonitoringService:
             charts.strategy = new Chart(strategyCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Text Semantic', 'Visual Multimodal', 'Knowledge Graph', 'Temporal Aware', 'Hybrid Fusion', 'Contextual Adaptive'],
+                    labels: ['Text Semantic', 'Visual Multimodal', 'Knowledge Graph',
+                        'Temporal Aware', 'Hybrid Fusion', 'Contextual Adaptive'],
                     datasets: [{
                         data: [0, 0, 0, 0, 0, 0],
-                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56',
+                            '#4BC0C0', '#9966FF', '#FF9F40']
                     }]
                 },
                 options: {
@@ -498,7 +500,8 @@ class RealTimeMonitoringService:
                 `;
                 resultDiv.style.display = 'block';
 
-                addLog(`測試完成 - 策略: ${result.selected_strategy}, 時間: ${(result.response_time * 1000).toFixed(2)}ms`);
+                addLog(`測試完成 - 策略: ${result.selected_strategy}, ` +
+                    `時間: ${(result.response_time * 1000).toFixed(2)}ms`);
 
                 // 刷新數據
                 await refreshData();
