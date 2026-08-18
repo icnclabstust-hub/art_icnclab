@@ -23,9 +23,9 @@ transformers==5.15.0
 sentence-transformers==5.7.0     # BGE-M3 等嵌入模型；硬相依 torch
 faiss-cpu==1.15.0                # 若走 GPU 檢索請改裝 faiss-gpu
 
-# ==================== 科學計算 / 繪圖 ====================
-scipy==1.15.3                    # langchain-rag/test_cuda_readiness.py
+# ==================== 繪圖 ====================
 matplotlib==3.10.9               # 策略比較分析圖表
+# scipy 不在此檔——它是 neo4j-graphrag 的硬相依，已列入 requirements.txt 核心。
 
 # ==================== GPU 監控 ====================
 nvidia-ml-py==13.610.43          # 提供 pynvml；langchain-rag/performance_monitor.py
