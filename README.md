@@ -1,5 +1,10 @@
 # 藝術史資料庫爬蟲系統
 
+> **📦 本 repo 已轉為歷史存檔（2026-08-18）**
+> 後續開發一律在 [metaversestust-pms/art_icnclab](https://github.com/metaversestust-pms/art_icnclab)
+> （全新歷史的精整版）。本 repo 保留完整開發歷史與 `db_backups/` 的
+> Neo4j/ChromaDB 資料備份（Git LFS）——部署還原資料時仍需從這裡取得。
+
 專注於RAG集成的藝術史資料庫爬蟲系統，透過精簡的4個AI Agent協同工作，建立高品質的藝術史資料收集、處理與API服務系統。
 
 ## 🎯 核心目標
