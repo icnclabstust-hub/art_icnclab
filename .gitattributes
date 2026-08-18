@@ -1,1 +1,7 @@
 db_backups/*.tar.gz filter=lfs diff=lfs merge=lfs -text
+
+# .sh 一律 LF：這些腳本在 WSL 內執行，CRLF 會讓 bash 死在
+# syntax error near unexpected token $'{\r'。本機 core.autocrlf=true，
+# 沒有此規則時任何一次重新 checkout 都會把工作區的 .sh 轉成 CRLF。
+# （前身 repo 的每日爬蟲曾因此從未成功執行過，教訓已付。）
+*.sh text eol=lf
