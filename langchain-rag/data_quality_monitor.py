@@ -7,73 +7,84 @@
 import json
 import logging
 import os
-from typing import Dict, List, Any, Optional
-from dataclasses import dataclass, asdict
-from enum import Enum
-from datetime import datetime, timedelta
 from collections import defaultdict
-import asyncio
+from dataclasses import dataclass
+from datetime import datetime
+from enum import Enum
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
+
 class QualityMetric(Enum):
     """品質指標"""
-    COMPLETENESS = "completeness"           # 完整性
-    ACCURACY = "accuracy"                   # 準確性
-    CONSISTENCY = "consistency"             # 一致性
-    TIMELINESS = "timeliness"              # 時效性
-    VALIDITY = "validity"                   # 有效性
-    UNIQUENESS = "uniqueness"              # 唯一性
+
+    COMPLETENESS = "completeness"  # 完整性
+    ACCURACY = "accuracy"  # 準確性
+    CONSISTENCY = "consistency"  # 一致性
+    TIMELINESS = "timeliness"  # 時效性
+    VALIDITY = "validity"  # 有效性
+    UNIQUENESS = "uniqueness"  # 唯一性
+
 
 class AlertLevel(Enum):
     """警報級別"""
+
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"
     CRITICAL = "critical"
 
+
 @dataclass
 class QualityScore:
     """品質分數"""
+
     metric: QualityMetric
     score: float  # 0-100
-    details: Dict[str, Any]
+    details: dict[str, Any]
     timestamp: datetime
+
 
 @dataclass
 class DataQualityAlert:
     """資料品質警報"""
+
     alert_id: str
     level: AlertLevel
     metric: QualityMetric
     message: str
-    affected_records: List[str]
+    affected_records: list[str]
     timestamp: datetime
     resolved: bool = False
+
 
 @dataclass
 class SourceQualityReport:
     """資料來源品質報告"""
+
     source_id: str
     source_name: str
     total_records: int
-    quality_scores: Dict[QualityMetric, float]
+    quality_scores: dict[QualityMetric, float]
     overall_score: float
-    alerts: List[DataQualityAlert]
+    alerts: list[DataQualityAlert]
     last_updated: datetime
     trend: str  # "improving", "stable", "declining"
+
 
 class DataQualityMonitor:
     """資料品質監控器"""
 
     def __init__(self, output_dir: str = "quality_reports"):
         self.output_dir = output_dir
-        self.alerts: List[DataQualityAlert] = []
-        self.quality_history: Dict[str, List[QualityScore]] = defaultdict(list)
+        self.alerts: list[DataQualityAlert] = []
+        self.quality_history: dict[str, list[QualityScore]] = defaultdict(list)
         os.makedirs(output_dir, exist_ok=True)
 
-    def assess_data_quality(self, data_records: List[Dict[str, Any]],
-                           source_id: str = "unknown") -> SourceQualityReport:
+    def assess_data_quality(
+        self, data_records: list[dict[str, Any]], source_id: str = "unknown"
+    ) -> SourceQualityReport:
         """評估資料品質"""
         logger.info(f"🔍 評估資料來源 {source_id} 的品質...")
 
@@ -98,13 +109,10 @@ class DataQualityMonitor:
             QualityMetric.CONSISTENCY: 0.15,
             QualityMetric.TIMELINESS: 0.10,
             QualityMetric.VALIDITY: 0.15,
-            QualityMetric.UNIQUENESS: 0.10
+            QualityMetric.UNIQUENESS: 0.10,
         }
 
-        overall_score = sum(
-            quality_scores[metric] * weight
-            for metric, weight in weights.items()
-        )
+        overall_score = sum(quality_scores[metric] * weight for metric, weight in weights.items())
 
         # 生成警報
         source_alerts = self._generate_alerts(quality_scores, source_id, data_records)
@@ -120,20 +128,20 @@ class DataQualityMonitor:
             overall_score=overall_score,
             alerts=source_alerts,
             last_updated=datetime.now(),
-            trend=trend
+            trend=trend,
         )
 
         logger.info(f"✅ {source_id} 品質評估完成，總分: {overall_score:.2f}")
         return report
 
-    def _assess_completeness(self, records: List[Dict[str, Any]]) -> float:
+    def _assess_completeness(self, records: list[dict[str, Any]]) -> float:
         """評估完整性"""
         if not records:
             return 0.0
 
         # 定義必需欄位
-        required_fields = ['title', 'description', 'date', 'creator']
-        optional_fields = ['medium', 'dimensions', 'provenance', 'image']
+        required_fields = ["title", "description", "date", "creator"]
+        optional_fields = ["medium", "dimensions", "provenance", "image"]
 
         total_score = 0
         for record in records:
@@ -153,7 +161,7 @@ class DataQualityMonitor:
 
         return total_score / len(records)
 
-    def _assess_accuracy(self, records: List[Dict[str, Any]]) -> float:
+    def _assess_accuracy(self, records: list[dict[str, Any]]) -> float:
         """評估準確性"""
         total_score = 0
 
@@ -161,19 +169,19 @@ class DataQualityMonitor:
             record_score = 100  # 從滿分開始
 
             # 檢查日期格式
-            if 'date' in record:
-                if not self._is_valid_date(record['date']):
+            if "date" in record:
+                if not self._is_valid_date(record["date"]):
                     record_score -= 20
 
             # 檢查數值範圍
-            if 'quality_score' in record:
-                score = record.get('quality_score', 0)
+            if "quality_score" in record:
+                score = record.get("quality_score", 0)
                 if not (0 <= score <= 100):
                     record_score -= 15
 
             # 檢查文本長度合理性
-            if 'description' in record:
-                desc_len = len(str(record['description']))
+            if "description" in record:
+                desc_len = len(str(record["description"]))
                 if desc_len < 10 or desc_len > 10000:
                     record_score -= 10
 
@@ -181,7 +189,7 @@ class DataQualityMonitor:
 
         return total_score / len(records) if records else 0
 
-    def _assess_consistency(self, records: List[Dict[str, Any]]) -> float:
+    def _assess_consistency(self, records: list[dict[str, Any]]) -> float:
         """評估一致性"""
         if len(records) < 2:
             return 100.0
@@ -202,7 +210,7 @@ class DataQualityMonitor:
 
         return consistency_score
 
-    def _check_naming_consistency(self, records: List[Dict[str, Any]]) -> float:
+    def _check_naming_consistency(self, records: list[dict[str, Any]]) -> float:
         """檢查命名一致性"""
         # 檢查相似欄位的命名是否一致
         naming_patterns = defaultdict(int)
@@ -210,7 +218,7 @@ class DataQualityMonitor:
         for record in records:
             for key in record.keys():
                 # 標準化命名
-                standardized = key.lower().replace('-', '_').replace(' ', '_')
+                standardized = key.lower().replace("-", "_").replace(" ", "_")
                 naming_patterns[standardized] += 1
 
         # 如果大部分記錄使用相同的命名模式，分數較高
@@ -220,23 +228,23 @@ class DataQualityMonitor:
 
         return 1.0
 
-    def _assess_timeliness(self, records: List[Dict[str, Any]]) -> float:
+    def _assess_timeliness(self, records: list[dict[str, Any]]) -> float:
         """評估時效性"""
         now = datetime.now()
         total_score = 0
 
         for record in records:
             # 檢查資料的更新時間
-            if 'timestamp' in record or 'last_updated' in record or 'created_at' in record:
+            if "timestamp" in record or "last_updated" in record or "created_at" in record:
                 timestamp_field = (
-                    record.get('timestamp') or
-                    record.get('last_updated') or
-                    record.get('created_at')
+                    record.get("timestamp")
+                    or record.get("last_updated")
+                    or record.get("created_at")
                 )
 
                 try:
                     if isinstance(timestamp_field, str):
-                        record_time = datetime.fromisoformat(timestamp_field.replace('Z', '+00:00'))
+                        record_time = datetime.fromisoformat(timestamp_field.replace("Z", "+00:00"))
                     else:
                         record_time = timestamp_field
 
@@ -262,7 +270,7 @@ class DataQualityMonitor:
 
         return total_score / len(records) if records else 0
 
-    def _assess_validity(self, records: List[Dict[str, Any]]) -> float:
+    def _assess_validity(self, records: list[dict[str, Any]]) -> float:
         """評估有效性"""
         total_score = 0
 
@@ -270,18 +278,18 @@ class DataQualityMonitor:
             record_score = 100
 
             # 檢查必需欄位是否為空
-            if 'title' in record and not record['title']:
+            if "title" in record and not record["title"]:
                 record_score -= 30
 
             # 檢查資料類型是否正確
-            if 'quality_score' in record:
+            if "quality_score" in record:
                 try:
-                    float(record['quality_score'])
+                    float(record["quality_score"])
                 except (ValueError, TypeError):
                     record_score -= 20
 
             # 檢查URL格式
-            url_fields = ['url', 'image_url', 'source_url']
+            url_fields = ["url", "image_url", "source_url"]
             for field in url_fields:
                 if field in record and record[field]:
                     if not self._is_valid_url(record[field]):
@@ -291,7 +299,7 @@ class DataQualityMonitor:
 
         return total_score / len(records) if records else 0
 
-    def _assess_uniqueness(self, records: List[Dict[str, Any]]) -> float:
+    def _assess_uniqueness(self, records: list[dict[str, Any]]) -> float:
         """評估唯一性"""
         if len(records) < 2:
             return 100.0
@@ -303,7 +311,7 @@ class DataQualityMonitor:
 
         for record in records:
             # 檢查標題重複
-            title = record.get('title', '').lower().strip()
+            title = record.get("title", "").lower().strip()
             if title:
                 if title in seen_titles:
                     duplicate_count += 1
@@ -311,7 +319,7 @@ class DataQualityMonitor:
                     seen_titles.add(title)
 
             # 檢查ID重複
-            record_id = record.get('id') or record.get('record_id')
+            record_id = record.get("id") or record.get("record_id")
             if record_id:
                 if record_id in seen_ids:
                     duplicate_count += 1
@@ -322,8 +330,12 @@ class DataQualityMonitor:
         uniqueness_score = (1 - (duplicate_count / len(records))) * 100
         return max(0, uniqueness_score)
 
-    def _generate_alerts(self, quality_scores: Dict[QualityMetric, float],
-                        source_id: str, records: List[Dict[str, Any]]) -> List[DataQualityAlert]:
+    def _generate_alerts(
+        self,
+        quality_scores: dict[QualityMetric, float],
+        source_id: str,
+        records: list[dict[str, Any]],
+    ) -> list[DataQualityAlert]:
         """生成品質警報"""
         alerts = []
 
@@ -336,8 +348,8 @@ class DataQualityMonitor:
                     level=AlertLevel.CRITICAL,
                     metric=metric,
                     message=f"{metric.value}分數極低 ({score:.1f}/100)",
-                    affected_records=[r.get('id', 'unknown') for r in records[:5]],
-                    timestamp=datetime.now()
+                    affected_records=[r.get("id", "unknown") for r in records[:5]],
+                    timestamp=datetime.now(),
                 )
             elif score < 70:
                 alert = DataQualityAlert(
@@ -345,8 +357,8 @@ class DataQualityMonitor:
                     level=AlertLevel.WARNING,
                     metric=metric,
                     message=f"{metric.value}分數偏低 ({score:.1f}/100)",
-                    affected_records=[r.get('id', 'unknown') for r in records[:3]],
-                    timestamp=datetime.now()
+                    affected_records=[r.get("id", "unknown") for r in records[:3]],
+                    timestamp=datetime.now(),
                 )
             elif score < 85:
                 alert = DataQualityAlert(
@@ -355,7 +367,7 @@ class DataQualityMonitor:
                     metric=metric,
                     message=f"{metric.value}分數中等 ({score:.1f}/100)",
                     affected_records=[],
-                    timestamp=datetime.now()
+                    timestamp=datetime.now(),
                 )
 
             if alert:
@@ -374,7 +386,7 @@ class DataQualityMonitor:
                 metric=QualityMetric.COMPLETENESS,  # 用於總體分數
                 score=current_score,
                 details={},
-                timestamp=datetime.now()
+                timestamp=datetime.now(),
             )
         )
 
@@ -400,13 +412,7 @@ class DataQualityMonitor:
 
         try:
             # 嘗試多種日期格式
-            date_formats = [
-                '%Y-%m-%d',
-                '%Y/%m/%d',
-                '%Y',
-                '%d-%m-%Y',
-                '%m/%d/%Y'
-            ]
+            date_formats = ["%Y-%m-%d", "%Y/%m/%d", "%Y", "%d-%m-%Y", "%m/%d/%Y"]
 
             for fmt in date_formats:
                 try:
@@ -424,7 +430,7 @@ class DataQualityMonitor:
         if not url:
             return False
 
-        return url.startswith(('http://', 'https://'))
+        return url.startswith(("http://", "https://"))
 
     def _get_source_name(self, source_id: str) -> str:
         """獲取資料來源名稱"""
@@ -433,7 +439,7 @@ class DataQualityMonitor:
             "met_museum": "Metropolitan Museum of Art",
             "europeana": "Europeana",
             "google_books": "Google Books",
-            "google_scholar": "Google Scholar"
+            "google_scholar": "Google Scholar",
         }
         return source_names.get(source_id, source_id)
 
@@ -447,10 +453,10 @@ class DataQualityMonitor:
             overall_score=0.0,
             alerts=[],
             last_updated=datetime.now(),
-            trend="stable"
+            trend="stable",
         )
 
-    def generate_dashboard_data(self, reports: List[SourceQualityReport]) -> Dict[str, Any]:
+    def generate_dashboard_data(self, reports: list[SourceQualityReport]) -> dict[str, Any]:
         """生成儀表板數據"""
         logger.info("📊 生成品質監控儀表板數據...")
 
@@ -463,21 +469,25 @@ class DataQualityMonitor:
             "excellent": len([r for r in reports if r.overall_score >= 90]),
             "good": len([r for r in reports if 75 <= r.overall_score < 90]),
             "fair": len([r for r in reports if 60 <= r.overall_score < 75]),
-            "poor": len([r for r in reports if r.overall_score < 60])
+            "poor": len([r for r in reports if r.overall_score < 60]),
         }
 
         # 警報統計
         alert_stats = {
-            "critical": len([a for a in self.alerts if a.level == AlertLevel.CRITICAL and not a.resolved]),
-            "warning": len([a for a in self.alerts if a.level == AlertLevel.WARNING and not a.resolved]),
-            "info": len([a for a in self.alerts if a.level == AlertLevel.INFO and not a.resolved])
+            "critical": len(
+                [a for a in self.alerts if a.level == AlertLevel.CRITICAL and not a.resolved]
+            ),
+            "warning": len(
+                [a for a in self.alerts if a.level == AlertLevel.WARNING and not a.resolved]
+            ),
+            "info": len([a for a in self.alerts if a.level == AlertLevel.INFO and not a.resolved]),
         }
 
         # 趨勢統計
         trend_stats = {
             "improving": len([r for r in reports if r.trend == "improving"]),
             "stable": len([r for r in reports if r.trend == "stable"]),
-            "declining": len([r for r in reports if r.trend == "declining"])
+            "declining": len([r for r in reports if r.trend == "declining"]),
         }
 
         # 各指標平均分數
@@ -490,13 +500,13 @@ class DataQualityMonitor:
             "metadata": {
                 "generated_at": datetime.now().isoformat(),
                 "total_sources": len(reports),
-                "monitoring_period": "real-time"
+                "monitoring_period": "real-time",
             },
             "overview": {
                 "total_records": total_records,
                 "average_quality_score": avg_overall_score,
                 "quality_distribution": quality_distribution,
-                "trend_statistics": trend_stats
+                "trend_statistics": trend_stats,
             },
             "alerts": {
                 "summary": alert_stats,
@@ -506,10 +516,11 @@ class DataQualityMonitor:
                         "level": a.level.value,
                         "metric": a.metric.value,
                         "message": a.message,
-                        "timestamp": a.timestamp.isoformat()
+                        "timestamp": a.timestamp.isoformat(),
                     }
-                    for a in self.alerts if not a.resolved
-                ][-10:]  # 最近10個未解決警報
+                    for a in self.alerts
+                    if not a.resolved
+                ][-10:],  # 最近10個未解決警報
             },
             "metric_averages": metric_averages,
             "source_reports": [
@@ -520,24 +531,78 @@ class DataQualityMonitor:
                     "overall_score": r.overall_score,
                     "quality_scores": {k.value: v for k, v in r.quality_scores.items()},
                     "trend": r.trend,
-                    "alert_count": len(r.alerts)
+                    "alert_count": len(r.alerts),
                 }
                 for r in reports
-            ]
+            ],
         }
 
         logger.info("✅ 儀表板數據生成完成")
         return dashboard
 
-    def save_dashboard(self, dashboard_data: Dict[str, Any], filename: str = "quality_dashboard.json"):
+    def save_dashboard(
+        self, dashboard_data: dict[str, Any], filename: str = "quality_dashboard.json"
+    ):
         """保存儀表板數據"""
         output_path = os.path.join(self.output_dir, filename)
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             json.dump(dashboard_data, f, ensure_ascii=False, indent=2)
         logger.info(f"💾 儀表板數據已保存到 {output_path}")
 
-    def generate_html_dashboard(self, dashboard_data: Dict[str, Any]) -> str:
+    def generate_html_dashboard(self, dashboard_data: dict[str, Any]) -> str:
         """生成HTML儀表板"""
+        # 資料來源卡片先在 f-string 外組好，再以單一變數插入。
+        # 原本寫成三層同款三引號的巢狀 f-string，py3.11 不允許重用外層引號
+        # （PEP 701 要到 3.12 才放寬）；且趨勢標籤的 dict 查表被寫成雙層大括號，
+        # 在 f-string 中會逃逸成字面大括號而非查表，並留下一個落單的右括號。
+        trend_labels = {
+            "improving": "📈 改善中",
+            "stable": "➡️ 穩定",
+            "declining": "📉 下降中",
+        }
+
+        metric_tpl = (
+            '<div class="metric">'
+            '<div class="label">{label}</div>'
+            '<div class="score" style="font-size: 1.2em;">{score:.0f}</div>'
+            "</div>"
+        )
+
+        card_tpl = """
+            <div class="source-card">
+                <h3>{source_name} ({source_id})</h3>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <div>總記錄數: <strong>{total_records:,}</strong></div>
+                        <div>趨勢: <span class="trend {trend}">{trend_label}</span></div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 2em; color: #667eea; font-weight: bold;">{overall_score:.1f}</div>
+                        <div style="font-size: 0.9em; color: #6b7280;">總分</div>
+                    </div>
+                </div>
+                <div class="metric-grid" style="grid-template-columns: repeat(6, 1fr);">
+                    {metrics}
+                </div>
+            </div>
+"""
+
+        source_cards_html = "".join(
+            card_tpl.format(
+                source_name=source["source_name"],
+                source_id=source["source_id"],
+                total_records=source["total_records"],
+                trend=source["trend"],
+                trend_label=trend_labels.get(source["trend"], source["trend"]),
+                overall_score=source["overall_score"],
+                metrics="".join(
+                    metric_tpl.format(label=metric.split("_")[0][:4], score=score)
+                    for metric, score in source["quality_scores"].items()
+                ),
+            )
+            for source in dashboard_data["source_reports"]
+        )
+
         html = f"""<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -694,29 +759,36 @@ class DataQualityMonitor:
         <div class="header">
             <h1>🎨 藝術史資料品質監控儀表板</h1>
             <p>即時監控資料品質，確保資料的準確性與完整性</p>
-            <p style="margin-top: 10px; color: #999;">更新時間: {dashboard_data['metadata']['generated_at']}</p>
+            <p style="margin-top: 10px; color: #999;">更新時間: {
+            dashboard_data["metadata"]["generated_at"]
+        }</p>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
                 <h3>總體品質分數</h3>
-                <div class="value">{dashboard_data['overview']['average_quality_score']:.1f}</div>
+                <div class="value">{dashboard_data["overview"]["average_quality_score"]:.1f}</div>
                 <div class="trend stable">滿分 100</div>
             </div>
             <div class="stat-card">
                 <h3>資料來源數量</h3>
-                <div class="value">{dashboard_data['metadata']['total_sources']}</div>
+                <div class="value">{dashboard_data["metadata"]["total_sources"]}</div>
                 <div class="trend stable">個資料源</div>
             </div>
             <div class="stat-card">
                 <h3>總記錄數</h3>
-                <div class="value">{dashboard_data['overview']['total_records']:,}</div>
+                <div class="value">{dashboard_data["overview"]["total_records"]:,}</div>
                 <div class="trend up">筆資料</div>
             </div>
             <div class="stat-card">
                 <h3>待處理警報</h3>
-                <div class="value">{dashboard_data['alerts']['summary']['critical'] + dashboard_data['alerts']['summary']['warning']}</div>
-                <div class="trend {'down' if dashboard_data['alerts']['summary']['critical'] > 0 else 'stable'}">需要關注</div>
+                <div class="value">{
+            dashboard_data["alerts"]["summary"]["critical"]
+            + dashboard_data["alerts"]["summary"]["warning"]
+        }</div>
+                <div class="trend {
+            "down" if dashboard_data["alerts"]["summary"]["critical"] > 0 else "stable"
+        }">需要關注</div>
             </div>
         </div>
 
@@ -725,26 +797,37 @@ class DataQualityMonitor:
             <div class="metric-grid">
                 <div class="metric">
                     <div class="label">優秀 (90+)</div>
-                    <div class="score" style="color: #10b981;">{dashboard_data['overview']['quality_distribution']['excellent']}</div>
+                    <div class="score" style="color: #10b981;">{
+            dashboard_data["overview"]["quality_distribution"]["excellent"]
+        }</div>
                 </div>
                 <div class="metric">
                     <div class="label">良好 (75-89)</div>
-                    <div class="score" style="color: #3b82f6;">{dashboard_data['overview']['quality_distribution']['good']}</div>
+                    <div class="score" style="color: #3b82f6;">{
+            dashboard_data["overview"]["quality_distribution"]["good"]
+        }</div>
                 </div>
                 <div class="metric">
                     <div class="label">一般 (60-74)</div>
-                    <div class="score" style="color: #f59e0b;">{dashboard_data['overview']['quality_distribution']['fair']}</div>
+                    <div class="score" style="color: #f59e0b;">{
+            dashboard_data["overview"]["quality_distribution"]["fair"]
+        }</div>
                 </div>
                 <div class="metric">
                     <div class="label">待改進 (<60)</div>
-                    <div class="score" style="color: #ef4444;">{dashboard_data['overview']['quality_distribution']['poor']}</div>
+                    <div class="score" style="color: #ef4444;">{
+            dashboard_data["overview"]["quality_distribution"]["poor"]
+        }</div>
                 </div>
             </div>
         </div>
 
         <div class="section">
             <h2>⚠️ 即時警報</h2>
-            {''.join([f'''
+            {
+            "".join(
+                [
+                    f'''
             <div class="alert {alert['level']}">
                 <div>
                     <strong>{alert['metric'].upper()}</strong>
@@ -752,12 +835,21 @@ class DataQualityMonitor:
                     <small style="color: #6b7280;">{alert['timestamp']}</small>
                 </div>
             </div>
-            ''' for alert in dashboard_data['alerts']['active_alerts'][:5]]) if dashboard_data['alerts']['active_alerts'] else '<p style="color: #10b981;">✅ 目前沒有警報</p>'}
+            '''
+                    for alert in dashboard_data["alerts"]["active_alerts"][:5]
+                ]
+            )
+            if dashboard_data["alerts"]["active_alerts"]
+            else '<p style="color: #10b981;">✅ 目前沒有警報</p>'
+        }
         </div>
 
         <div class="section">
             <h2>📈 各項品質指標</h2>
-            {''.join([f'''
+            {
+            "".join(
+                [
+                    f'''
             <div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
                     <span style="font-weight: 500;">{metric}</span>
@@ -768,49 +860,32 @@ class DataQualityMonitor:
                     </div>
                 </div>
             </div>
-            ''' for metric, score in dashboard_data['metric_averages'].items()])}
+            '''
+                    for metric, score in dashboard_data["metric_averages"].items()
+                ]
+            )
+        }
         </div>
 
         <div class="section">
             <h2>📦 資料來源詳情</h2>
-            {''.join([f'''
-            <div class="source-card">
-                <h3>{source['source_name']} ({source['source_id']})</h3>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div>總記錄數: <strong>{source['total_records']:,}</strong></div>
-                        <div>趨勢: <span class="trend {source['trend']}">{{"improving": "📈 改善中", "stable": "➡️ 穩定", "declining": "📉 下降中"}}[source['trend']]}</span></div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div style="font-size: 2em; color: #667eea; font-weight: bold;">{source['overall_score']:.1f}</div>
-                        <div style="font-size: 0.9em; color: #6b7280;">總分</div>
-                    </div>
-                </div>
-                <div class="metric-grid" style="grid-template-columns: repeat(6, 1fr);">
-                    {''.join([f'''
-                    <div class="metric">
-                        <div class="label">{metric.split('_')[0][:4]}</div>
-                        <div class="score" style="font-size: 1.2em;">{score:.0f}</div>
-                    </div>
-                    ''' for metric, score in source['quality_scores'].items()])}
-                </div>
-            </div>
-            ''' for source in dashboard_data['source_reports']])}
+            {source_cards_html}
         </div>
     </div>
 </body>
 </html>"""
 
         output_path = os.path.join(self.output_dir, "quality_dashboard.html")
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(html)
 
         logger.info(f"🎨 HTML儀表板已生成: {output_path}")
         return output_path
 
+
 def main():
     """主函數"""
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
     print("🔍 藝術史資料品質監控系統")
     print("=" * 60)
@@ -828,7 +903,7 @@ def main():
                 "creator": "Vincent van Gogh",
                 "medium": "Oil on canvas",
                 "quality_score": 95,
-                "timestamp": "2025-10-15T10:00:00"
+                "timestamp": "2025-10-15T10:00:00",
             },
             {
                 "id": "002",
@@ -838,8 +913,8 @@ def main():
                 "creator": "Leonardo da Vinci",
                 "medium": "Oil on panel",
                 "quality_score": 98,
-                "timestamp": "2025-10-14T15:30:00"
-            }
+                "timestamp": "2025-10-14T15:30:00",
+            },
         ],
         "met_museum": [
             {
@@ -849,7 +924,7 @@ def main():
                 "date": "1831",
                 "creator": "Hokusai",
                 "quality_score": 85,
-                "timestamp": "2025-09-20T12:00:00"
+                "timestamp": "2025-09-20T12:00:00",
             }
         ],
         "europeana": [
@@ -862,9 +937,9 @@ def main():
                 "medium": "Tempera on canvas",
                 "image_url": "https://example.com/image.jpg",
                 "quality_score": 92,
-                "timestamp": "2025-10-10T09:00:00"
+                "timestamp": "2025-10-10T09:00:00",
             }
-        ]
+        ],
     }
 
     # 評估各資料源
@@ -887,7 +962,8 @@ def main():
     print("\n✅ 品質監控完成！")
     print(f"📁 JSON數據: {os.path.join(monitor.output_dir, 'quality_dashboard.json')}")
     print(f"🎨 HTML儀表板: {html_path}")
-    print(f"\n💡 在瀏覽器中打開 HTML 文件查看完整儀表板")
+    print("\n💡 在瀏覽器中打開 HTML 文件查看完整儀表板")
+
 
 if __name__ == "__main__":
     main()
