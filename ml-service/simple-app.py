@@ -979,4 +979,12 @@ if __name__ == "__main__":
 
     logger.info("🔗 服務將在 http://0.0.0.0:8080 啟動")
 
-    app.run(host="0.0.0.0", port=8080, debug=True, threaded=True)
+    # F-01 [MUST]：生產啟動不得開 debug。debug=True 會啟用 Werkzeug 除錯器，
+    # 任何能連到本服務的人都可在例外頁面上執行任意 Python。
+    # 與 app.py 的啟動方式對齊：預設關閉，需要時才用環境變數開啟。
+    app.run(
+        host="0.0.0.0",
+        port=8080,
+        debug=os.getenv("FLASK_DEBUG", "False").lower() == "true",
+        threaded=True,
+    )
