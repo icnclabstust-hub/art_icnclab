@@ -13,8 +13,6 @@ import requests
 import urllib3
 from pydantic import BaseModel, Field
 
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-
 
 class Tools:
     class Valves(BaseModel):
@@ -28,6 +26,13 @@ class Tools:
             default="",
             description="Obsidian Local REST API 外掛設定頁裡的 API Key",
         )
+        CA_CERT: str = Field(
+            default="",
+            description="Obsidian Local REST API 憑證檔（.crt/.pem）的路徑。"
+            "該外掛用自簽憑證，預設無法對公開 CA 驗證；"
+            "把外掛設定頁匯出的憑證存成檔案並填入此路徑，即可啟用真正的憑證驗證。"
+            "留空則略過驗證（僅適用於連往私有位址的情形）",
+        )
         TIMEOUT: int = Field(default=15, description="請求逾時秒數")
 
     def __init__(self):
@@ -35,6 +40,25 @@ class Tools:
 
     def _headers(self):
         return {"Authorization": f"Bearer {self.valves.API_KEY}"}
+
+    def _verify(self):
+        """決定 requests 的 verify 參數。
+
+        Returns:
+            設定了 CA_CERT 時回傳該路徑（對自簽憑證做真正的驗證）；
+            未設定時回傳 False，並就地關閉 urllib3 的不安全警告。
+
+        Note:
+            預設 False 是刻意的：Obsidian Local REST API 外掛使用自簽憑證，
+            對公開 CA 驗證必然失敗，且連線目標是 WSL 看得到的 Windows 主機
+            私有位址（預設 172.20.160.1），不經過公網。但這仍會失去對
+            中間人攻擊的防護，因此提供 CA_CERT 讓使用者改用真正的驗證。
+            對映 CODING_STYLE.md S-14 的精神：抑制安全預設須有明文理由。
+        """
+        if self.valves.CA_CERT:
+            return self.valves.CA_CERT
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        return False
 
     def list_notes(self, folder: str = "") -> str:
         """列出 Obsidian 筆記庫裡某個資料夾（預設為根目錄）底下的所有筆記檔案。
@@ -46,7 +70,7 @@ class Tools:
             resp = requests.get(
                 f"{self.valves.API_URL}{path}",
                 headers=self._headers(),
-                verify=False,
+                verify=self._verify(),
                 timeout=self.valves.TIMEOUT,
             )
             resp.raise_for_status()
@@ -64,7 +88,7 @@ class Tools:
             resp = requests.get(
                 f"{self.valves.API_URL}/vault/{filename}",
                 headers=self._headers(),
-                verify=False,
+                verify=self._verify(),
                 timeout=self.valves.TIMEOUT,
             )
             if resp.status_code == 404:
@@ -85,7 +109,7 @@ class Tools:
                 f"{self.valves.API_URL}/vault/{filename}",
                 headers={**self._headers(), "Content-Type": "text/markdown"},
                 data=content.encode("utf-8"),
-                verify=False,
+                verify=self._verify(),
                 timeout=self.valves.TIMEOUT,
             )
             resp.raise_for_status()
@@ -104,7 +128,7 @@ class Tools:
                 f"{self.valves.API_URL}/vault/{filename}",
                 headers={**self._headers(), "Content-Type": "text/markdown"},
                 data=content.encode("utf-8"),
-                verify=False,
+                verify=self._verify(),
                 timeout=self.valves.TIMEOUT,
             )
             resp.raise_for_status()
@@ -147,7 +171,7 @@ class Tools:
                 f"{self.valves.API_URL}/search/simple/",
                 headers=self._headers(),
                 params={"query": query},
-                verify=False,
+                verify=self._verify(),
                 timeout=self.valves.TIMEOUT,
             )
             resp.raise_for_status()
