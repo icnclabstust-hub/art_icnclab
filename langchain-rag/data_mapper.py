@@ -150,7 +150,8 @@ class ArtHistoryDataMapper:
         """確定作品的具體類型"""
         dc_type = item.get("dcType", "").lower()
         dc_format = item.get("dcFormat", "").lower()
-        title = item.get("dcTitle", "").lower()
+        # 原本另取 dcTitle 但從未參與判型——僅憑標題判斷媒材誤判率高（如
+        # 「Painting the Modern Garden」書籍），維持只看 dcType/dcFormat。
 
         # 繪畫
         if any(

@@ -143,21 +143,11 @@ class AgentFrameworkTester:
             if not self.system or not self.system.is_running:
                 return False
 
-            # 創建測試實驗配置
-            experiment_config = {
-                "experiment_id": "test_rag_experiment",
-                "rag_framework": "vector_rag",
-                "llm_model": "ollama",
-                "priority": 1,
-                "estimated_duration": 30,
-                "test_queries": ["什麼是藝術史？", "文藝復興的特點是什麼？"],
-            }
-
             print("📝 創建RAG實驗配置...")
 
             # 直接測試RAG Agent
             vector_rag_agent = None
-            for agent_id, agent in self.system.agents.items():
+            for _agent_id, agent in self.system.agents.items():
                 if hasattr(agent, "rag_framework") and agent.rag_framework == "vector_rag":
                     vector_rag_agent = agent
                     break
@@ -240,7 +230,7 @@ class AgentFrameworkTester:
             vector_rag_agent = list(self.system.agents.values())[0]
 
             try:
-                result = await vector_rag_agent.process_single_query("")
+                await vector_rag_agent.process_single_query("")
                 print("✓ 空查詢處理正常")
             except Exception as e:
                 print(f"✓ 空查詢錯誤處理: {str(e)[:50]}...")

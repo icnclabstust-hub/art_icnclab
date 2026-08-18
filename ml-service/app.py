@@ -330,7 +330,7 @@ def inference():
     try:
         data = request.json
         texts = data.get("texts", [])
-        tasks = data.get("tasks", ["classification"])
+        _tasks = data.get("tasks", ["classification"])  # 模擬中未使用，保留以記錄 API 參數
         model_version = data.get("model_version", "latest")
 
         if not texts:
@@ -421,7 +421,7 @@ def generate_embeddings():
 
         # 模擬嵌入生成（實際實現中會使用真實模型）
         embeddings = []
-        for text in texts:
+        for _text in texts:
             # 生成768維的隨機嵌入（實際應該是模型輸出）
             embedding = torch.randn(768).tolist()
             embeddings.append(embedding)
@@ -451,7 +451,7 @@ def similarity_search():
         data = request.json
         query_text = data.get("query_text", "")
         top_k = data.get("top_k", 10)
-        include_embeddings = data.get("include_embeddings", False)
+        _include_embeddings = data.get("include_embeddings", False)  # 模擬中未使用
 
         if not query_text:
             return jsonify({"success": False, "error": "沒有提供查詢文本"}), 400
@@ -511,7 +511,7 @@ if __name__ == "__main__":
             logger.info(f"   GPU {i}: {torch.cuda.get_device_name(i)}")
 
     app.run(
-        host="0.0.0.0",
+        host="0.0.0.0",  # noqa: S104 -- 供同機其他服務（Node API、Prometheus 抓取）跨介面存取
         port=8080,
         debug=os.getenv("FLASK_DEBUG", "False").lower() == "true",
         threaded=True,

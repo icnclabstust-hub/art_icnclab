@@ -99,7 +99,7 @@ async def test_basic_agent_functionality():
             "dependencies": [],
         }
 
-        scheduled_exp = await scheduler.schedule_single_experiment(experiment_config)
+        await scheduler.schedule_single_experiment(experiment_config)
         scheduler_status = scheduler.get_status()
 
         print(f"✅ 調度器測試通過，待調度實驗: {scheduler_status['queue_status']['pending']}")

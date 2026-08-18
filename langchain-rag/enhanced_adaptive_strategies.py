@@ -98,9 +98,10 @@ class EnhancedAdaptiveManager:
 
     async def select_optimal_strategy(self, context: QueryContext) -> ContextualRAGStrategy:
         """選擇最優檢索策略"""
-        # 1. 分析查詢情境
-        intent_score = self._analyze_query_intent(context)
-        complexity_score = self._calculate_complexity(context)
+        # 1.（原本此處預先計算 intent/complexity 分數，但 _get_candidate_strategies
+        #    與 _calculate_base_score 各自重算 intent，複雜度則從未接進任何評分——
+        #    屬設計缺口。移除死計算；若要讓複雜度影響策略選擇，應把
+        #    _calculate_complexity(context) 納入下方 strategy_scores 的加權。
 
         # 2. 獲取候選策略
         candidate_strategies = self._get_candidate_strategies(context)
@@ -125,7 +126,8 @@ class EnhancedAdaptiveManager:
             # 利用：選擇最佳策略
             selected_strategy = max(strategy_scores, key=strategy_scores.get)
             logger.info(
-                f"🎯 最優策略選擇: {selected_strategy.value} (分數: {strategy_scores[selected_strategy]:.3f})"
+                f"🎯 最優策略選擇: {selected_strategy.value} "
+                f"(分數: {strategy_scores[selected_strategy]:.3f})"
             )
 
         # 5. 記錄選擇
@@ -470,12 +472,18 @@ class EnhancedAdaptiveManager:
     ) -> str:
         """生成策略選擇解釋"""
         explanations = {
-            ContextualRAGStrategy.TEXT_SEMANTIC: f"基於純文本語義搜索，適合事實查詢(分數:{intent_analysis.get(QueryIntent.FACTUAL_LOOKUP, 0):.2f})",
-            ContextualRAGStrategy.VISUAL_MULTIMODAL: f"結合視覺和文本信息，適合視覺描述查詢(分數:{intent_analysis.get(QueryIntent.VISUAL_DESCRIPTION, 0):.2f})",
-            ContextualRAGStrategy.KNOWLEDGE_GRAPH: f"利用知識圖譜推理，適合分析性查詢(分數:{intent_analysis.get(QueryIntent.ANALYTICAL_REASONING, 0):.2f})",
-            ContextualRAGStrategy.TEMPORAL_AWARE: f"時序感知檢索，適合歷史脈絡查詢(分數:{intent_analysis.get(QueryIntent.HISTORICAL_CONTEXT, 0):.2f})",
-            ContextualRAGStrategy.HYBRID_FUSION: f"多策略融合，適合對比分析(分數:{intent_analysis.get(QueryIntent.COMPARATIVE_ANALYSIS, 0):.2f})",
-            ContextualRAGStrategy.CONTEXTUAL_ADAPTIVE: f"情境自適應策略，適合復雜查詢(複雜度:{complexity_score:.2f})",
+            ContextualRAGStrategy.TEXT_SEMANTIC: f"基於純文本語義搜索，適合事實查詢"
+            f"(分數:{intent_analysis.get(QueryIntent.FACTUAL_LOOKUP, 0):.2f})",
+            ContextualRAGStrategy.VISUAL_MULTIMODAL: f"結合視覺和文本信息，適合視覺描述查詢"
+            f"(分數:{intent_analysis.get(QueryIntent.VISUAL_DESCRIPTION, 0):.2f})",
+            ContextualRAGStrategy.KNOWLEDGE_GRAPH: f"利用知識圖譜推理，適合分析性查詢"
+            f"(分數:{intent_analysis.get(QueryIntent.ANALYTICAL_REASONING, 0):.2f})",
+            ContextualRAGStrategy.TEMPORAL_AWARE: f"時序感知檢索，適合歷史脈絡查詢"
+            f"(分數:{intent_analysis.get(QueryIntent.HISTORICAL_CONTEXT, 0):.2f})",
+            ContextualRAGStrategy.HYBRID_FUSION: f"多策略融合，適合對比分析"
+            f"(分數:{intent_analysis.get(QueryIntent.COMPARATIVE_ANALYSIS, 0):.2f})",
+            ContextualRAGStrategy.CONTEXTUAL_ADAPTIVE: f"情境自適應策略，適合復雜查詢"
+            f"(複雜度:{complexity_score:.2f})",
         }
 
         return explanations.get(strategy, "未知策略")

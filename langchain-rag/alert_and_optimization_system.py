@@ -784,7 +784,8 @@ async def main():
         await asyncio.sleep(1)
 
     # 啟動告警系統
-    alert_task = asyncio.create_task(alert_system.start_monitoring())
+    # 保留 task 引用避免被 GC 回收（asyncio 只保存弱引用）
+    _alert_task = asyncio.create_task(alert_system.start_monitoring())  # noqa: RUF006
 
     # 運行5分鐘
     await asyncio.sleep(30)

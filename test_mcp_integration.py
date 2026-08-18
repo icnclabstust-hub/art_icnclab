@@ -96,7 +96,8 @@ class MCPIntegrationTester:
             self.log_test_result(
                 "工具分類功能",
                 len(ai_tools) > 0 and len(vector_db_tools) > 0,
-                f"AI工具: {len(ai_tools)}, 向量DB: {len(vector_db_tools)}, 多模態: {len(multimodal_tools)}",
+                f"AI工具: {len(ai_tools)}, 向量DB: {len(vector_db_tools)}, "
+                f"多模態: {len(multimodal_tools)}",
             )
 
             # 測試工具發現
@@ -273,7 +274,7 @@ class MCPIntegrationTester:
 
             # 測試無效Agent類型創建
             try:
-                agent = MCPAgentFactory.create_mcp_agent("invalid_type")
+                MCPAgentFactory.create_mcp_agent("invalid_type")
                 self.log_test_result("無效Agent類型處理", False, "應該拋出異常")
             except ValueError:
                 self.log_test_result("無效Agent類型處理", True, "正確拋出ValueError")

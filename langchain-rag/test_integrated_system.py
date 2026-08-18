@@ -175,7 +175,8 @@ async def test_integrated_rag_system():
             strategy_correct += 1
         else:
             print(
-                f"❌ {test_name}: 期望 {[s.value for s in expected_strategies]}, 實際 {result.strategy_used.value}"
+                f"❌ {test_name}: 期望 {[s.value for s in expected_strategies]}, "
+                f"實際 {result.strategy_used.value}"
             )
 
     if strategy_correct >= len(strategy_tests) * 0.7:
@@ -209,14 +210,16 @@ async def test_integrated_rag_system():
     print("\n" + "=" * 60)
     print("📊 測試總結:")
     print(
-        f"單個查詢成功率: {successful_tests}/{len(test_cases)} ({successful_tests / len(test_cases) * 100:.1f}%)"
+        f"單個查詢成功率: {successful_tests}/{len(test_cases)} "
+        f"({successful_tests / len(test_cases) * 100:.1f}%)"
     )
     print(f"平均查詢時間: {total_processing_time / len(test_cases):.3f}s")
 
     final_status = optimizer.get_system_status()
     print(f"快取命中率: {final_status['cache_stats']['hit_rate']:.1%}")
     print(
-        f"系統組件狀態: {sum(1 for s in final_status['components'].values() if s == 'ready')}/{len(final_status['components'])} 正常"
+        f"系統組件狀態: {sum(1 for s in final_status['components'].values() if s == 'ready')}"
+        f"/{len(final_status['components'])} 正常"
     )
 
     # 判斷測試整體結果
@@ -259,7 +262,7 @@ def run_performance_benchmark():
         times = []
         for query in benchmark_queries:
             start = time.time()
-            result = await optimizer.query(query)
+            await optimizer.query(query)
             duration = time.time() - start
             times.append(duration)
             print(f"查詢: {query[:20]}... 時間: {duration:.3f}s")

@@ -95,7 +95,7 @@ async def quick_test():
     # 測試批次優化
     print("\n⚡ 執行系統優化...")
     optimization_start = time.time()
-    optimization_result = await adaptive_manager.optimize_system_performance()
+    await adaptive_manager.optimize_system_performance()
     optimization_time = time.time() - optimization_start
     print(f"優化執行時間: {optimization_time:.3f}s")
 

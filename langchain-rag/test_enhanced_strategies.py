@@ -273,7 +273,6 @@ class TestRunner:
         ]
 
         batch_start_time = time.time()
-        batch_results = []
 
         # 並行處理查詢
         tasks = []

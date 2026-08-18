@@ -103,7 +103,11 @@ class TestSummarizationAgent(unittest.TestCase):
 
     def test_brief_summary_generation(self):
         """測試簡要摘要生成"""
-        text = "The Starry Night is an oil-on-canvas painting by Dutch Post-Impressionist painter Vincent van Gogh. Painted in June 1889, it depicts the view from the east-facing window of his asylum room at Saint-Rémy-de-Provence."
+        text = (
+            "The Starry Night is an oil-on-canvas painting by Dutch Post-Impressionist "
+            "painter Vincent van Gogh. Painted in June 1889, it depicts the view from "
+            "the east-facing window of his asylum room at Saint-Rémy-de-Provence."
+        )
 
         result = self.agent.generate_summary(text, self.SummaryLevel.BRIEF)
 
@@ -290,7 +294,7 @@ class TestPerformance(unittest.TestCase):
         ]
 
         start_time = time.time()
-        report = monitor.assess_data_quality(test_records, "performance_test")
+        monitor.assess_data_quality(test_records, "performance_test")
         end_time = time.time()
 
         processing_time = end_time - start_time
@@ -303,12 +307,12 @@ class TestPerformance(unittest.TestCase):
         agent = SummarizationTranslationAgent()
 
         text = (
-            "The Starry Night is an oil-on-canvas painting by Dutch Post-Impressionist painter Vincent van Gogh. "
-            * 10
+            "The Starry Night is an oil-on-canvas painting by Dutch Post-Impressionist "
+            "painter Vincent van Gogh. " * 10
         )
 
         start_time = time.time()
-        result = agent.generate_summary(text, SummaryLevel.BRIEF)
+        agent.generate_summary(text, SummaryLevel.BRIEF)
         end_time = time.time()
 
         processing_time = end_time - start_time

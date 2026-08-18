@@ -17,8 +17,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 try:
     import uvicorn
-    from fastapi import BackgroundTasks, FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-    from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
+    from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+    from fastapi.responses import FileResponse, HTMLResponse
 
     FASTAPI_AVAILABLE = True
 except ImportError:
@@ -36,7 +36,7 @@ class UnifiedMonitoringService:
     def __init__(
         self,
         adaptive_manager: EnhancedAdaptiveManager | None = None,
-        host: str = "0.0.0.0",
+        host: str = "0.0.0.0",  # noqa: S104 -- 監控面板需供同機其他服務跨介面存取
         port: int = 8005,
     ):
         """
@@ -315,7 +315,8 @@ class UnifiedMonitoringService:
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+                'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             color: #333;
@@ -590,7 +591,8 @@ class UnifiedMonitoringService:
             <div class="card">
                 <h3>🎮 測試控制台</h3>
                 <div class="input-group">
-                    <input type="text" id="testQuery" placeholder="輸入測試查詢..." value="分析莫內印象派作品的色彩特色">
+                    <input type="text" id="testQuery" placeholder="輸入測試查詢..."
+                        value="分析莫內印象派作品的色彩特色">
                     <button class="btn" onclick="executeTestQuery()">執行測試</button>
                 </div>
                 <div class="controls">
@@ -861,7 +863,8 @@ class UnifiedMonitoringService:
 信心度: ${(result.performance_data.confidence * 100).toFixed(1)}%
 狀態: 成功
                     `;
-                    addLog(`測試完成 - ${result.selected_strategy} - ${(result.response_time * 1000).toFixed(2)}ms`);
+                    addLog(`測試完成 - ${result.selected_strategy} - ` +
+                        `${(result.response_time * 1000).toFixed(2)}ms`);
                 } else {
                     resultsDiv.innerHTML = `錯誤: ${result.error}`;
                     addLog(`測試失敗: ${result.error}`);
@@ -1012,7 +1015,9 @@ class UnifiedMonitoringService:
         await self.monitor.start_monitoring()
 
         # 啟動告警系統（這會自動啟動監控和優化循環）
-        alert_task = asyncio.create_task(self.alert_system.start_monitoring())
+        # 存到 self：asyncio 對 task 只保存弱引用，區域變數在本方法返回後即失效，
+        # 告警迴圈可能被 GC 中途回收——這是實際缺陷而非風格問題
+        self._alert_task = asyncio.create_task(self.alert_system.start_monitoring())
 
         self.logger.info("統一監控服務已全面啟動")
 

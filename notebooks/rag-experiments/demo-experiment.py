@@ -233,12 +233,13 @@ class MultimodalRAGDemo:
             print(f"{status_icon} {test.upper()}: {'成功' if status else '失敗'}")
 
         print(
-            f"\n🎯 演示成功率: {success_count}/{total_tests} ({success_count / total_tests * 100:.1f}%)"
+            f"\n🎯 演示成功率: {success_count}/{total_tests} "
+            f"({success_count / total_tests * 100:.1f}%)"
         )
 
         if success_count >= total_tests * 0.8:
             print("🎉 演示實驗成功！多模態RAG系統基礎設施已準備就緒")
-            report = self.generate_experiment_report()
+            self.generate_experiment_report()  # 有寫檔副作用，回傳值不需使用
             return True
         else:
             print("⚠️ 演示實驗部分失敗，需要進一步調試")

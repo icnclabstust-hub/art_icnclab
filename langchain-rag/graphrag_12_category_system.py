@@ -610,12 +610,12 @@ class GraphRAGQueryRouter:
 
     def generate_cypher_query(self, query_analysis: dict[str, Any], limit: int = 50) -> str:
         """基於查詢分析生成Cypher查詢"""
-        config = query_analysis["query_config"]
         pattern = query_analysis["selected_pattern"]
 
-        # 構建入口節點匹配
-        entry_categories = config["entry_categories"]
-        target_categories = config["target_categories"]
+        # 注意：query_analysis["query_config"] 的 entry_categories / target_categories
+        # 目前未被使用——
+        # 下方各 pattern 的 Cypher 是硬編碼的節點標籤。若要讓查詢真正跟隨 12 分類
+        # 設定，需以這兩個欄位動態組標籤（標籤值來自程式內固定分類表，非使用者輸入）。
 
         if pattern == "artist_works":
             cypher = f"""
@@ -861,7 +861,8 @@ class ArtHistory12CategorySchema:
                 start_period: 1495,
                 end_period: 1520,
                 origin_location: 'Rome, Florence',
-                key_characteristics: ['perfect balance', 'idealized beauty', 'mathematical precision'],
+                key_characteristics: ['perfect balance', 'idealized beauty',
+                    'mathematical precision'],
                 major_figures: ['Leonardo', 'Michelangelo', 'Raphael'],
                 category: 'Movements'
             })""",
@@ -1073,39 +1074,56 @@ class ArtHistory12CategorySchema:
         # 創作關係
         relationships.extend(
             [
-                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), (mona:Painting {title: 'Mona Lisa'}) CREATE (mona)-[:CREATED_BY {year: 1503}]->(leo)",
-                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), (sfumato:Sfumato) CREATE (leo)-[:DEVELOPED_TECHNIQUE]->(sfumato)",
+                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), "
+                "(mona:Painting {title: 'Mona Lisa'}) "
+                "CREATE (mona)-[:CREATED_BY {year: 1503}]->(leo)",
+                "CREATE (mona)-[:CREATED_BY {year: 1503}]->(leo)",
+                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), (sfumato:Sfumato) "
+                "CREATE (leo)-[:DEVELOPED_TECHNIQUE]->(sfumato)",
             ]
         )
 
         # 影響關係
         relationships.extend(
             [
-                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), (hr:HighRenaissance) CREATE (leo)-[:BELONGS_TO_MOVEMENT]->(hr)",
-                "MATCH (mona:Painting {title: 'Mona Lisa'}), (sfumato:Sfumato) CREATE (mona)-[:USES_TECHNIQUE]->(sfumato)",
+                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), (hr:HighRenaissance) "
+                "CREATE (leo)-[:BELONGS_TO_MOVEMENT]->(hr)",
+                "MATCH (mona:Painting {title: 'Mona Lisa'}), (sfumato:Sfumato) "
+                "CREATE (mona)-[:USES_TECHNIQUE]->(sfumato)",
             ]
         )
 
         # 收藏關係
         relationships.extend(
             [
-                "MATCH (mona:Painting {title: 'Mona Lisa'}), (louvre:Museum {name: 'Louvre Museum'}) CREATE (mona)-[:HOUSED_IN]->(louvre)",
+                "MATCH (mona:Painting {title: 'Mona Lisa'}), "
+                "(louvre:Museum {name: 'Louvre Museum'}) "
+                "CREATE (mona)-[:HOUSED_IN]->(louvre)",
+                "CREATE (mona)-[:HOUSED_IN]->(louvre)",
             ]
         )
 
         # 地理關係
         relationships.extend(
             [
-                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), (florence:City {name: 'Florence'}) CREATE (leo)-[:WORKED_IN]->(florence)",
-                "MATCH (louvre:Museum {name: 'Louvre Museum'}), (paris:City {name: 'Paris'}) CREATE (louvre)-[:LOCATED_IN]->(paris)",
+                "MATCH (leo:Artist {name: 'Leonardo da Vinci'}), "
+                "(florence:City {name: 'Florence'}) "
+                "CREATE (leo)-[:WORKED_IN]->(florence)",
+                "CREATE (leo)-[:WORKED_IN]->(florence)",
+                "MATCH (louvre:Museum {name: 'Louvre Museum'}), (paris:City {name: 'Paris'}) "
+                "CREATE (louvre)-[:LOCATED_IN]->(paris)",
             ]
         )
 
         # 語言對照關係
         relationships.extend(
             [
-                "MATCH (it:ItalianTerm {term: 'sfumato'}), (cn:ChineseTerm {term: '暈塗法'}) CREATE (it)-[:TRANSLATED_AS]->(cn)",
-                "MATCH (it:ItalianTerm {term: 'sfumato'}), (en:EnglishTerm {term: 'sfumato technique'}) CREATE (it)-[:EQUIVALENT_TO]->(en)",
+                "MATCH (it:ItalianTerm {term: 'sfumato'}), (cn:ChineseTerm {term: '暈塗法'}) "
+                "CREATE (it)-[:TRANSLATED_AS]->(cn)",
+                "MATCH (it:ItalianTerm {term: 'sfumato'}), "
+                "(en:EnglishTerm {term: 'sfumato technique'}) "
+                "CREATE (it)-[:EQUIVALENT_TO]->(en)",
+                "CREATE (it)-[:EQUIVALENT_TO]->(en)",
             ]
         )
 

@@ -286,10 +286,10 @@ class ArtHistoryRAGSystem:
             # 檢查或創建集合
             collection_name = self.config.collection_name
             try:
-                collection = client.get_collection(name=collection_name)
+                client.get_collection(name=collection_name)
                 logger.info(f"✅ 找到現有集合: {collection_name}")
-            except:
-                collection = client.create_collection(name=collection_name)
+            except Exception:
+                client.create_collection(name=collection_name)
                 logger.info(f"✅ 創建新集合: {collection_name}")
 
             # 返回 LangChain Chroma 向量存儲
