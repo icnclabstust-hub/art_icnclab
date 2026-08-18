@@ -1536,9 +1536,27 @@ async def process_query(request: QueryRequest):
                         max_tokens = combo["params"].get("max_tokens", 2048)
                     break
 
-        answer = await strategy.generate(
-            request.query, sources, llm_model, temperature=temperature, max_tokens=max_tokens
+        # 答案層快取：原本只快取檢索結果，但檢索僅 ~0.04s、生成要 10s+，
+        # 快取蓋在不痛的地方——同題重問照樣付全額生成時間。答案 key 需含
+        # 會影響輸出的全部參數（組合、溫度、長度上限、來源過濾）。
+        answer_cache_key = (
+            f"ans:{request.model_combination_id}:{temperature}:{max_tokens}:"
+            f"{request.source_filter or ''}"
         )
+        cached_answer = (
+            query_cache.get(request.query, answer_cache_key, request.max_results)
+            if query_cache
+            else None
+        )
+        if cached_answer is not None:
+            answer = cached_answer
+            cache_hit = True
+        else:
+            answer = await strategy.generate(
+                request.query, sources, llm_model, temperature=temperature, max_tokens=max_tokens
+            )
+            if query_cache:
+                query_cache.set(request.query, answer_cache_key, request.max_results, answer)
     except Exception as e:
         logger.error(f"生成失敗: {e}")
         raise HTTPException(status_code=500, detail=f"生成失敗: {str(e)}") from e
