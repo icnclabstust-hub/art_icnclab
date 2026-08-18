@@ -85,7 +85,8 @@ class TrainingJob:
                 self.eta = remaining_epochs * time_per_epoch
 
                 logger.info(
-                    f"訓練進度: Epoch {epoch}/{self.total_epochs}, Loss: {self.current_loss}, Accuracy: {self.current_accuracy}"
+                    f"訓練進度: Epoch {epoch}/{self.total_epochs}, "
+                    f"Loss: {self.current_loss}, Accuracy: {self.current_accuracy}"
                 )
 
             self.status = "completed"
@@ -264,7 +265,7 @@ def inference():
     try:
         data = request.json
         texts = data.get("texts", [])
-        tasks = data.get("tasks", ["classification"])
+        _tasks = data.get("tasks", ["classification"])  # 模擬模式未使用，保留以記錄 API 參數
         model_version = data.get("model_version", "latest")
 
         if not texts:
@@ -274,7 +275,7 @@ def inference():
 
         # 模擬推理過程
         results = []
-        for i, text in enumerate(texts):
+        for _i, text in enumerate(texts):
             # 模擬不同的分類結果
             periods = ["古代", "中世紀", "文藝復興", "巴洛克", "現代", "當代"]
             styles = ["寫實主義", "印象派", "表現主義", "立體派", "抽象主義"]
@@ -462,7 +463,7 @@ def generate_embeddings():
 
             # 結合原文本和語意增強詞彙生成hash
             combined_text = text + " ".join(enhanced_terms)
-            text_hash = hashlib.md5(combined_text.encode()).hexdigest()
+            text_hash = hashlib.md5(combined_text.encode(), usedforsecurity=False).hexdigest()
 
             # 使用增強hash作為隨機種子
             random.seed(text_hash)
@@ -473,8 +474,8 @@ def generate_embeddings():
             # 如果有語意增強，調整嵌入向量
             if enhanced_terms:
                 # 為每個增強詞彙添加語意權重
-                for i, term in enumerate(enhanced_terms[:10]):  # 限制前10個詞彙
-                    term_hash = hashlib.md5(term.encode()).hexdigest()
+                for _i, term in enumerate(enhanced_terms[:10]):  # 限制前10個詞彙
+                    term_hash = hashlib.md5(term.encode(), usedforsecurity=False).hexdigest()
                     random.seed(term_hash)
                     weight = 0.1 + random.random() * 0.2  # 0.1-0.3的權重
 
@@ -511,7 +512,7 @@ def similarity_search():
         data = request.json
         query_text = data.get("query_text", "")
         top_k = data.get("top_k", 10)
-        include_embeddings = data.get("include_embeddings", False)
+        _include_embeddings = data.get("include_embeddings", False)  # 模擬模式未使用
 
         if not query_text:
             return jsonify({"success": False, "error": "沒有提供查詢文本"}), 400
@@ -638,7 +639,7 @@ def extract_image_features():
     """圖像特徵提取"""
     try:
         data = request.json
-        image_path = data.get("image_path", "")
+        _image_path = data.get("image_path", "")  # 模擬模式未使用
 
         # 模擬圖像特徵提取
         import random
@@ -691,7 +692,8 @@ def generate_detailed_art_response(question, enhanced_terms):
     # 專業藝術史知識庫
     knowledge_base = {
         "印象派": {
-            "definition": "印象派是19世紀下半葉興起於法國的藝術運動，以捕捉光線和色彩的瞬間變化為特色。",
+            "definition": "印象派是19世紀下半葉興起於法國的藝術運動，"
+            "以捕捉光線和色彩的瞬間變化為特色。",
             "characteristics": [
                 "強調光線和色彩的變化效果，特別是自然光線下的色彩表現",
                 "採用快速、可見的筆觸技法，不追求過度的細節描繪",
@@ -712,7 +714,8 @@ def generate_detailed_art_response(question, enhanced_terms):
                 "《煎餅磨坊的舞會》",
                 "《芭蕾舞排練》",
             ],
-            "historical_context": "印象派的出現與19世紀工業革命、都市化進程以及攝影技術的發明密切相關，藝術家們開始探索新的視覺表達方式。",
+            "historical_context": "印象派的出現與19世紀工業革命、都市化進程"
+            "以及攝影技術的發明密切相關，藝術家們開始探索新的視覺表達方式。",
         },
         "文藝復興": {
             "definition": "文藝復興是14-16世紀歐洲的文化運動，以復興古典文化和人文主義精神為核心。",
@@ -736,7 +739,8 @@ def generate_detailed_art_response(question, enhanced_terms):
                 "《雅典學院》",
                 "《維納斯的誕生》",
             ],
-            "historical_context": "文藝復興始於義大利，受到拜占庭學者西遷、古典文獻重新發現以及商業繁榮的推動。",
+            "historical_context": "文藝復興始於義大利，受到拜占庭學者西遷、"
+            "古典文獻重新發現以及商業繁榮的推動。",
         },
         "巴洛克": {
             "definition": "巴洛克藝術興起於17世紀，以戲劇性、動感和豐富裝飾為特色的藝術風格。",
@@ -760,7 +764,8 @@ def generate_detailed_art_response(question, enhanced_terms):
                 "《瑪麗·德·美第奇組畫》",
                 "《宮娥》",
             ],
-            "historical_context": "巴洛克藝術是天主教反宗教改革的產物，同時也反映了絕對君主制的權力美學。",
+            "historical_context": "巴洛克藝術是天主教反宗教改革的產物，"
+            "同時也反映了絕對君主制的權力美學。",
         },
     }
 
@@ -903,7 +908,7 @@ def multimodal_generate():
     try:
         data = request.json
         text_input = data.get("text_input", "")
-        image_features = data.get("image_features", [])
+        _image_features = data.get("image_features", [])  # 模擬模式未使用
 
         # 模擬多模態描述生成
         descriptions = [
@@ -983,7 +988,7 @@ if __name__ == "__main__":
     # 任何能連到本服務的人都可在例外頁面上執行任意 Python。
     # 與 app.py 的啟動方式對齊：預設關閉，需要時才用環境變數開啟。
     app.run(
-        host="0.0.0.0",
+        host="0.0.0.0",  # noqa: S104 -- 供同機其他服務（Node API、Prometheus 抓取）跨介面存取
         port=8080,
         debug=os.getenv("FLASK_DEBUG", "False").lower() == "true",
         threaded=True,
