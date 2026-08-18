@@ -1536,6 +1536,12 @@ async def process_query(request: QueryRequest):
                         max_tokens = combo["params"].get("max_tokens", 2048)
                     break
 
+        # 部署層可設全域生成長度上限（RAG_MAX_TOKENS_CAP）：實測回應時間與答案
+        # 長度近乎線性（~60 字/s），課堂情境用上限換速度；0 或未設定表示不設限
+        cap = int(os.getenv("RAG_MAX_TOKENS_CAP", "0"))
+        if cap > 0 and max_tokens:
+            max_tokens = min(max_tokens, cap)
+
         # 答案層快取：原本只快取檢索結果，但檢索僅 ~0.04s、生成要 10s+，
         # 快取蓋在不痛的地方——同題重問照樣付全額生成時間。答案 key 需含
         # 會影響輸出的全部參數（組合、溫度、長度上限、來源過濾）。
