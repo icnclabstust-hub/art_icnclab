@@ -28,7 +28,7 @@ class Pipe:
 
     def __init__(self):
         self.id = "nmth_art_history_rag"
-        self.name = "qwen3 8B + 臺灣歷史博物館 RAG"
+        self.name = "Qwen3 8B + 臺灣歷史博物館 RAG"
         self.valves = self.Valves()
 
     def pipes(self):

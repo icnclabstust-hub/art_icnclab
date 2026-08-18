@@ -28,7 +28,7 @@ class Pipe:
 
     def __init__(self):
         self.id = "advanced_graphrag"
-        self.name = "qwen3 8B + Advanced RAG"
+        self.name = "Qwen3 8B + Advanced Graph RAG"
         self.valves = self.Valves()
 
     def pipes(self):
